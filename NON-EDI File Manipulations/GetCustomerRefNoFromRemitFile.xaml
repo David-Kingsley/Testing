@@ -1,0 +1,813 @@
+﻿<Activity mc:Ignorable="sap sap2010 sads" x:Class="GetCustomerRefNoFromRemitFile"
+ xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
+ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+ xmlns:moie="clr-namespace:Microsoft.Office.Interop.Excel;assembly=Microsoft.Office.Interop.Excel"
+ xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities"
+ xmlns:s="clr-namespace:System;assembly=mscorlib"
+ xmlns:sads="http://schemas.microsoft.com/netfx/2010/xaml/activities/debugger"
+ xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"
+ xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation"
+ xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib"
+ xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib"
+ xmlns:sd="clr-namespace:System.Data;assembly=System.Data"
+ xmlns:snm="clr-namespace:System.Net.Mail;assembly=System"
+ xmlns:ui="http://schemas.uipath.com/workflow/activities"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property Name="Arg_inRemitFile" Type="InOutArgument(x:String)" />
+    <x:Property Name="Arg_inCustomerRefNoColumnName" Type="InArgument(x:String)" />
+    <x:Property Name="Arg_inCnt" Type="InArgument(x:Int32)" />
+    <x:Property Name="Arg_inPaymentDT" Type="InArgument(sd:DataTable)" />
+    <x:Property Name="Arg_inRemitCustomerName" Type="InArgument(x:String)" />
+    <x:Property Name="Arg_inLogFilePath" Type="InArgument(x:String)" />
+    <x:Property Name="Arg_inOutputDirectory" Type="InArgument(x:String)" />
+    <x:Property Name="Arg_inoutFinalDT" Type="InArgument(sd:DataTable)" />
+    <x:Property Name="Arg_inUniqueID" Type="InArgument(x:String)" />
+    <x:Property Name="Arg_inRemitFolder" Type="InArgument(x:String)" />
+    <x:Property Name="Arg_inDBDataSource" Type="InArgument(x:String)" />
+    <x:Property Name="Arg_inUsername" Type="InArgument(x:String)" />
+    <x:Property Name="Arg_inPassword" Type="InArgument(x:String)" />
+    <x:Property Name="Arg_inMail" Type="InArgument(snm:MailMessage)" />
+  </x:Members>
+  <mva:VisualBasic.Settings>
+    <x:Null />
+  </mva:VisualBasic.Settings>
+  <sap2010:WorkflowViewState.IdRef>GetCustomerRefNoFromRemitFile_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <sco:Collection x:TypeArguments="x:String">
+      <x:String>System.Activities</x:String>
+      <x:String>System.Activities.Statements</x:String>
+      <x:String>System.Activities.Expressions</x:String>
+      <x:String>System.Activities.Validation</x:String>
+      <x:String>System.Activities.XamlIntegration</x:String>
+      <x:String>Microsoft.VisualBasic</x:String>
+      <x:String>Microsoft.VisualBasic.Activities</x:String>
+      <x:String>System</x:String>
+      <x:String>System.Collections</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Diagnostics</x:String>
+      <x:String>System.Drawing</x:String>
+      <x:String>System.IO</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Net.Mail</x:String>
+      <x:String>System.Xml</x:String>
+      <x:String>System.Xml.Linq</x:String>
+      <x:String>System.Windows.Markup</x:String>
+      <x:String>UiPath.Core</x:String>
+      <x:String>UiPath.Core.Activities</x:String>
+      <x:String>UiPath.Excel</x:String>
+      <x:String>System.Xml.Serialization</x:String>
+      <x:String>System.Text.RegularExpressions</x:String>
+      <x:String>Microsoft.Office.Interop.Excel</x:String>
+    </sco:Collection>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System.Data.DataSetExtensions</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Drawing</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>PresentationCore</AssemblyReference>
+      <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Excel</AssemblyReference>
+      <AssemblyReference>System.Collections.Immutable</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>UiPath.PDF</AssemblyReference>
+      <AssemblyReference>System.ValueTuple</AssemblyReference>
+      <AssemblyReference>UiPath.Studio.Plugin.Workflow</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
+      <AssemblyReference>Microsoft.Office.Interop.Excel</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualStudio.Services.Common</AssemblyReference>
+    </sco:Collection>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence DisplayName="Get CustomerRefNo From Remit File" sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="ui:WorkbookApplication" Name="wrkbk" />
+      <Variable x:TypeArguments="sd:DataTable" Name="RemitDT" />
+      <Variable x:TypeArguments="x:Int32" Name="index" />
+      <Variable x:TypeArguments="x:String" Name="CustRefNo" />
+      <Variable x:TypeArguments="x:String" Name="ColumnAddr" />
+      <Variable x:TypeArguments="ui:GenericValue" Name="Col" />
+      <Variable x:TypeArguments="ui:GenericValue" Name="RefNo" />
+    </Sequence.Variables>
+    <If Condition="[Arg_inRemitFile.Contains(&quot;.csv&quot;)]" DisplayName="If Remit file has CSV extension" sap2010:WorkflowViewState.IdRef="If_1">
+      <If.Then>
+        <Sequence sap2010:WorkflowViewState.IdRef="Sequence_5">
+          <ui:ReadCsvFile Encoding="{x:Null}" DataTable="[RemitDT]" Delimitator="Comma" DisplayName="Read CSV" FilePath="[Arg_inRemitFile]" sap2010:WorkflowViewState.IdRef="ReadCsvFile_1" />
+        </Sequence>
+      </If.Then>
+    </If>
+    <Delay Duration="00:00:04" sap2010:WorkflowViewState.IdRef="Delay_4" />
+    <ui:InvokeCode ContinueOnError="{x:Null}" Code="app = New Microsoft.Office.Interop.Excel.Application&#xA;workbook= app.Workbooks.Open(file)&#xA;app.DisplayAlerts=False&#xA;workbook.SaveAs(Path &amp; FileName,FileFormat:=51)&#xA;workbook.Close()&#xA;app.Quit()" DisplayName="Invoke Code" sap2010:WorkflowViewState.IdRef="InvokeCode_3">
+      <ui:InvokeCode.Arguments>
+        <InArgument x:TypeArguments="moie:Application" x:Key="app" />
+        <InArgument x:TypeArguments="moie:Workbook" x:Key="workbook" />
+        <InArgument x:TypeArguments="x:String" x:Key="file">[Arg_inRemitFile]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="FileName">[Path.GetFileNameWithoutExtension(Arg_inRemitFile)]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="Path">[Arg_inRemitFolder+"\"]</InArgument>
+      </ui:InvokeCode.Arguments>
+    </ui:InvokeCode>
+    <Assign sap2010:WorkflowViewState.IdRef="Assign_44">
+      <Assign.To>
+        <OutArgument x:TypeArguments="x:String">[Arg_inRemitFile]</OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="x:String">[Arg_inRemitFolder+"\"+Path.GetFileNameWithoutExtension(Arg_inRemitFile)+".xlsx"]</InArgument>
+      </Assign.Value>
+    </Assign>
+    <Delay Duration="00:00:02" sap2010:WorkflowViewState.IdRef="Delay_2" />
+    <TryCatch DisplayName="Try Catch" sap2010:WorkflowViewState.IdRef="TryCatch_2">
+      <TryCatch.Try>
+        <ui:ExcelApplicationScope Password="{x:Null}" DisplayName="Excel Application Scope" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_2" Visible="False" Workbook="[wrkbk]" WorkbookPath="[Arg_inRemitFile]">
+          <ui:ExcelApplicationScope.Body>
+            <ActivityAction x:TypeArguments="ui:WorkbookApplication">
+              <ActivityAction.Argument>
+                <DelegateInArgument x:TypeArguments="ui:WorkbookApplication" Name="ExcelWorkbookScope" />
+              </ActivityAction.Argument>
+              <Sequence DisplayName="Do" sap2010:WorkflowViewState.IdRef="Sequence_3">
+                <TryCatch DisplayName="Try Catch" sap2010:WorkflowViewState.IdRef="TryCatch_1">
+                  <TryCatch.Try>
+                    <ui:ExcelReadRange AddHeaders="True" DataTable="[RemitDT]" DisplayName="Read Range" sap2010:WorkflowViewState.IdRef="ExcelReadRange_2" SheetName="[wrkbk.GetSheets(0)]">
+                      <ui:ExcelReadRange.Range>
+                        <InArgument x:TypeArguments="x:String">
+                          <Literal x:TypeArguments="x:String" Value="" />
+                        </InArgument>
+                      </ui:ExcelReadRange.Range>
+                    </ui:ExcelReadRange>
+                  </TryCatch.Try>
+                  <TryCatch.Catches>
+                    <Catch x:TypeArguments="s:Exception" sap2010:WorkflowViewState.IdRef="Catch`1_1">
+                      <ActivityAction x:TypeArguments="s:Exception">
+                        <ActivityAction.Argument>
+                          <DelegateInArgument x:TypeArguments="s:Exception" Name="exception" />
+                        </ActivityAction.Argument>
+                      </ActivityAction>
+                    </Catch>
+                  </TryCatch.Catches>
+                </TryCatch>
+                <Switch x:TypeArguments="x:String" DisplayName="Switch" Expression="[Arg_inCustomerRefNoColumnName]" sap2010:WorkflowViewState.IdRef="Switch`1_1">
+                  <Sequence x:Key="&quot;Remit&quot;, &quot;Check No&quot;" DisplayName="Column is CheckNo" sap2010:WorkflowViewState.IdRef="Sequence_6">
+                    <ui:ExcelLookUpRange DisplayName="LookUp Range" sap2010:WorkflowViewState.IdRef="ExcelLookUpRange_2" Range="A:Z" Result="[ColumnAddr]" SheetName="[wrkbk.GetSheets(0)]" Value="Check No:" />
+                    <Assign sap2010:WorkflowViewState.IdRef="Assign_10">
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="ui:GenericValue">[Col]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="ui:GenericValue">[System.Text.RegularExpressions.Regex.Match(ColumnAddr,"[a-zA-Z]+").ToString]</InArgument>
+                      </Assign.Value>
+                    </Assign>
+                    <Assign sap2010:WorkflowViewState.IdRef="Assign_5">
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="x:Int32">[index]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="x:Int32">[ASC(col)+1]</InArgument>
+                      </Assign.Value>
+                    </Assign>
+                    <Assign sap2010:WorkflowViewState.IdRef="Assign_6">
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="x:String">[ColumnAddr]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="x:String">[System.Text.RegularExpressions.Regex.Match(ColumnAddr,"\d+").ToString]</InArgument>
+                      </Assign.Value>
+                    </Assign>
+                    <ui:ExcelReadCell Cell="[Chr(index).ToString+ColumnAddr]" DisplayName="Read Cell" sap2010:WorkflowViewState.IdRef="ExcelReadCell_2" SheetName="[wrkbk.GetSheets(0)]">
+                      <ui:ExcelReadCell.Result>
+                        <OutArgument x:TypeArguments="ui:GenericValue">[RefNo]</OutArgument>
+                      </ui:ExcelReadCell.Result>
+                    </ui:ExcelReadCell>
+                    <Assign sap2010:WorkflowViewState.IdRef="Assign_34">
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="x:String">[CustRefNo]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="x:String">[cstr(RefNo)]</InArgument>
+                      </Assign.Value>
+                    </Assign>
+                  </Sequence>
+                  <Sequence x:Key="&quot;Remit&quot;, &quot;Check NumberR&quot;" sap2010:WorkflowViewState.IdRef="Sequence_7">
+                    <ui:ExcelLookUpRange DisplayName="LookUp Range" sap2010:WorkflowViewState.IdRef="ExcelLookUpRange_3" Range="A:Z" Result="[ColumnAddr]" SheetName="[wrkbk.GetSheets(0)]" Value="Check Number" />
+                    <Assign sap2010:WorkflowViewState.IdRef="Assign_11">
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="ui:GenericValue">[Col]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="ui:GenericValue">[System.Text.RegularExpressions.Regex.Match(ColumnAddr,"[A-Za-z]+").ToString]</InArgument>
+                      </Assign.Value>
+                    </Assign>
+                    <Assign sap2010:WorkflowViewState.IdRef="Assign_8">
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="x:String">[ColumnAddr]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="x:String">[System.Text.RegularExpressions.Regex.Match(ColumnAddr,"\d+").ToString]</InArgument>
+                      </Assign.Value>
+                    </Assign>
+                    <ui:ExcelReadCell Cell="[Col+(Convert.ToInt32(ColumnAddr)+1).ToString]" DisplayName="Read Cell" sap2010:WorkflowViewState.IdRef="ExcelReadCell_3" SheetName="[wrkbk.GetSheets(0)]">
+                      <ui:ExcelReadCell.Result>
+                        <OutArgument x:TypeArguments="ui:GenericValue">[RefNo]</OutArgument>
+                      </ui:ExcelReadCell.Result>
+                    </ui:ExcelReadCell>
+                    <Assign sap2010:WorkflowViewState.IdRef="Assign_33">
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="x:String">[CustRefNo]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="x:String">[cstr(RefNo)]</InArgument>
+                      </Assign.Value>
+                    </Assign>
+                  </Sequence>
+                  <Sequence x:Key="&quot;Remit&quot;, &quot;Check #&quot;" sap2010:WorkflowViewState.IdRef="Sequence_8">
+                    <ui:ExcelLookUpRange DisplayName="LookUp Range" sap2010:WorkflowViewState.IdRef="ExcelLookUpRange_4" Range="A:Z" Result="[ColumnAddr]" SheetName="[wrkbk.GetSheets(0)]" Value="Check #" />
+                    <ui:ExcelReadCell Cell="[ColumnAddr]" DisplayName="Read Cell" sap2010:WorkflowViewState.IdRef="ExcelReadCell_4" SheetName="[wrkbk.GetSheets(0)]">
+                      <ui:ExcelReadCell.Result>
+                        <OutArgument x:TypeArguments="x:String">[CustRefNo]</OutArgument>
+                      </ui:ExcelReadCell.Result>
+                    </ui:ExcelReadCell>
+                    <Assign sap2010:WorkflowViewState.IdRef="Assign_18">
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="x:String">[CustRefNo]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="x:String">[Regex.Match(CustRefNo.ToString,"[0-9]+").ToString]</InArgument>
+                      </Assign.Value>
+                    </Assign>
+                  </Sequence>
+                  <Sequence x:Key="&quot;Remit&quot;, &quot;Clrng doc&quot;" sap2010:WorkflowViewState.IdRef="Sequence_9">
+                    <ui:ExcelLookUpRange DisplayName="LookUp Range" sap2010:WorkflowViewState.IdRef="ExcelLookUpRange_5" Range="A:Z" Result="[ColumnAddr]" SheetName="[wrkbk.GetSheets(0)]" Value="Clrng doc" />
+                    <Assign sap2010:WorkflowViewState.IdRef="Assign_14">
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="ui:GenericValue">[Col]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="ui:GenericValue">[System.Text.RegularExpressions.Regex.Match(ColumnAddr,"[A-Za-z]+").ToString]</InArgument>
+                      </Assign.Value>
+                    </Assign>
+                    <Assign sap2010:WorkflowViewState.IdRef="Assign_15">
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="x:String">[ColumnAddr]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="x:String">[System.Text.RegularExpressions.Regex.Match(ColumnAddr,"\d+").ToString]</InArgument>
+                      </Assign.Value>
+                    </Assign>
+                    <ui:ExcelReadCell Cell="[Col+(Convert.ToInt32(ColumnAddr)+1).ToString]" DisplayName="Read Cell" sap2010:WorkflowViewState.IdRef="ExcelReadCell_5" SheetName="[wrkbk.GetSheets(0)]">
+                      <ui:ExcelReadCell.Result>
+                        <OutArgument x:TypeArguments="ui:GenericValue">[RefNo]</OutArgument>
+                      </ui:ExcelReadCell.Result>
+                    </ui:ExcelReadCell>
+                    <Assign sap2010:WorkflowViewState.IdRef="Assign_35">
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="x:String">[CustRefNo]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="x:String">[cstr(RefNo)]</InArgument>
+                      </Assign.Value>
+                    </Assign>
+                  </Sequence>
+                  <Sequence x:Key="&quot;Remit&quot;, &quot;Payment Number&quot;" sap2010:WorkflowViewState.IdRef="Sequence_10">
+                    <ui:ExcelLookUpRange DisplayName="LookUp Range" sap2010:WorkflowViewState.IdRef="ExcelLookUpRange_6" Range="A:Z" Result="[ColumnAddr]" SheetName="[wrkbk.GetSheets(0)]" Value="Payment Number" />
+                    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke workflow file" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_3" UnSafe="False" WorkflowFileName="Framework\Logging\Logging.xaml">
+                      <ui:InvokeWorkflowFile.Arguments>
+                        <InArgument x:TypeArguments="x:String" x:Key="argLogFilePath">[Arg_inLogFilePath]</InArgument>
+                        <InArgument x:TypeArguments="x:String" x:Key="argLogMessage">["Payment no index"+ColumnAddr]</InArgument>
+                        <InArgument x:TypeArguments="x:String" x:Key="argLogLevel">Info</InArgument>
+                        <InArgument x:TypeArguments="x:String" x:Key="argOutputDirectory">[Arg_inOutputDirectory]</InArgument>
+                        <InArgument x:TypeArguments="x:String" x:Key="argUniqueInputID">[Arg_inUniqueID]</InArgument>
+                        <InOutArgument x:TypeArguments="sd:DataTable" x:Key="argDTFinalOutPut">[Arg_inoutFinalDT]</InOutArgument>
+                        <InArgument x:TypeArguments="x:String" x:Key="argStepDetailDescription">["Payment no index"+ColumnAddr]</InArgument>
+                        <InArgument x:TypeArguments="x:String" x:Key="argExceptionMessage">NA</InArgument>
+                      </ui:InvokeWorkflowFile.Arguments>
+                    </ui:InvokeWorkflowFile>
+                    <Assign sap2010:WorkflowViewState.IdRef="Assign_16">
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="ui:GenericValue">[Col]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="ui:GenericValue">[System.Text.RegularExpressions.Regex.Match(ColumnAddr,"[A-Za-z]+").ToString]</InArgument>
+                      </Assign.Value>
+                    </Assign>
+                    <Assign sap2010:WorkflowViewState.IdRef="Assign_17">
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="x:String">[ColumnAddr]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="x:String">[System.Text.RegularExpressions.Regex.Match(ColumnAddr,"\d+").ToString]</InArgument>
+                      </Assign.Value>
+                    </Assign>
+                    <ui:ExcelReadCell Cell="[Col+(Convert.ToInt32(ColumnAddr)+1).ToString]" DisplayName="Read Cell" sap2010:WorkflowViewState.IdRef="ExcelReadCell_6" SheetName="[wrkbk.GetSheets(0)]">
+                      <ui:ExcelReadCell.Result>
+                        <OutArgument x:TypeArguments="ui:GenericValue">[RefNo]</OutArgument>
+                      </ui:ExcelReadCell.Result>
+                    </ui:ExcelReadCell>
+                    <Assign sap2010:WorkflowViewState.IdRef="Assign_28">
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="x:String">[CustRefNo]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="x:String">[cstr(RefNo)]</InArgument>
+                      </Assign.Value>
+                    </Assign>
+                  </Sequence>
+                  <Sequence x:Key="&quot;Remit&quot;, &quot;Payment No&quot;" sap2010:WorkflowViewState.IdRef="Sequence_13">
+                    <ui:ExcelLookUpRange DisplayName="LookUp Range" sap2010:WorkflowViewState.IdRef="ExcelLookUpRange_7" Range="A:Z" Result="[ColumnAddr]" SheetName="[wrkbk.GetSheets(0)]" Value="Payment No" />
+                    <Assign sap2010:WorkflowViewState.IdRef="Assign_19">
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="ui:GenericValue">[Col]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="ui:GenericValue">[System.Text.RegularExpressions.Regex.Match(ColumnAddr,"[A-Za-z]+").ToString]</InArgument>
+                      </Assign.Value>
+                    </Assign>
+                    <Assign sap2010:WorkflowViewState.IdRef="Assign_20">
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="x:String">[ColumnAddr]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="x:String">[System.Text.RegularExpressions.Regex.Match(ColumnAddr,"\d+").ToString]</InArgument>
+                      </Assign.Value>
+                    </Assign>
+                    <ui:ExcelReadCell Cell="[Col+(Convert.ToInt32(ColumnAddr)+1).ToString]" DisplayName="Read Cell" sap2010:WorkflowViewState.IdRef="ExcelReadCell_7" SheetName="[wrkbk.GetSheets(0)]">
+                      <ui:ExcelReadCell.Result>
+                        <OutArgument x:TypeArguments="ui:GenericValue">[RefNo]</OutArgument>
+                      </ui:ExcelReadCell.Result>
+                    </ui:ExcelReadCell>
+                    <Assign sap2010:WorkflowViewState.IdRef="Assign_36">
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="x:String">[CustRefNo]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="x:String">[cstr(RefNo)]</InArgument>
+                      </Assign.Value>
+                    </Assign>
+                  </Sequence>
+                  <Sequence x:Key="&quot;Remit&quot;, &quot;Payment Reference&quot;" sap2010:WorkflowViewState.IdRef="Sequence_14">
+                    <ui:ExcelLookUpRange DisplayName="LookUp Range" sap2010:WorkflowViewState.IdRef="ExcelLookUpRange_8" Range="A:Z" Result="[ColumnAddr]" SheetName="[wrkbk.GetSheets(0)]" Value="Payment Reference Number" />
+                    <Assign sap2010:WorkflowViewState.IdRef="Assign_21">
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="ui:GenericValue">[Col]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="ui:GenericValue">[System.Text.RegularExpressions.Regex.Match(ColumnAddr,"[a-zA-Z]+").ToString]</InArgument>
+                      </Assign.Value>
+                    </Assign>
+                    <Assign sap2010:WorkflowViewState.IdRef="Assign_22">
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="x:Int32">[index]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="x:Int32">[ASC(col)+1]</InArgument>
+                      </Assign.Value>
+                    </Assign>
+                    <Assign sap2010:WorkflowViewState.IdRef="Assign_23">
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="x:String">[ColumnAddr]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="x:String">[System.Text.RegularExpressions.Regex.Match(ColumnAddr,"\d+").ToString]</InArgument>
+                      </Assign.Value>
+                    </Assign>
+                    <ui:ExcelReadCell Cell="[Chr(index).ToString+ColumnAddr]" DisplayName="Read Cell" sap2010:WorkflowViewState.IdRef="ExcelReadCell_8" SheetName="[wrkbk.GetSheets(0)]">
+                      <ui:ExcelReadCell.Result>
+                        <OutArgument x:TypeArguments="ui:GenericValue">[RefNo]</OutArgument>
+                      </ui:ExcelReadCell.Result>
+                    </ui:ExcelReadCell>
+                    <Assign sap2010:WorkflowViewState.IdRef="Assign_37">
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="x:String">[CustRefNo]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="x:String">[cstr(RefNo)]</InArgument>
+                      </Assign.Value>
+                    </Assign>
+                  </Sequence>
+                  <Assign x:Key="&quot;Mail Body&quot;,&quot;CRF&quot;" sap2010:WorkflowViewState.IdRef="Assign_25">
+                    <Assign.To>
+                      <OutArgument x:TypeArguments="x:String">[CustRefNo]</OutArgument>
+                    </Assign.To>
+                    <Assign.Value>
+                      <InArgument x:TypeArguments="x:String">[System.Text.RegularExpressions.Regex.Match(System.Text.RegularExpressions.Regex.Replace(Arg_inMail.Body,"&lt;.*?&gt;",string.Empty),"[0-9]+").ToString.Trim]</InArgument>
+                    </Assign.Value>
+                  </Assign>
+                  <Sequence x:Key="&quot;Remit&quot;, &quot;Check NumberC&quot;" sap2010:WorkflowViewState.IdRef="Sequence_18">
+                    <ui:ExcelLookUpRange DisplayName="LookUp Range" sap2010:WorkflowViewState.IdRef="ExcelLookUpRange_9" Range="A:Z" Result="[ColumnAddr]" SheetName="[wrkbk.GetSheets(0)]" Value="Check Number" />
+                    <Assign sap2010:WorkflowViewState.IdRef="Assign_29">
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="ui:GenericValue">[Col]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="ui:GenericValue">[System.Text.RegularExpressions.Regex.Match(ColumnAddr,"[a-zA-Z]+").ToString]</InArgument>
+                      </Assign.Value>
+                    </Assign>
+                    <Assign sap2010:WorkflowViewState.IdRef="Assign_30">
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="x:Int32">[index]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="x:Int32">[ASC(col)+1]</InArgument>
+                      </Assign.Value>
+                    </Assign>
+                    <Assign sap2010:WorkflowViewState.IdRef="Assign_31">
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="x:String">[ColumnAddr]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="x:String">[System.Text.RegularExpressions.Regex.Match(ColumnAddr,"\d+").ToString]</InArgument>
+                      </Assign.Value>
+                    </Assign>
+                    <ui:ExcelReadCell Cell="[Chr(index).ToString+ColumnAddr]" DisplayName="Read Cell" sap2010:WorkflowViewState.IdRef="ExcelReadCell_9" SheetName="[wrkbk.GetSheets(0)]">
+                      <ui:ExcelReadCell.Result>
+                        <OutArgument x:TypeArguments="ui:GenericValue">[RefNo]</OutArgument>
+                      </ui:ExcelReadCell.Result>
+                    </ui:ExcelReadCell>
+                    <If sap2010:Annotation.AnnotationText="To read the Customer refrence no for Ingra Micro from 5th column&#xD;&#xA;" Condition="[RefNo is Nothing]">
+                      <If.Then>
+                        <Sequence>
+                          <Assign>
+                            <Assign.To>
+                              <OutArgument x:TypeArguments="x:Int32">[index]</OutArgument>
+                            </Assign.To>
+                            <Assign.Value>
+                              <InArgument x:TypeArguments="x:Int32">[ASC(col)+4]</InArgument>
+                            </Assign.Value>
+                            <sap2010:WorkflowViewState.IdRef>Assign_45</sap2010:WorkflowViewState.IdRef>
+                          </Assign>
+                          <Assign>
+                            <Assign.To>
+                              <OutArgument x:TypeArguments="x:String">[ColumnAddr]</OutArgument>
+                            </Assign.To>
+                            <Assign.Value>
+                              <InArgument x:TypeArguments="x:String">[System.Text.RegularExpressions.Regex.Match(ColumnAddr,"\d+").ToString]</InArgument>
+                            </Assign.Value>
+                            <sap2010:WorkflowViewState.IdRef>Assign_46</sap2010:WorkflowViewState.IdRef>
+                          </Assign>
+                          <ui:ExcelReadCell Cell="[Chr(index).ToString+ColumnAddr]" DisplayName="Read Cell" SheetName="[wrkbk.GetSheets(0)]">
+                            <ui:ExcelReadCell.Result>
+                              <OutArgument x:TypeArguments="ui:GenericValue">[RefNo]</OutArgument>
+                            </ui:ExcelReadCell.Result>
+                            <sap2010:WorkflowViewState.IdRef>ExcelReadCell_11</sap2010:WorkflowViewState.IdRef>
+                          </ui:ExcelReadCell>
+                          <sap2010:WorkflowViewState.IdRef>Sequence_20</sap2010:WorkflowViewState.IdRef>
+                        </Sequence>
+                      </If.Then>
+                      <sap2010:WorkflowViewState.IdRef>If_2</sap2010:WorkflowViewState.IdRef>
+                    </If>
+                    <Assign sap2010:WorkflowViewState.IdRef="Assign_32">
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="x:String">[CustRefNo]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="x:String">[cstr(RefNo)]</InArgument>
+                      </Assign.Value>
+                    </Assign>
+                  </Sequence>
+                  <Assign x:Key="&quot;Statement&quot;, &quot;Check Number&quot;" sap2010:WorkflowViewState.IdRef="Assign_38">
+                    <Assign.To>
+                      <OutArgument x:TypeArguments="x:String">[CustRefNo]</OutArgument>
+                    </Assign.To>
+                    <Assign.Value>
+                      <InArgument x:TypeArguments="x:String">[Arg_inPaymentDT(Arg_inCnt)("RECEIPT_NUMBER").ToString]</InArgument>
+                    </Assign.Value>
+                  </Assign>
+                  <Sequence x:Key="&quot;Remit&quot;, &quot;Check #C&quot;" sap2010:WorkflowViewState.IdRef="Sequence_19">
+                    <ui:ExcelLookUpRange DisplayName="LookUp Range" sap2010:WorkflowViewState.IdRef="ExcelLookUpRange_10" Range="A:Z" Result="[ColumnAddr]" SheetName="[wrkbk.GetSheets(0)]" Value="Check #" />
+                    <Assign sap2010:WorkflowViewState.IdRef="Assign_39">
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="ui:GenericValue">[Col]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="ui:GenericValue">[System.Text.RegularExpressions.Regex.Match(ColumnAddr,"[a-zA-Z]+").ToString]</InArgument>
+                      </Assign.Value>
+                    </Assign>
+                    <Assign sap2010:WorkflowViewState.IdRef="Assign_40">
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="x:Int32">[index]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="x:Int32">[ASC(col)+1]</InArgument>
+                      </Assign.Value>
+                    </Assign>
+                    <Assign sap2010:WorkflowViewState.IdRef="Assign_41">
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="x:String">[ColumnAddr]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="x:String">[System.Text.RegularExpressions.Regex.Match(ColumnAddr,"\d+").ToString]</InArgument>
+                      </Assign.Value>
+                    </Assign>
+                    <ui:ExcelReadCell Cell="[Chr(index).ToString+ColumnAddr]" DisplayName="Read Cell" sap2010:WorkflowViewState.IdRef="ExcelReadCell_10" SheetName="[wrkbk.GetSheets(0)]">
+                      <ui:ExcelReadCell.Result>
+                        <OutArgument x:TypeArguments="ui:GenericValue">[RefNo]</OutArgument>
+                      </ui:ExcelReadCell.Result>
+                    </ui:ExcelReadCell>
+                    <Assign sap2010:WorkflowViewState.IdRef="Assign_42">
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="x:String">[CustRefNo]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="x:String">[cstr(RefNo)]</InArgument>
+                      </Assign.Value>
+                    </Assign>
+                  </Sequence>
+                </Switch>
+                <ui:ExcelCloseWorkbook DisplayName="Close Workbook" sap2010:WorkflowViewState.IdRef="ExcelCloseWorkbook_2" Workbook="[wrkbk]" />
+              </Sequence>
+            </ActivityAction>
+          </ui:ExcelApplicationScope.Body>
+        </ui:ExcelApplicationScope>
+      </TryCatch.Try>
+      <TryCatch.Catches>
+        <Catch x:TypeArguments="s:Exception" sap2010:WorkflowViewState.IdRef="Catch`1_2">
+          <ActivityAction x:TypeArguments="s:Exception">
+            <ActivityAction.Argument>
+              <DelegateInArgument x:TypeArguments="s:Exception" Name="exception" />
+            </ActivityAction.Argument>
+            <Assign sap2010:WorkflowViewState.IdRef="Assign_43">
+              <Assign.To>
+                <OutArgument x:TypeArguments="x:String">[CustRefNo]</OutArgument>
+              </Assign.To>
+              <Assign.Value>
+                <InArgument x:TypeArguments="x:String">
+                  <Literal x:TypeArguments="x:String" Value="" />
+                </InArgument>
+              </Assign.Value>
+            </Assign>
+          </ActivityAction>
+        </Catch>
+      </TryCatch.Catches>
+    </TryCatch>
+    <Delay Duration="00:00:04" sap2010:WorkflowViewState.IdRef="Delay_3" />
+    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke workflow file" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Framework\Logging\Logging.xaml">
+      <ui:InvokeWorkflowFile.Arguments>
+        <InArgument x:TypeArguments="x:String" x:Key="argLogFilePath">[Arg_inLogFilePath]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="argLogMessage">["Customer Ref No is" +CustRefNo]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="argLogLevel">Info</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="argOutputDirectory">[Arg_inOutputDirectory]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="argUniqueInputID">[Arg_inUniqueID]</InArgument>
+        <InOutArgument x:TypeArguments="sd:DataTable" x:Key="argDTFinalOutPut">[Arg_inoutFinalDT]</InOutArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="argStepDetailDescription">["Customer Ref No is:- "+CustRefNo]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="argExceptionMessage">NA</InArgument>
+      </ui:InvokeWorkflowFile.Arguments>
+    </ui:InvokeWorkflowFile>
+    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke UpdateMasterTable workflow" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="DatabaseOperations\UpdateMasterTableWithRemitFileName.xaml">
+      <ui:InvokeWorkflowFile.Arguments>
+        <InArgument x:TypeArguments="x:String" x:Key="Arg_inRemitCustomerName">[Arg_inRemitCustomerName]</InArgument>
+        <InArgument x:TypeArguments="sd:DataTable" x:Key="Arg_inPaymentDT">[Arg_inPaymentDT]</InArgument>
+        <InArgument x:TypeArguments="x:Int32" x:Key="Arg_inCnt">[Arg_inCnt]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="Arg_inCustRefNo">[CustRefNo]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="Arg_inRemitFileName">[Path.GetFileName(Arg_inRemitFile)]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="Arg_RemitFilePath">[Arg_inRemitFolder]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="Arg_inUsername">[Arg_inUsername]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="Arg_inPassword">[Arg_inPassword]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="Arg_inDBDataSource">[Arg_inDBDataSource]</InArgument>
+      </ui:InvokeWorkflowFile.Arguments>
+    </ui:InvokeWorkflowFile>
+    <sads:DebugSymbol.Symbol>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</sads:DebugSymbol.Symbol>
+  </Sequence>
+  <sap2010:WorkflowViewState.ViewStateManager>
+    <sap2010:ViewStateManager>
+      <sap2010:ViewStateData Id="ReadCsvFile_1" sap:VirtualizedContainerService.HintSize="314,59" />
+      <sap2010:ViewStateData Id="Sequence_5" sap:VirtualizedContainerService.HintSize="336,183">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="If_1" sap:VirtualizedContainerService.HintSize="530,331">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Delay_4" sap:VirtualizedContainerService.HintSize="530,22" />
+      <sap2010:ViewStateData Id="InvokeCode_3" sap:VirtualizedContainerService.HintSize="530,164" />
+      <sap2010:ViewStateData Id="Assign_44" sap:VirtualizedContainerService.HintSize="530,60" />
+      <sap2010:ViewStateData Id="Delay_2" sap:VirtualizedContainerService.HintSize="530,22" />
+      <sap2010:ViewStateData Id="ExcelReadRange_2" sap:VirtualizedContainerService.HintSize="314,59" />
+      <sap2010:ViewStateData Id="Catch`1_1" sap:VirtualizedContainerService.HintSize="404,21">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="TryCatch_1" sap:VirtualizedContainerService.HintSize="476,287">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ExcelLookUpRange_2" sap:VirtualizedContainerService.HintSize="314,87" />
+      <sap2010:ViewStateData Id="Assign_10" sap:VirtualizedContainerService.HintSize="314,60" />
+      <sap2010:ViewStateData Id="Assign_5" sap:VirtualizedContainerService.HintSize="314,60" />
+      <sap2010:ViewStateData Id="Assign_6" sap:VirtualizedContainerService.HintSize="314,60" />
+      <sap2010:ViewStateData Id="ExcelReadCell_2" sap:VirtualizedContainerService.HintSize="314,59" />
+      <sap2010:ViewStateData Id="Assign_34" sap:VirtualizedContainerService.HintSize="314,60" />
+      <sap2010:ViewStateData Id="Sequence_6" sap:VirtualizedContainerService.HintSize="336,51">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ExcelLookUpRange_3" sap:VirtualizedContainerService.HintSize="314,87" />
+      <sap2010:ViewStateData Id="Assign_11" sap:VirtualizedContainerService.HintSize="314,60" />
+      <sap2010:ViewStateData Id="Assign_8" sap:VirtualizedContainerService.HintSize="314,60" />
+      <sap2010:ViewStateData Id="ExcelReadCell_3" sap:VirtualizedContainerService.HintSize="314,59" />
+      <sap2010:ViewStateData Id="Assign_33" sap:VirtualizedContainerService.HintSize="314,60" />
+      <sap2010:ViewStateData Id="Sequence_7" sap:VirtualizedContainerService.HintSize="336,610">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ExcelLookUpRange_4" sap:VirtualizedContainerService.HintSize="314,87" />
+      <sap2010:ViewStateData Id="ExcelReadCell_4" sap:VirtualizedContainerService.HintSize="314,59" />
+      <sap2010:ViewStateData Id="Assign_18" sap:VirtualizedContainerService.HintSize="314,60" />
+      <sap2010:ViewStateData Id="Sequence_8" sap:VirtualizedContainerService.HintSize="336,51">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ExcelLookUpRange_5" sap:VirtualizedContainerService.HintSize="314,87" />
+      <sap2010:ViewStateData Id="Assign_14" sap:VirtualizedContainerService.HintSize="314,60" />
+      <sap2010:ViewStateData Id="Assign_15" sap:VirtualizedContainerService.HintSize="314,60" />
+      <sap2010:ViewStateData Id="ExcelReadCell_5" sap:VirtualizedContainerService.HintSize="314,59" />
+      <sap2010:ViewStateData Id="Assign_35" sap:VirtualizedContainerService.HintSize="314,60" />
+      <sap2010:ViewStateData Id="Sequence_9" sap:VirtualizedContainerService.HintSize="336,51">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ExcelLookUpRange_6" sap:VirtualizedContainerService.HintSize="314,87" />
+      <sap2010:ViewStateData Id="InvokeWorkflowFile_3" sap:VirtualizedContainerService.HintSize="314,87" />
+      <sap2010:ViewStateData Id="Assign_16" sap:VirtualizedContainerService.HintSize="314,60" />
+      <sap2010:ViewStateData Id="Assign_17" sap:VirtualizedContainerService.HintSize="314,60" />
+      <sap2010:ViewStateData Id="ExcelReadCell_6" sap:VirtualizedContainerService.HintSize="314,59" />
+      <sap2010:ViewStateData Id="Assign_28" sap:VirtualizedContainerService.HintSize="314,60" />
+      <sap2010:ViewStateData Id="Sequence_10" sap:VirtualizedContainerService.HintSize="336,51">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ExcelLookUpRange_7" sap:VirtualizedContainerService.HintSize="314,87" />
+      <sap2010:ViewStateData Id="Assign_19" sap:VirtualizedContainerService.HintSize="314,60" />
+      <sap2010:ViewStateData Id="Assign_20" sap:VirtualizedContainerService.HintSize="314,60" />
+      <sap2010:ViewStateData Id="ExcelReadCell_7" sap:VirtualizedContainerService.HintSize="314,59" />
+      <sap2010:ViewStateData Id="Assign_36" sap:VirtualizedContainerService.HintSize="314,60" />
+      <sap2010:ViewStateData Id="Sequence_13" sap:VirtualizedContainerService.HintSize="336,610">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ExcelLookUpRange_8" sap:VirtualizedContainerService.HintSize="314,87" />
+      <sap2010:ViewStateData Id="Assign_21" sap:VirtualizedContainerService.HintSize="314,60" />
+      <sap2010:ViewStateData Id="Assign_22" sap:VirtualizedContainerService.HintSize="314,60" />
+      <sap2010:ViewStateData Id="Assign_23" sap:VirtualizedContainerService.HintSize="314,60" />
+      <sap2010:ViewStateData Id="ExcelReadCell_8" sap:VirtualizedContainerService.HintSize="314,59" />
+      <sap2010:ViewStateData Id="Assign_37" sap:VirtualizedContainerService.HintSize="314,60" />
+      <sap2010:ViewStateData Id="Sequence_14" sap:VirtualizedContainerService.HintSize="336,51">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Assign_25" sap:VirtualizedContainerService.HintSize="242,60" />
+      <sap2010:ViewStateData Id="ExcelLookUpRange_9" sap:VirtualizedContainerService.HintSize="314,87" />
+      <sap2010:ViewStateData Id="Assign_29" sap:VirtualizedContainerService.HintSize="314,60" />
+      <sap2010:ViewStateData Id="Assign_30" sap:VirtualizedContainerService.HintSize="314,60" />
+      <sap2010:ViewStateData Id="Assign_31" sap:VirtualizedContainerService.HintSize="314,60" />
+      <sap2010:ViewStateData Id="ExcelReadCell_9" sap:VirtualizedContainerService.HintSize="314,59" />
+      <sap2010:ViewStateData Id="Assign_45" sap:VirtualizedContainerService.HintSize="314,60" />
+      <sap2010:ViewStateData Id="Assign_46" sap:VirtualizedContainerService.HintSize="314,60" />
+      <sap2010:ViewStateData Id="ExcelReadCell_11" sap:VirtualizedContainerService.HintSize="314,59" />
+      <sap2010:ViewStateData Id="Sequence_20" sap:VirtualizedContainerService.HintSize="336,383">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="If_2" sap:VirtualizedContainerService.HintSize="314,123">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+            <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Assign_32" sap:VirtualizedContainerService.HintSize="314,60" />
+      <sap2010:ViewStateData Id="Sequence_18" sap:VirtualizedContainerService.HintSize="336,873">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Assign_38" sap:VirtualizedContainerService.HintSize="242,60" />
+      <sap2010:ViewStateData Id="ExcelLookUpRange_10" sap:VirtualizedContainerService.HintSize="314,87" />
+      <sap2010:ViewStateData Id="Assign_39" sap:VirtualizedContainerService.HintSize="314,60" />
+      <sap2010:ViewStateData Id="Assign_40" sap:VirtualizedContainerService.HintSize="314,60" />
+      <sap2010:ViewStateData Id="Assign_41" sap:VirtualizedContainerService.HintSize="314,60" />
+      <sap2010:ViewStateData Id="ExcelReadCell_10" sap:VirtualizedContainerService.HintSize="314,59" />
+      <sap2010:ViewStateData Id="Assign_42" sap:VirtualizedContainerService.HintSize="314,60" />
+      <sap2010:ViewStateData Id="Sequence_19" sap:VirtualizedContainerService.HintSize="336,51">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Switch`1_1" sap:VirtualizedContainerService.HintSize="476,1276">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ExcelCloseWorkbook_2" sap:VirtualizedContainerService.HintSize="476,59" />
+      <sap2010:ViewStateData Id="Sequence_3" sap:VirtualizedContainerService.HintSize="498,1826">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ExcelApplicationScope_2" sap:VirtualizedContainerService.HintSize="512,1935">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Assign_43" sap:VirtualizedContainerService.HintSize="242,60" />
+      <sap2010:ViewStateData Id="Catch`1_2" sap:VirtualizedContainerService.HintSize="516,21">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="TryCatch_2" sap:VirtualizedContainerService.HintSize="530,2162">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Delay_3" sap:VirtualizedContainerService.HintSize="530,22" />
+      <sap2010:ViewStateData Id="InvokeWorkflowFile_1" sap:VirtualizedContainerService.HintSize="530,87" />
+      <sap2010:ViewStateData Id="InvokeWorkflowFile_2" sap:VirtualizedContainerService.HintSize="530,87" />
+      <sap2010:ViewStateData Id="Sequence_1" sap:VirtualizedContainerService.HintSize="552,3401">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="GetCustomerRefNoFromRemitFile_1" sap:VirtualizedContainerService.HintSize="592,3481" />
+    </sap2010:ViewStateManager>
+  </sap2010:WorkflowViewState.ViewStateManager>
+</Activity>

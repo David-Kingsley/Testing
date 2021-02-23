@@ -1,0 +1,548 @@
+﻿<Activity mc:Ignorable="sap sap2010 sads" x:Class="GetPaymentDetailsfromCheckandBankStatementsandSaveinDatabase"
+ xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
+ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+ xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities"
+ xmlns:sads="http://schemas.microsoft.com/netfx/2010/xaml/activities/debugger"
+ xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"
+ xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation"
+ xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib"
+ xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib"
+ xmlns:sd="clr-namespace:System.Data;assembly=System.Data"
+ xmlns:ui="http://schemas.uipath.com/workflow/activities"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property Name="Arg_inMappingDT" Type="InArgument(sd:DataTable)" />
+    <x:Property Name="Arg_inEmailAttachmentPath" Type="InArgument(x:String)" />
+    <x:Property Name="Arg_inLogFilePath" Type="InArgument(x:String)" />
+    <x:Property Name="Arg_inOutputDirectory" Type="InArgument(x:String)" />
+    <x:Property Name="Arg_inoutFinalDT" Type="InOutArgument(sd:DataTable)" />
+    <x:Property Name="Arg_inUniqueID" Type="InArgument(x:String)" />
+    <x:Property Name="Arg_inProcessFolderPath" Type="InArgument(x:String)" />
+    <x:Property Name="Arg_inDBDataDource" Type="InArgument(x:String)" />
+    <x:Property Name="Arg_inUsername" Type="InArgument(x:String)" />
+    <x:Property Name="Arg_inPassword" Type="InArgument(x:String)" />
+    <x:Property Name="Arg_inAllDataTable" Type="InOutArgument(sd:DataTable)" />
+    <x:Property Name="Arg_inBSMappingFilePath" Type="InArgument(x:String)" />
+    <x:Property Name="Arg_inEmailDT" Type="InArgument(sd:DataTable)" />
+    <x:Property Name="Arg_inSuccessEmailID" Type="InArgument(x:String)" />
+    <x:Property Name="Arg_inEmailID" Type="InArgument(x:String)" />
+    <x:Property Name="Arg_inEmailPassword" Type="InArgument(x:String)" />
+    <x:Property Name="Arg_inProcessStartTime" Type="InArgument(x:String)" />
+  </x:Members>
+  <mva:VisualBasic.Settings>
+    <x:Null />
+  </mva:VisualBasic.Settings>
+  <sap2010:WorkflowViewState.IdRef>GetPaymentDetailsfromCheckandBankStatementsandSaveinDatabase_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <sco:Collection x:TypeArguments="x:String">
+      <x:String>System.Activities</x:String>
+      <x:String>System.Activities.Statements</x:String>
+      <x:String>System.Activities.Expressions</x:String>
+      <x:String>System.Activities.Validation</x:String>
+      <x:String>System.Activities.XamlIntegration</x:String>
+      <x:String>Microsoft.VisualBasic</x:String>
+      <x:String>Microsoft.VisualBasic.Activities</x:String>
+      <x:String>System</x:String>
+      <x:String>System.Collections</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Diagnostics</x:String>
+      <x:String>System.Drawing</x:String>
+      <x:String>System.IO</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Net.Mail</x:String>
+      <x:String>System.Xml</x:String>
+      <x:String>System.Xml.Linq</x:String>
+      <x:String>UiPath.Core</x:String>
+      <x:String>UiPath.Orchestrator.Client</x:String>
+      <x:String>UiPath.Orchestrator.Client.Models</x:String>
+      <x:String>UiPath.Core.Activities</x:String>
+      <x:String>UiPath.Mail.Activities</x:String>
+      <x:String>UiPath.Mail.Exchange.Activities</x:String>
+      <x:String>UiPath.Mail.IMAP.Activities</x:String>
+      <x:String>UiPath.Mail.Outlook.Activities</x:String>
+      <x:String>UiPath.Mail.POP3.Activities</x:String>
+      <x:String>UiPath.Mail.SMTP.Activities</x:String>
+      <x:String>UiPath.PDF.Activities</x:String>
+      <x:String>UiPath.XPS.Activities</x:String>
+      <x:String>UiPath.Database.Activities</x:String>
+      <x:String>UiPath.Database</x:String>
+      <x:String>UiPath.Excel.Activities</x:String>
+      <x:String>UiPath.CSV.Activities</x:String>
+      <x:String>UiPath.Excel</x:String>
+      <x:String>UiPath.CSV</x:String>
+      <x:String>System.Windows.Markup</x:String>
+      <x:String>System.Xml.Serialization</x:String>
+    </sco:Collection>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System.Data.DataSetExtensions</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Drawing</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>UiPath.Studio.Plugin.Workflow</AssemblyReference>
+      <AssemblyReference>UiPath.OrchestratorClient</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Mail.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.PDF.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Database.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Database</AssemblyReference>
+      <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Excel.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Excel</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>PresentationCore</AssemblyReference>
+      <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>UiPath.PDF</AssemblyReference>
+      <AssemblyReference>System.ValueTuple</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
+    </sco:Collection>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence DisplayName="Get Payment Details from Check and Bank Statements and Save in Database" sap2010:WorkflowViewState.IdRef="Sequence_58">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="scg:Dictionary(x:String, x:Object)" Name="Config" />
+      <Variable x:TypeArguments="sd:DataTable" Name="RegexDT" />
+      <Variable x:TypeArguments="x:String" Name="Region" />
+    </Sequence.Variables>
+    <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" DisplayName="For Each file present in Temp Folder" sap2010:WorkflowViewState.IdRef="ForEach`1_10" Values="[Directory.GetFiles(Arg_inEmailAttachmentPath)]">
+      <ui:ForEach.Body>
+        <ActivityAction x:TypeArguments="x:String">
+          <ActivityAction.Argument>
+            <DelegateInArgument x:TypeArguments="x:String" Name="file" />
+          </ActivityAction.Argument>
+          <Sequence sap2010:WorkflowViewState.IdRef="Sequence_64">
+            <Assign DisplayName="New dictionary" sap2010:WorkflowViewState.IdRef="Assign_40">
+              <Assign.To>
+                <OutArgument x:TypeArguments="scg:Dictionary(x:String, x:Object)">[Config]</OutArgument>
+              </Assign.To>
+              <Assign.Value>
+                <InArgument x:TypeArguments="scg:Dictionary(x:String, x:Object)">[new Dictionary(of String, object)]</InArgument>
+              </Assign.Value>
+            </Assign>
+            <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke workflow file" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_10" UnSafe="False" WorkflowFileName="Framework\Logging\Logging.xaml">
+              <ui:InvokeWorkflowFile.Arguments>
+                <InArgument x:TypeArguments="x:String" x:Key="argLogFilePath">[Arg_inLogFilePath]</InArgument>
+                <InArgument x:TypeArguments="x:String" x:Key="argLogMessage">Reading ProcessedPaymentTable</InArgument>
+                <InArgument x:TypeArguments="x:String" x:Key="argLogLevel">Info</InArgument>
+                <InArgument x:TypeArguments="x:String" x:Key="argOutputDirectory">[Arg_inOutputDirectory]</InArgument>
+                <InArgument x:TypeArguments="x:String" x:Key="argUniqueInputID">[Arg_inUniqueID]</InArgument>
+                <InOutArgument x:TypeArguments="sd:DataTable" x:Key="argDTFinalOutPut">[Arg_inoutFinalDT]</InOutArgument>
+                <InArgument x:TypeArguments="x:String" x:Key="argStepDetailDescription">["File is"+file]</InArgument>
+                <InArgument x:TypeArguments="x:String" x:Key="argExceptionMessage">NA</InArgument>
+              </ui:InvokeWorkflowFile.Arguments>
+            </ui:InvokeWorkflowFile>
+            <If Condition="[Path.GetExtension(file).ToString.Contains(&quot;MT942&quot;) And Path.GetFileName(file).Contains(&quot;WIRE&quot;)]" DisplayName="If File extension is MT942" sap2010:WorkflowViewState.IdRef="If_26">
+              <If.Then>
+                <Sequence sap2010:WorkflowViewState.IdRef="Sequence_60">
+                  <ui:ExcelApplicationScope Password="{x:Null}" DisplayName="Excel application scope" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_5" WorkbookPath="[Arg_inBSMappingFilePath]">
+                    <ui:ExcelApplicationScope.Body>
+                      <ActivityAction x:TypeArguments="ui:WorkbookApplication">
+                        <ActivityAction.Argument>
+                          <DelegateInArgument x:TypeArguments="ui:WorkbookApplication" Name="ExcelWorkbookScope" />
+                        </ActivityAction.Argument>
+                        <Sequence DisplayName="Do" sap2010:WorkflowViewState.IdRef="Sequence_59">
+                          <ui:ExcelReadRange AddHeaders="True" DataTable="[RegexDT]" DisplayName="Read Range" sap2010:WorkflowViewState.IdRef="ExcelReadRange_5" SheetName="Regex">
+                            <ui:ExcelReadRange.Range>
+                              <InArgument x:TypeArguments="x:String">
+                                <Literal x:TypeArguments="x:String" Value="" />
+                              </InArgument>
+                            </ui:ExcelReadRange.Range>
+                          </ui:ExcelReadRange>
+                        </Sequence>
+                      </ActivityAction>
+                    </ui:ExcelApplicationScope.Body>
+                  </ui:ExcelApplicationScope>
+                  <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke workflow file" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_11" UnSafe="False" WorkflowFileName="Framework\Logging\Logging.xaml">
+                    <ui:InvokeWorkflowFile.Arguments>
+                      <InArgument x:TypeArguments="x:String" x:Key="argLogFilePath">[Arg_inLogFilePath]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="argLogMessage">["Process file using MT942" +file]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="argLogLevel">Info</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="argOutputDirectory">[Arg_inOutputDirectory]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="argUniqueInputID">[Arg_inUniqueID]</InArgument>
+                      <InOutArgument x:TypeArguments="sd:DataTable" x:Key="argDTFinalOutPut">[Arg_inoutFinalDT]</InOutArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="argStepDetailDescription">["Process file using MT942" +file]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="argExceptionMessage">NA</InArgument>
+                    </ui:InvokeWorkflowFile.Arguments>
+                  </ui:InvokeWorkflowFile>
+                  <If Condition="[Path.GetFileName(file).Contains(&quot;AMR&quot;)]" DisplayName="If FileName contains AMR" sap2010:WorkflowViewState.IdRef="If_27">
+                    <If.Then>
+                      <Sequence DisplayName="Extract data fromAMR File" sap2010:WorkflowViewState.IdRef="Sequence_62">
+                        <ui:ForEachRow CurrentIndex="{x:Null}" DataTable="[RegexDT]" DisplayName="For each row" sap2010:WorkflowViewState.IdRef="ForEachRow_3">
+                          <ui:ForEachRow.Body>
+                            <ActivityAction x:TypeArguments="sd:DataRow">
+                              <ActivityAction.Argument>
+                                <DelegateInArgument x:TypeArguments="sd:DataRow" Name="row" />
+                              </ActivityAction.Argument>
+                              <If Condition="[NOT(String.IsNullOrEmpty(row(&quot;Particulars&quot;).ToString.Trim))]" sap2010:WorkflowViewState.IdRef="If_29">
+                                <If.Then>
+                                  <Assign sap2010:WorkflowViewState.IdRef="Assign_42">
+                                    <Assign.To>
+                                      <OutArgument x:TypeArguments="x:Object">[Config(row("Particulars").ToString.Trim)]</OutArgument>
+                                    </Assign.To>
+                                    <Assign.Value>
+                                      <InArgument x:TypeArguments="x:String">[row("AMR").ToString.Trim]</InArgument>
+                                    </Assign.Value>
+                                  </Assign>
+                                </If.Then>
+                              </If>
+                            </ActivityAction>
+                          </ui:ForEachRow.Body>
+                        </ui:ForEachRow>
+                        <Assign DisplayName="Assign Region" sap2010:WorkflowViewState.IdRef="Assign_45">
+                          <Assign.To>
+                            <OutArgument x:TypeArguments="x:String">[Region]</OutArgument>
+                          </Assign.To>
+                          <Assign.Value>
+                            <InArgument x:TypeArguments="x:String">AMR</InArgument>
+                          </Assign.Value>
+                        </Assign>
+                        <ui:MoveFile ContinueOnError="{x:Null}" Destination="[Arg_inProcessFolderPath]" DisplayName="Move File from Temp to Proces Folder" sap2010:WorkflowViewState.IdRef="MoveFile_1" Overwrite="True" Path="[file]" />
+                        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Get Details from AMR file" DisplayName="Invoke Workflow File" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_6" UnSafe="False" WorkflowFileName="PDFAndMT942FilesOperations\GetDetailsFromMT942.xaml">
+                          <ui:InvokeWorkflowFile.Arguments>
+                            <InArgument x:TypeArguments="scg:Dictionary(x:String, x:Object)" x:Key="Arg_inConfig">[Config]</InArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="Arg_inFile">[Arg_inProcessFolderPath+"\"+Path.GetFileName(file)]</InArgument>
+                            <InOutArgument x:TypeArguments="sd:DataTable" x:Key="Arg_inoutMappingTable">[Arg_inMappingDT]</InOutArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="Arg_inRegion">[Region]</InArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="Arg_inDBDataSource">[Arg_inDBDataDource]</InArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="Arg_inUsername">[Arg_inUsername]</InArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="Arg_inPassword">[Arg_inPassword]</InArgument>
+                            <InOutArgument x:TypeArguments="sd:DataTable" x:Key="Arg_inAllDataTable">[Arg_inAllDataTable]</InOutArgument>
+                            <InArgument x:TypeArguments="sd:DataTable" x:Key="Arg_inEmailDT">[Arg_inEmailDT]</InArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="Arg_inSuccessEmailID">[Arg_inSuccessEmailID]</InArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="Arg_inEmailID">[Arg_inEmailID]</InArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="Arg_inEmailPassword">[Arg_inEmailPassword]</InArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="Arg_inProcessStartTime">[Arg_inProcessStartTime]</InArgument>
+                          </ui:InvokeWorkflowFile.Arguments>
+                        </ui:InvokeWorkflowFile>
+                        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke workflow file" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_12" UnSafe="False" WorkflowFileName="Framework\Logging\Logging.xaml">
+                          <ui:InvokeWorkflowFile.Arguments>
+                            <InArgument x:TypeArguments="x:String" x:Key="argLogFilePath">[Arg_inLogFilePath]</InArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="argLogMessage">["Extracted Data from "+file +" and saved in Database"]</InArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="argLogLevel">Info</InArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="argOutputDirectory">[Arg_inOutputDirectory]</InArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="argUniqueInputID">[Arg_inUniqueID]</InArgument>
+                            <InOutArgument x:TypeArguments="sd:DataTable" x:Key="argDTFinalOutPut">[Arg_inoutFinalDT]</InOutArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="argStepDetailDescription">["Extracted Data from "+file +" and saved in Database"]</InArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="argExceptionMessage">NA</InArgument>
+                          </ui:InvokeWorkflowFile.Arguments>
+                        </ui:InvokeWorkflowFile>
+                        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke workflow file" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_14" UnSafe="False" WorkflowFileName="Framework\Logging\Logging.xaml">
+                          <ui:InvokeWorkflowFile.Arguments>
+                            <InArgument x:TypeArguments="x:String" x:Key="argLogFilePath">[Arg_inLogFilePath]</InArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="argLogMessage">[file+" moved into "+Arg_inProcessFolderPath]</InArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="argLogLevel">Info</InArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="argOutputDirectory">[Arg_inOutputDirectory]</InArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="argUniqueInputID">[Arg_inUniqueID]</InArgument>
+                            <InOutArgument x:TypeArguments="sd:DataTable" x:Key="argDTFinalOutPut">[Arg_inoutFinalDT]</InOutArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="argStepDetailDescription">[file+" moved into "+Arg_inProcessFolderPath]</InArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="argExceptionMessage">NA</InArgument>
+                          </ui:InvokeWorkflowFile.Arguments>
+                        </ui:InvokeWorkflowFile>
+                      </Sequence>
+                    </If.Then>
+                    <If.Else>
+                      <Sequence sap2010:WorkflowViewState.IdRef="Sequence_63">
+                        <ui:ForEachRow CurrentIndex="{x:Null}" DataTable="[RegexDT]" DisplayName="For each row" sap2010:WorkflowViewState.IdRef="ForEachRow_4">
+                          <ui:ForEachRow.Body>
+                            <ActivityAction x:TypeArguments="sd:DataRow">
+                              <ActivityAction.Argument>
+                                <DelegateInArgument x:TypeArguments="sd:DataRow" Name="row" />
+                              </ActivityAction.Argument>
+                              <If Condition="[NOT(String.IsNullOrEmpty(row(&quot;Particulars&quot;).ToString.Trim))]" sap2010:WorkflowViewState.IdRef="If_30">
+                                <If.Then>
+                                  <Assign sap2010:WorkflowViewState.IdRef="Assign_43">
+                                    <Assign.To>
+                                      <OutArgument x:TypeArguments="x:Object">[Config(row("Particulars").ToString.Trim)]</OutArgument>
+                                    </Assign.To>
+                                    <Assign.Value>
+                                      <InArgument x:TypeArguments="x:String">[row("EMEA").ToString.Trim]</InArgument>
+                                    </Assign.Value>
+                                  </Assign>
+                                </If.Then>
+                              </If>
+                            </ActivityAction>
+                          </ui:ForEachRow.Body>
+                        </ui:ForEachRow>
+                        <Assign DisplayName="Assign Region" sap2010:WorkflowViewState.IdRef="Assign_44">
+                          <Assign.To>
+                            <OutArgument x:TypeArguments="x:String">[Region]</OutArgument>
+                          </Assign.To>
+                          <Assign.Value>
+                            <InArgument x:TypeArguments="x:String">EMEA</InArgument>
+                          </Assign.Value>
+                        </Assign>
+                        <ui:MoveFile ContinueOnError="{x:Null}" Destination="[Arg_inProcessFolderPath]" DisplayName="Move File from Temp to Process" sap2010:WorkflowViewState.IdRef="MoveFile_2" Overwrite="True" Path="[file]" />
+                        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="This sequnce is used to extract data from EMEA file" DisplayName="Invoke Workflow File" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_7" UnSafe="False" WorkflowFileName="PDFAndMT942FilesOperations\GetDetailsFromMT942.xaml">
+                          <ui:InvokeWorkflowFile.Arguments>
+                            <InArgument x:TypeArguments="scg:Dictionary(x:String, x:Object)" x:Key="Arg_inConfig">[Config]</InArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="Arg_inFile">[Arg_inProcessFolderPath+"\"+Path.GetFileName(file)]</InArgument>
+                            <InOutArgument x:TypeArguments="sd:DataTable" x:Key="Arg_inoutMappingTable">[Arg_inMappingDT]</InOutArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="Arg_inRegion">[Region]</InArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="Arg_inDBDataSource">[Arg_inDBDataDource]</InArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="Arg_inUsername">[Arg_inUsername]</InArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="Arg_inPassword">[Arg_inPassword]</InArgument>
+                            <InOutArgument x:TypeArguments="sd:DataTable" x:Key="Arg_inAllDataTable">[Arg_inAllDataTable]</InOutArgument>
+                            <InArgument x:TypeArguments="sd:DataTable" x:Key="Arg_inEmailDT">[Arg_inEmailDT]</InArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="Arg_inSuccessEmailID">[Arg_inSuccessEmailID]</InArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="Arg_inEmailID">[Arg_inEmailID]</InArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="Arg_inEmailPassword">[Arg_inEmailPassword]</InArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="Arg_inProcessStartTime">[Arg_inProcessStartTime]</InArgument>
+                          </ui:InvokeWorkflowFile.Arguments>
+                        </ui:InvokeWorkflowFile>
+                        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke workflow file" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_13" UnSafe="False" WorkflowFileName="Framework\Logging\Logging.xaml">
+                          <ui:InvokeWorkflowFile.Arguments>
+                            <InArgument x:TypeArguments="x:String" x:Key="argLogFilePath">[Arg_inLogFilePath]</InArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="argLogMessage">["Extracted Data from "+file +" and saved in Database"]</InArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="argLogLevel">Info</InArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="argOutputDirectory">[Arg_inOutputDirectory]</InArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="argUniqueInputID">[Arg_inUniqueID]</InArgument>
+                            <InOutArgument x:TypeArguments="sd:DataTable" x:Key="argDTFinalOutPut">[Arg_inoutFinalDT]</InOutArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="argStepDetailDescription">["Extracted Data from "+file +" and saved in Database"]</InArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="argExceptionMessage">NA</InArgument>
+                          </ui:InvokeWorkflowFile.Arguments>
+                        </ui:InvokeWorkflowFile>
+                        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke workflow file" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_15" UnSafe="False" WorkflowFileName="Framework\Logging\Logging.xaml">
+                          <ui:InvokeWorkflowFile.Arguments>
+                            <InArgument x:TypeArguments="x:String" x:Key="argLogFilePath">[Arg_inLogFilePath]</InArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="argLogMessage">[file+" moved into "+Arg_inProcessFolderPath]</InArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="argLogLevel">Info</InArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="argOutputDirectory">[Arg_inOutputDirectory]</InArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="argUniqueInputID">[Arg_inUniqueID]</InArgument>
+                            <InOutArgument x:TypeArguments="sd:DataTable" x:Key="argDTFinalOutPut">[Arg_inoutFinalDT]</InOutArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="argStepDetailDescription">[file+" moved into "+Arg_inProcessFolderPath]</InArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="argExceptionMessage">NA</InArgument>
+                          </ui:InvokeWorkflowFile.Arguments>
+                        </ui:InvokeWorkflowFile>
+                      </Sequence>
+                    </If.Else>
+                  </If>
+                </Sequence>
+              </If.Then>
+              <If.Else>
+                <If Condition="[Path.GetFileName(file).Contains(&quot;Check&quot;)]" DisplayName="If Filename contain &quot;Check&quot;" sap2010:WorkflowViewState.IdRef="If_31">
+                  <If.Then>
+                    <Sequence sap2010:WorkflowViewState.IdRef="Sequence_65">
+                      <ui:MoveFile ContinueOnError="{x:Null}" Destination="[Arg_inProcessFolderPath]" DisplayName="Move File from Temp to Process Folder" sap2010:WorkflowViewState.IdRef="MoveFile_3" Overwrite="True" Path="[file]" />
+                      <Assign DisplayName="Assign Region" sap2010:WorkflowViewState.IdRef="Assign_46">
+                        <Assign.To>
+                          <OutArgument x:TypeArguments="x:String">[Region]</OutArgument>
+                        </Assign.To>
+                        <Assign.Value>
+                          <InArgument x:TypeArguments="x:String">AMR</InArgument>
+                        </Assign.Value>
+                      </Assign>
+                      <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke workflow file" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_17" UnSafe="False" WorkflowFileName="Framework\Logging\Logging.xaml">
+                        <ui:InvokeWorkflowFile.Arguments>
+                          <InArgument x:TypeArguments="x:String" x:Key="argLogFilePath">[Arg_inLogFilePath]</InArgument>
+                          <InArgument x:TypeArguments="x:String" x:Key="argLogMessage">[file+" moved into "+Arg_inProcessFolderPath]</InArgument>
+                          <InArgument x:TypeArguments="x:String" x:Key="argLogLevel">Info</InArgument>
+                          <InArgument x:TypeArguments="x:String" x:Key="argOutputDirectory">[Arg_inOutputDirectory]</InArgument>
+                          <InArgument x:TypeArguments="x:String" x:Key="argUniqueInputID">[Arg_inUniqueID]</InArgument>
+                          <InOutArgument x:TypeArguments="sd:DataTable" x:Key="argDTFinalOutPut">[Arg_inoutFinalDT]</InOutArgument>
+                          <InArgument x:TypeArguments="x:String" x:Key="argStepDetailDescription">[file+" moved into "+Arg_inProcessFolderPath]</InArgument>
+                          <InArgument x:TypeArguments="x:String" x:Key="argExceptionMessage">NA</InArgument>
+                        </ui:InvokeWorkflowFile.Arguments>
+                      </ui:InvokeWorkflowFile>
+                      <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Get details from Check Statament" DisplayName="Invoke GetDetailsFromCheckstatement workflow" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_9" UnSafe="False" WorkflowFileName="PDFAndMT942FilesOperations\GetDetailsFromCheckstatement.xaml">
+                        <ui:InvokeWorkflowFile.Arguments>
+                          <InArgument x:TypeArguments="x:String" x:Key="Arg_inFile">[Arg_inProcessFolderPath+"\"+Path.GetFileName(file)]</InArgument>
+                          <InOutArgument x:TypeArguments="sd:DataTable" x:Key="Arg_inoutMappingTable">[Arg_inMappingDT]</InOutArgument>
+                          <InArgument x:TypeArguments="x:String" x:Key="Arg_inDBDataSource">[Arg_inDBDataDource]</InArgument>
+                          <InArgument x:TypeArguments="x:String" x:Key="Arg_inUsername">[Arg_inUsername]</InArgument>
+                          <InArgument x:TypeArguments="x:String" x:Key="Arg_inPassword">[Arg_inPassword]</InArgument>
+                          <InArgument x:TypeArguments="sd:DataTable" x:Key="Arg_inAllDatatable">[Arg_inAllDataTable]</InArgument>
+                          <InArgument x:TypeArguments="x:String" x:Key="Arg_inRegion">[Region]</InArgument>
+                        </ui:InvokeWorkflowFile.Arguments>
+                      </ui:InvokeWorkflowFile>
+                      <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke workflow file" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_16" UnSafe="False" WorkflowFileName="Framework\Logging\Logging.xaml">
+                        <ui:InvokeWorkflowFile.Arguments>
+                          <InArgument x:TypeArguments="x:String" x:Key="argLogFilePath">[Arg_inLogFilePath]</InArgument>
+                          <InArgument x:TypeArguments="x:String" x:Key="argLogMessage">["Extracted Data from "+file +" and saved in Database"]</InArgument>
+                          <InArgument x:TypeArguments="x:String" x:Key="argLogLevel">Info</InArgument>
+                          <InArgument x:TypeArguments="x:String" x:Key="argOutputDirectory">[Arg_inOutputDirectory]</InArgument>
+                          <InArgument x:TypeArguments="x:String" x:Key="argUniqueInputID">[Arg_inUniqueID]</InArgument>
+                          <InOutArgument x:TypeArguments="sd:DataTable" x:Key="argDTFinalOutPut">[Arg_inoutFinalDT]</InOutArgument>
+                          <InArgument x:TypeArguments="x:String" x:Key="argStepDetailDescription">["Extracted Data from "+file +" and saved in Database"]</InArgument>
+                          <InArgument x:TypeArguments="x:String" x:Key="argExceptionMessage">NA</InArgument>
+                        </ui:InvokeWorkflowFile.Arguments>
+                      </ui:InvokeWorkflowFile>
+                    </Sequence>
+                  </If.Then>
+                </If>
+              </If.Else>
+            </If>
+          </Sequence>
+        </ActivityAction>
+      </ui:ForEach.Body>
+    </ui:ForEach>
+    <sads:DebugSymbol.Symbol>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</sads:DebugSymbol.Symbol>
+  </Sequence>
+  <sap2010:WorkflowViewState.ViewStateManager>
+    <sap2010:ViewStateManager>
+      <sap2010:ViewStateData Id="Assign_40" sap:VirtualizedContainerService.HintSize="925,60" />
+      <sap2010:ViewStateData Id="InvokeWorkflowFile_10" sap:VirtualizedContainerService.HintSize="925,87" />
+      <sap2010:ViewStateData Id="ExcelReadRange_5" sap:VirtualizedContainerService.HintSize="314,59" />
+      <sap2010:ViewStateData Id="Sequence_59" sap:VirtualizedContainerService.HintSize="336,183">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ExcelApplicationScope_5" sap:VirtualizedContainerService.HintSize="414,292">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="InvokeWorkflowFile_11" sap:VirtualizedContainerService.HintSize="414,87" />
+      <sap2010:ViewStateData Id="Assign_42" sap:VirtualizedContainerService.HintSize="242,60" />
+      <sap2010:ViewStateData Id="If_29" sap:VirtualizedContainerService.HintSize="464,210">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ForEachRow_3" sap:VirtualizedContainerService.HintSize="494,359">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Assign_45" sap:VirtualizedContainerService.HintSize="494,60" />
+      <sap2010:ViewStateData Id="MoveFile_1" sap:VirtualizedContainerService.HintSize="494,22" />
+      <sap2010:ViewStateData Id="InvokeWorkflowFile_6" sap:VirtualizedContainerService.HintSize="494,115">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="InvokeWorkflowFile_12" sap:VirtualizedContainerService.HintSize="494,87" />
+      <sap2010:ViewStateData Id="InvokeWorkflowFile_14" sap:VirtualizedContainerService.HintSize="494,87" />
+      <sap2010:ViewStateData Id="Sequence_62" sap:VirtualizedContainerService.HintSize="516,1054">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Assign_43" sap:VirtualizedContainerService.HintSize="242,60" />
+      <sap2010:ViewStateData Id="If_30" sap:VirtualizedContainerService.HintSize="464,210">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ForEachRow_4" sap:VirtualizedContainerService.HintSize="494,359">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Assign_44" sap:VirtualizedContainerService.HintSize="494,60" />
+      <sap2010:ViewStateData Id="MoveFile_2" sap:VirtualizedContainerService.HintSize="494,22" />
+      <sap2010:ViewStateData Id="InvokeWorkflowFile_7" sap:VirtualizedContainerService.HintSize="494,115">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="InvokeWorkflowFile_13" sap:VirtualizedContainerService.HintSize="494,87" />
+      <sap2010:ViewStateData Id="InvokeWorkflowFile_15" sap:VirtualizedContainerService.HintSize="494,87" />
+      <sap2010:ViewStateData Id="Sequence_63" sap:VirtualizedContainerService.HintSize="516,1054">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="If_27" sap:VirtualizedContainerService.HintSize="414,52">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Sequence_60" sap:VirtualizedContainerService.HintSize="436,635">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="MoveFile_3" sap:VirtualizedContainerService.HintSize="314,22" />
+      <sap2010:ViewStateData Id="Assign_46" sap:VirtualizedContainerService.HintSize="314,60" />
+      <sap2010:ViewStateData Id="InvokeWorkflowFile_17" sap:VirtualizedContainerService.HintSize="314,87" />
+      <sap2010:ViewStateData Id="InvokeWorkflowFile_9" sap:VirtualizedContainerService.HintSize="314,115">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="InvokeWorkflowFile_16" sap:VirtualizedContainerService.HintSize="314,87" />
+      <sap2010:ViewStateData Id="Sequence_65" sap:VirtualizedContainerService.HintSize="336,655">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="If_31" sap:VirtualizedContainerService.HintSize="464,805">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="If_26" sap:VirtualizedContainerService.HintSize="925,955">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Sequence_64" sap:VirtualizedContainerService.HintSize="947,1306">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ForEach`1_10" sap:VirtualizedContainerService.HintSize="963,1441" />
+      <sap2010:ViewStateData Id="Sequence_58" sap:VirtualizedContainerService.HintSize="985,1565">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="GetPaymentDetailsfromCheckandBankStatementsandSaveinDatabase_1" sap:VirtualizedContainerService.HintSize="1025,1645" />
+    </sap2010:ViewStateManager>
+  </sap2010:WorkflowViewState.ViewStateManager>
+</Activity>

@@ -1,0 +1,444 @@
+<Activity mc:Ignorable="sap sap2010" x:Class="DownloadRemitFilefromSecureFX" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:p="http://schemas.uipath.com/workflow/activities/ftp" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property Name="PaymentDT" Type="InArgument(sd:DataTable)" />
+    <x:Property Name="cnt" Type="InArgument(x:Int32)" />
+    <x:Property Name="RemitFile" Type="OutArgument(x:String)" />
+    <x:Property Name="Arg_inRemitFileFolderPath" Type="InArgument(x:String)" />
+    <x:Property Name="Arg_inLogFilePath" Type="InArgument(x:String)" />
+    <x:Property Name="Arg_inOutputDirectory" Type="InArgument(x:String)" />
+    <x:Property Name="Arg_inUniqueID" Type="InArgument(x:String)" />
+    <x:Property Name="Arg_inoutFinalDT" Type="InOutArgument(sd:DataTable)" />
+    <x:Property Name="Arg_inRemitCustName" Type="InArgument(x:String)" />
+    <x:Property Name="Arg_outRemitFileFound" Type="OutArgument(x:Boolean)" />
+    <x:Property Name="Arg_inUsername" Type="InArgument(x:String)" />
+    <x:Property Name="Arg_inPassword" Type="InArgument(x:String)" />
+    <x:Property Name="Arg_inDBDataSource" Type="InArgument(x:String)" />
+    <x:Property Name="Arg_inRemitSender" Type="InArgument(x:String)" />
+    <x:Property Name="Arg_inProcessedFolderPath" Type="InArgument(x:String)" />
+    <x:Property Name="Arg_inIterationCount" Type="InArgument(x:Int32)" />
+    <x:Property Name="Arg_inSSHUsername" Type="InArgument(x:String)" />
+    <x:Property Name="Arg_inSSHPassword" Type="InArgument(x:String)" />
+    <x:Property Name="Arg_inSSHHostName" Type="InArgument(x:String)" />
+  </x:Members>
+  <mva:VisualBasic.Settings>
+    <x:Null />
+  </mva:VisualBasic.Settings>
+  <sap:VirtualizedContainerService.HintSize>1969,3142</sap:VirtualizedContainerService.HintSize>
+  <sap2010:WorkflowViewState.IdRef>DownloadRemitFilefromSecureFX_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <sco:Collection x:TypeArguments="x:String">
+      <x:String>System.Activities</x:String>
+      <x:String>System.Activities.Statements</x:String>
+      <x:String>System.Activities.Expressions</x:String>
+      <x:String>System.Activities.Validation</x:String>
+      <x:String>System.Activities.XamlIntegration</x:String>
+      <x:String>Microsoft.VisualBasic</x:String>
+      <x:String>Microsoft.VisualBasic.Activities</x:String>
+      <x:String>UiPath.FTP</x:String>
+      <x:String>UiPath.FTP.Activities</x:String>
+      <x:String>UiPath.FTP.Activities.Design</x:String>
+      <x:String>System</x:String>
+      <x:String>System.Collections</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Diagnostics</x:String>
+      <x:String>System.Drawing</x:String>
+      <x:String>System.IO</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Net.Mail</x:String>
+      <x:String>System.Xml</x:String>
+      <x:String>System.Xml.Linq</x:String>
+      <x:String>UiPath.Core</x:String>
+      <x:String>UiPath.Orchestrator.Client</x:String>
+      <x:String>UiPath.Orchestrator.Client.Models</x:String>
+      <x:String>UiPath.Core.Activities</x:String>
+      <x:String>UiPath.Excel.Activities</x:String>
+      <x:String>UiPath.CSV.Activities</x:String>
+      <x:String>UiPath.Excel</x:String>
+      <x:String>UiPath.CSV</x:String>
+      <x:String>UiPath.Mail.Activities</x:String>
+      <x:String>UiPath.Mail.Exchange.Activities</x:String>
+      <x:String>UiPath.Mail.IMAP.Activities</x:String>
+      <x:String>UiPath.Mail.Outlook.Activities</x:String>
+      <x:String>UiPath.Mail.POP3.Activities</x:String>
+      <x:String>UiPath.Mail.SMTP.Activities</x:String>
+      <x:String>UiPath.PDF.Activities</x:String>
+      <x:String>UiPath.XPS.Activities</x:String>
+      <x:String>UiPath.Database.Activities</x:String>
+      <x:String>UiPath.Database</x:String>
+      <x:String>System.Windows.Markup</x:String>
+      <x:String>System.Xml.Serialization</x:String>
+    </sco:Collection>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
+      <AssemblyReference>UiPath.FTP.Activities.Design</AssemblyReference>
+      <AssemblyReference>UiPath.FTP.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.FTP</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System.Data.DataSetExtensions</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Drawing</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>UiPath.Studio.Plugin.Workflow</AssemblyReference>
+      <AssemblyReference>UiPath.OrchestratorClient</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Excel.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Excel</AssemblyReference>
+      <AssemblyReference>UiPath.Mail.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.PDF.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Database.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Database</AssemblyReference>
+      <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>PresentationCore</AssemblyReference>
+      <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>UiPath.PDF</AssemblyReference>
+      <AssemblyReference>System.ValueTuple</AssemblyReference>
+      <AssemblyReference>System.Collections.Immutable</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualStudio.Services.Common</AssemblyReference>
+      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
+    </sco:Collection>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence DisplayName="Download Remit file from SecureFX" sap:VirtualizedContainerService.HintSize="1949,3082" sap2010:WorkflowViewState.IdRef="Sequence_3">
+    <sap:WorkflowViewStateService.ViewState>
+      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+      </scg:Dictionary>
+    </sap:WorkflowViewStateService.ViewState>
+    <p:WithFtpSession ClientCertificatePassword="{x:Null}" ClientCertificatePath="{x:Null}" AcceptAllCertificates="True" ContinueOnError="False" DisplayName="With ftp session" sap:VirtualizedContainerService.HintSize="1907,2990" Host="[Arg_inSSHHostName]" sap2010:WorkflowViewState.IdRef="WithFtpSession_1" Password="[Arg_inSSHPassword]" Port="21" Username="[Arg_inSSHUsername]">
+      <p:WithFtpSession.Body>
+        <ActivityAction x:TypeArguments="p:IFtpSession">
+          <ActivityAction.Argument>
+            <DelegateInArgument x:TypeArguments="p:IFtpSession" Name="FtpSession" />
+          </ActivityAction.Argument>
+          <Sequence DisplayName="Do" sap:VirtualizedContainerService.HintSize="1873,2904" sap2010:WorkflowViewState.IdRef="Sequence_2">
+            <Sequence.Variables>
+              <Variable x:TypeArguments="scg:IEnumerable(p:FtpObjectInfo)" Name="Files" />
+            </Sequence.Variables>
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+            <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke workflow file" sap:VirtualizedContainerService.HintSize="1831,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Framework\Logging\Logging.xaml">
+              <ui:InvokeWorkflowFile.Arguments>
+                <InArgument x:TypeArguments="x:String" x:Key="argLogFilePath">[Arg_inLogFilePath]</InArgument>
+                <InArgument x:TypeArguments="x:String" x:Key="argLogMessage">Secure FX</InArgument>
+                <InArgument x:TypeArguments="x:String" x:Key="argLogLevel">Info</InArgument>
+                <InArgument x:TypeArguments="x:String" x:Key="argOutputDirectory">[Arg_inOutputDirectory]</InArgument>
+                <InArgument x:TypeArguments="x:String" x:Key="argUniqueInputID">[Arg_inUniqueID]</InArgument>
+                <InOutArgument x:TypeArguments="sd:DataTable" x:Key="argDTFinalOutPut">[Arg_inoutFinalDT]</InOutArgument>
+                <InArgument x:TypeArguments="x:String" x:Key="argStepDetailDescription">Connected to Secure FX thorugh FTP</InArgument>
+                <InArgument x:TypeArguments="x:String" x:Key="argExceptionMessage">NA</InArgument>
+              </ui:InvokeWorkflowFile.Arguments>
+            </ui:InvokeWorkflowFile>
+            <p:EnumerateObjects ContinueOnError="False" DisplayName="Enumerate objects" Files="[Files]" sap:VirtualizedContainerService.HintSize="1831,22" sap2010:WorkflowViewState.IdRef="EnumerateObjects_1" Recursive="False" RemotePath="/finance/820" />
+            <ui:ForEach x:TypeArguments="p:FtpObjectInfo" CurrentIndex="{x:Null}" DisplayName="For Each file" sap:VirtualizedContainerService.HintSize="1831,2623" sap2010:WorkflowViewState.IdRef="ForEach`1_4" Values="[Files.OrderByDescending(function(d) d.Modified)]">
+              <ui:ForEach.Body>
+                <ActivityAction x:TypeArguments="p:FtpObjectInfo">
+                  <ActivityAction.Argument>
+                    <DelegateInArgument x:TypeArguments="p:FtpObjectInfo" Name="item" />
+                  </ActivityAction.Argument>
+                  <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="1795,2490" sap2010:WorkflowViewState.IdRef="Sequence_4">
+                    <sap:WorkflowViewStateService.ViewState>
+                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                      </scg:Dictionary>
+                    </sap:WorkflowViewStateService.ViewState>
+                    <Assign sap:VirtualizedContainerService.HintSize="1753,60" sap2010:WorkflowViewState.IdRef="Assign_3">
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="x:Boolean">[Arg_outRemitFileFound]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="x:Boolean">False</InArgument>
+                      </Assign.Value>
+                    </Assign>
+                    <If Condition="[item.Modified.Date &gt;= Now.AddDays(-Arg_inIterationCount).Date]" sap:VirtualizedContainerService.HintSize="1753,2298" sap2010:WorkflowViewState.IdRef="If_36">
+                      <If.Then>
+                        <Sequence sap:VirtualizedContainerService.HintSize="1608,2151" sap2010:WorkflowViewState.IdRef="Sequence_76">
+                          <sap:WorkflowViewStateService.ViewState>
+                            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                            </scg:Dictionary>
+                          </sap:WorkflowViewStateService.ViewState>
+                          <If Condition="[item.Name.Trim.ToLower.Contains(Arg_inRemitSender.ToString.ToLower)]" DisplayName="If file contain Customer Name" sap:VirtualizedContainerService.HintSize="1566,2059" sap2010:WorkflowViewState.IdRef="If_1">
+                            <sap:WorkflowViewStateService.ViewState>
+                              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                              </scg:Dictionary>
+                            </sap:WorkflowViewStateService.ViewState>
+                            <If.Then>
+                              <Sequence sap:VirtualizedContainerService.HintSize="1421,1912" sap2010:WorkflowViewState.IdRef="Sequence_5">
+                                <Sequence.Variables>
+                                  <Variable x:TypeArguments="x:String" Name="RemitFileContents" />
+                                  <Variable x:TypeArguments="sd:DataTable" Name="RemitDT" />
+                                </Sequence.Variables>
+                                <sap:WorkflowViewStateService.ViewState>
+                                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                  </scg:Dictionary>
+                                </sap:WorkflowViewStateService.ViewState>
+                                <Delay Duration="00:00:02" sap:VirtualizedContainerService.HintSize="1379,22" sap2010:WorkflowViewState.IdRef="Delay_1" />
+                                <p:DownloadFiles ContinueOnError="False" Create="False" DisplayName="Download files" sap:VirtualizedContainerService.HintSize="1379,22" sap2010:WorkflowViewState.IdRef="DownloadFiles_2" LocalPath="[Arg_inRemitFileFolderPath]" Overwrite="True" Recursive="False" RemotePath="[item.FullName]" />
+                                <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke workflow file" sap:VirtualizedContainerService.HintSize="1379,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="Framework\Logging\Logging.xaml">
+                                  <ui:InvokeWorkflowFile.Arguments>
+                                    <InArgument x:TypeArguments="x:String" x:Key="argLogFilePath">[Arg_inLogFilePath]</InArgument>
+                                    <InArgument x:TypeArguments="x:String" x:Key="argLogMessage" xml:space="preserve">Remit file found for customer </InArgument>
+                                    <InArgument x:TypeArguments="x:String" x:Key="argLogLevel">Info</InArgument>
+                                    <InArgument x:TypeArguments="x:String" x:Key="argOutputDirectory">[Arg_inOutputDirectory]</InArgument>
+                                    <InArgument x:TypeArguments="x:String" x:Key="argUniqueInputID">[Arg_inUniqueID]</InArgument>
+                                    <InOutArgument x:TypeArguments="sd:DataTable" x:Key="argDTFinalOutPut">[Arg_inoutFinalDT]</InOutArgument>
+                                    <InArgument x:TypeArguments="x:String" x:Key="argStepDetailDescription" xml:space="preserve">Remit file found for customer </InArgument>
+                                    <InArgument x:TypeArguments="x:String" x:Key="argExceptionMessage">NA</InArgument>
+                                  </ui:InvokeWorkflowFile.Arguments>
+                                </ui:InvokeWorkflowFile>
+                                <ui:ReadTextFile Content="[RemitFileContents]" DisplayName="Read Text File" FileName="[Arg_inRemitFileFolderPath+&quot;\&quot;+item.Name]" sap:VirtualizedContainerService.HintSize="1379,132" sap2010:WorkflowViewState.IdRef="ReadTextFile_1" />
+                                <ui:GenerateDataTable ColumnSizes="{x:Null}" Positions="{x:Null}" CSVParsing="True" ColumnSeparators="," DataTable="[RemitDT]" DisplayName="Generate Data Table" sap:VirtualizedContainerService.HintSize="1379,59" sap2010:WorkflowViewState.IdRef="GenerateDataTable_2" Input="[RemitFileContents]" NewLineSeparator="[Environment.NewLine]" UseColumnHeader="True" />
+                                <If Condition="[PaymentDT.Select(&quot;[REMIT_FILE_NAME] LIKE '&quot;+item.Name+&quot;%'&quot;).Length&gt;0]" DisplayName="If Remit File present in AllDataTable" sap:VirtualizedContainerService.HintSize="1379,1298" sap2010:WorkflowViewState.IdRef="If_33">
+                                  <sap:WorkflowViewStateService.ViewState>
+                                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                      <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                                    </scg:Dictionary>
+                                  </sap:WorkflowViewStateService.ViewState>
+                                  <If.Then>
+                                    <ui:Delete ContinueOnError="{x:Null}" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Delete_1" Path="[Arg_inRemitFileFolderPath+&quot;\&quot;+item.Name]" />
+                                  </If.Then>
+                                  <If.Else>
+                                    <Sequence DisplayName="Check Amount and Check #" sap:VirtualizedContainerService.HintSize="1134,1151" sap2010:WorkflowViewState.IdRef="Sequence_70">
+                                      <sap:WorkflowViewStateService.ViewState>
+                                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                                        </scg:Dictionary>
+                                      </sap:WorkflowViewStateService.ViewState>
+                                      <If Condition="[PaymentDT(cnt)(&quot;PAYMENT_TYPE&quot;).ToString.ToLower.Contains(&quot;check&quot;)]" DisplayName="If Payment Type is Check" sap:VirtualizedContainerService.HintSize="1092,1059" sap2010:WorkflowViewState.IdRef="If_35">
+                                        <sap:WorkflowViewStateService.ViewState>
+                                          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                                          </scg:Dictionary>
+                                        </sap:WorkflowViewStateService.ViewState>
+                                        <If.Then>
+                                          <If Condition="[cdbl(RemitDT(1)(5).Tostring)=cdbl(PaymentDT(cnt)(&quot;RECEIPT_AMOUNT&quot;).ToString) AND RemitDT(1)(3).Tostring.Contains(PaymentDT(cnt)(&quot;RECEIPT_NUMBER&quot;).ToString)]" DisplayName="Check Amount and Check Number" sap:VirtualizedContainerService.HintSize="200,51" sap2010:WorkflowViewState.IdRef="If_34">
+                                            <sap:WorkflowViewStateService.ViewState>
+                                              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                                <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                                                <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                                              </scg:Dictionary>
+                                            </sap:WorkflowViewStateService.ViewState>
+                                            <If.Then>
+                                              <Sequence sap:VirtualizedContainerService.HintSize="426,892" sap2010:WorkflowViewState.IdRef="Sequence_69">
+                                                <sap:WorkflowViewStateService.ViewState>
+                                                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                                    <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                                                  </scg:Dictionary>
+                                                </sap:WorkflowViewStateService.ViewState>
+                                                <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke workflow file" sap:VirtualizedContainerService.HintSize="384,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_9" UnSafe="False" WorkflowFileName="Framework\Logging\Logging.xaml">
+                                                  <ui:InvokeWorkflowFile.Arguments>
+                                                    <InArgument x:TypeArguments="x:String" x:Key="argLogFilePath">[Arg_inLogFilePath]</InArgument>
+                                                    <InArgument x:TypeArguments="x:String" x:Key="argLogMessage">["File is "+item.Name+" " +Arg_inRemitCustName]</InArgument>
+                                                    <InArgument x:TypeArguments="x:String" x:Key="argLogLevel">Info</InArgument>
+                                                    <InArgument x:TypeArguments="x:String" x:Key="argOutputDirectory">[Arg_inOutputDirectory]</InArgument>
+                                                    <InArgument x:TypeArguments="x:String" x:Key="argUniqueInputID">[Arg_inUniqueID]</InArgument>
+                                                    <InOutArgument x:TypeArguments="sd:DataTable" x:Key="argDTFinalOutPut">[Arg_inoutFinalDT]</InOutArgument>
+                                                    <InArgument x:TypeArguments="x:String" x:Key="argStepDetailDescription" xml:space="preserve">Remit file found for customer and amount matched </InArgument>
+                                                    <InArgument x:TypeArguments="x:String" x:Key="argExceptionMessage">NA</InArgument>
+                                                  </ui:InvokeWorkflowFile.Arguments>
+                                                </ui:InvokeWorkflowFile>
+                                                <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke Workflow File" sap:VirtualizedContainerService.HintSize="384,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_10" UnSafe="False" WorkflowFileName="DatabaseOperations\UpdateMasterTableWithRemitFileName.xaml">
+                                                  <ui:InvokeWorkflowFile.Arguments>
+                                                    <InArgument x:TypeArguments="x:String" x:Key="Arg_inRemitCustomerName">[Arg_inRemitCustName]</InArgument>
+                                                    <InArgument x:TypeArguments="sd:DataTable" x:Key="Arg_inPaymentDT">[PaymentDT]</InArgument>
+                                                    <InArgument x:TypeArguments="x:Int32" x:Key="Arg_inCnt">[cnt]</InArgument>
+                                                    <InArgument x:TypeArguments="x:String" x:Key="Arg_inCustRefNo">[RemitDT(1)(3).ToString]</InArgument>
+                                                    <InArgument x:TypeArguments="x:String" x:Key="Arg_inRemitFileName">[item.Name]</InArgument>
+                                                    <InArgument x:TypeArguments="x:String" x:Key="Arg_RemitFilePath">[Arg_inProcessedFolderPath]</InArgument>
+                                                    <InArgument x:TypeArguments="x:String" x:Key="Arg_inUsername">[Arg_inUsername]</InArgument>
+                                                    <InArgument x:TypeArguments="x:String" x:Key="Arg_inPassword">[Arg_inPassword]</InArgument>
+                                                    <InArgument x:TypeArguments="x:String" x:Key="Arg_inDBDataSource">[Arg_inDBDataSource]</InArgument>
+                                                  </ui:InvokeWorkflowFile.Arguments>
+                                                </ui:InvokeWorkflowFile>
+                                                <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke workflow file" sap:VirtualizedContainerService.HintSize="384,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_3" UnSafe="False" WorkflowFileName="Framework\Logging\Logging.xaml">
+                                                  <ui:InvokeWorkflowFile.Arguments>
+                                                    <InArgument x:TypeArguments="x:String" x:Key="argLogFilePath">[Arg_inLogFilePath]</InArgument>
+                                                    <InArgument x:TypeArguments="x:String" x:Key="argLogMessage" xml:space="preserve">Remit file found for customer and amount matched </InArgument>
+                                                    <InArgument x:TypeArguments="x:String" x:Key="argLogLevel">Info</InArgument>
+                                                    <InArgument x:TypeArguments="x:String" x:Key="argOutputDirectory">[Arg_inOutputDirectory]</InArgument>
+                                                    <InArgument x:TypeArguments="x:String" x:Key="argUniqueInputID">[Arg_inUniqueID]</InArgument>
+                                                    <InOutArgument x:TypeArguments="sd:DataTable" x:Key="argDTFinalOutPut">[Arg_inoutFinalDT]</InOutArgument>
+                                                    <InArgument x:TypeArguments="x:String" x:Key="argStepDetailDescription" xml:space="preserve">Remit file found for customer and amount matched </InArgument>
+                                                    <InArgument x:TypeArguments="x:String" x:Key="argExceptionMessage">NA</InArgument>
+                                                  </ui:InvokeWorkflowFile.Arguments>
+                                                </ui:InvokeWorkflowFile>
+                                                <ui:MoveFile ContinueOnError="{x:Null}" Destination="[Arg_inProcessedFolderPath]" DisplayName="Move File" sap:VirtualizedContainerService.HintSize="384,157" sap2010:WorkflowViewState.IdRef="MoveFile_2" Overwrite="True" Path="[Arg_inRemitFileFolderPath+&quot;\&quot;+item.Name]" />
+                                                <Assign sap:VirtualizedContainerService.HintSize="314,60" sap2010:WorkflowViewState.IdRef="Assign_1">
+                                                  <Assign.To>
+                                                    <OutArgument x:TypeArguments="x:String">[RemitFile]</OutArgument>
+                                                  </Assign.To>
+                                                  <Assign.Value>
+                                                    <InArgument x:TypeArguments="x:String">[Arg_inProcessedFolderPath+"\"+item.Name]</InArgument>
+                                                  </Assign.Value>
+                                                </Assign>
+                                                <Assign sap:VirtualizedContainerService.HintSize="314,60" sap2010:WorkflowViewState.IdRef="Assign_4">
+                                                  <Assign.To>
+                                                    <OutArgument x:TypeArguments="x:Boolean">[Arg_outRemitFileFound]</OutArgument>
+                                                  </Assign.To>
+                                                  <Assign.Value>
+                                                    <InArgument x:TypeArguments="x:Boolean">True</InArgument>
+                                                  </Assign.Value>
+                                                </Assign>
+                                                <ui:Break sap:VirtualizedContainerService.HintSize="314,22" sap2010:WorkflowViewState.IdRef="Break_2" />
+                                              </Sequence>
+                                            </If.Then>
+                                            <If.Else>
+                                              <Sequence sap:VirtualizedContainerService.HintSize="376,241" sap2010:WorkflowViewState.IdRef="Sequence_72">
+                                                <sap:WorkflowViewStateService.ViewState>
+                                                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                                  </scg:Dictionary>
+                                                </sap:WorkflowViewStateService.ViewState>
+                                                <ui:Delete ContinueOnError="{x:Null}" sap:VirtualizedContainerService.HintSize="334,22" sap2010:WorkflowViewState.IdRef="Delete_2" Path="[Arg_inRemitFileFolderPath+&quot;\&quot;+item.Name]" />
+                                                <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke workflow file" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_6" UnSafe="False" WorkflowFileName="Framework\Logging\Logging.xaml">
+                                                  <ui:InvokeWorkflowFile.Arguments>
+                                                    <InArgument x:TypeArguments="x:String" x:Key="argLogFilePath">[Arg_inLogFilePath]</InArgument>
+                                                    <InArgument x:TypeArguments="x:String" x:Key="argLogMessage">["Amount not matched,file is deleted "+item.FullName]</InArgument>
+                                                    <InArgument x:TypeArguments="x:String" x:Key="argLogLevel">Info</InArgument>
+                                                    <InArgument x:TypeArguments="x:String" x:Key="argOutputDirectory">[Arg_inOutputDirectory]</InArgument>
+                                                    <InArgument x:TypeArguments="x:String" x:Key="argUniqueInputID">[Arg_inUniqueID]</InArgument>
+                                                    <InOutArgument x:TypeArguments="sd:DataTable" x:Key="argDTFinalOutPut">[Arg_inoutFinalDT]</InOutArgument>
+                                                    <InArgument x:TypeArguments="x:String" x:Key="argStepDetailDescription">["Amount not matched,file is deleted "+item.FullName]</InArgument>
+                                                    <InArgument x:TypeArguments="x:String" x:Key="argExceptionMessage">NA</InArgument>
+                                                  </ui:InvokeWorkflowFile.Arguments>
+                                                </ui:InvokeWorkflowFile>
+                                              </Sequence>
+                                            </If.Else>
+                                          </If>
+                                        </If.Then>
+                                        <If.Else>
+                                          <If Condition="[cdbl(RemitDT(0)(5).Tostring)=cdbl(PaymentDT(cnt)(&quot;RECEIPT_AMOUNT&quot;).ToString)]" sap:VirtualizedContainerService.HintSize="847,912" sap2010:WorkflowViewState.IdRef="If_32">
+                                            <sap:WorkflowViewStateService.ViewState>
+                                              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                                <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                                              </scg:Dictionary>
+                                            </sap:WorkflowViewStateService.ViewState>
+                                            <If.Then>
+                                              <Sequence sap:VirtualizedContainerService.HintSize="426,765" sap2010:WorkflowViewState.IdRef="Sequence_68">
+                                                <sap:WorkflowViewStateService.ViewState>
+                                                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                                  </scg:Dictionary>
+                                                </sap:WorkflowViewStateService.ViewState>
+                                                <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke Workflow File" sap:VirtualizedContainerService.HintSize="384,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_8" UnSafe="False" WorkflowFileName="DatabaseOperations\UpdateMasterTableWithRemitFileName.xaml">
+                                                  <ui:InvokeWorkflowFile.Arguments>
+                                                    <InArgument x:TypeArguments="x:String" x:Key="Arg_inRemitCustomerName">[Arg_inRemitCustName]</InArgument>
+                                                    <InArgument x:TypeArguments="sd:DataTable" x:Key="Arg_inPaymentDT">[PaymentDT]</InArgument>
+                                                    <InArgument x:TypeArguments="x:Int32" x:Key="Arg_inCnt">[cnt]</InArgument>
+                                                    <InArgument x:TypeArguments="x:String" x:Key="Arg_inCustRefNo">[RemitDT(0)(3).ToString]</InArgument>
+                                                    <InArgument x:TypeArguments="x:String" x:Key="Arg_inRemitFileName">[item.Name]</InArgument>
+                                                    <InArgument x:TypeArguments="x:String" x:Key="Arg_RemitFilePath">[Arg_inProcessedFolderPath]</InArgument>
+                                                    <InArgument x:TypeArguments="x:String" x:Key="Arg_inUsername">[Arg_inUsername]</InArgument>
+                                                    <InArgument x:TypeArguments="x:String" x:Key="Arg_inPassword">[Arg_inPassword]</InArgument>
+                                                    <InArgument x:TypeArguments="x:String" x:Key="Arg_inDBDataSource">[Arg_inDBDataSource]</InArgument>
+                                                  </ui:InvokeWorkflowFile.Arguments>
+                                                </ui:InvokeWorkflowFile>
+                                                <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke workflow file" sap:VirtualizedContainerService.HintSize="384,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_5" UnSafe="False" WorkflowFileName="Framework\Logging\Logging.xaml">
+                                                  <ui:InvokeWorkflowFile.Arguments>
+                                                    <InArgument x:TypeArguments="x:String" x:Key="argLogFilePath">[Arg_inLogFilePath]</InArgument>
+                                                    <InArgument x:TypeArguments="x:String" x:Key="argLogMessage" xml:space="preserve">Remit file found for customer and amount matched </InArgument>
+                                                    <InArgument x:TypeArguments="x:String" x:Key="argLogLevel">Info</InArgument>
+                                                    <InArgument x:TypeArguments="x:String" x:Key="argOutputDirectory">[Arg_inOutputDirectory]</InArgument>
+                                                    <InArgument x:TypeArguments="x:String" x:Key="argUniqueInputID">[Arg_inUniqueID]</InArgument>
+                                                    <InOutArgument x:TypeArguments="sd:DataTable" x:Key="argDTFinalOutPut">[Arg_inoutFinalDT]</InOutArgument>
+                                                    <InArgument x:TypeArguments="x:String" x:Key="argStepDetailDescription" xml:space="preserve">Remit file found for customer and amount matched </InArgument>
+                                                    <InArgument x:TypeArguments="x:String" x:Key="argExceptionMessage">NA</InArgument>
+                                                  </ui:InvokeWorkflowFile.Arguments>
+                                                </ui:InvokeWorkflowFile>
+                                                <ui:MoveFile ContinueOnError="{x:Null}" Destination="[Arg_inProcessedFolderPath]" DisplayName="Move File" sap:VirtualizedContainerService.HintSize="384,157" sap2010:WorkflowViewState.IdRef="MoveFile_1" Overwrite="True" Path="[Arg_inRemitFileFolderPath+&quot;\&quot;+item.Name]" />
+                                                <Assign sap:VirtualizedContainerService.HintSize="384,60" sap2010:WorkflowViewState.IdRef="Assign_2">
+                                                  <Assign.To>
+                                                    <OutArgument x:TypeArguments="x:String">[RemitFile]</OutArgument>
+                                                  </Assign.To>
+                                                  <Assign.Value>
+                                                    <InArgument x:TypeArguments="x:String">[Arg_inProcessedFolderPath+"\"+item.Name]</InArgument>
+                                                  </Assign.Value>
+                                                </Assign>
+                                                <Assign sap:VirtualizedContainerService.HintSize="384,60" sap2010:WorkflowViewState.IdRef="Assign_5">
+                                                  <Assign.To>
+                                                    <OutArgument x:TypeArguments="x:Boolean">[Arg_outRemitFileFound]</OutArgument>
+                                                  </Assign.To>
+                                                  <Assign.Value>
+                                                    <InArgument x:TypeArguments="x:Boolean">True</InArgument>
+                                                  </Assign.Value>
+                                                </Assign>
+                                                <ui:Break sap:VirtualizedContainerService.HintSize="314,22" sap2010:WorkflowViewState.IdRef="Break_1" />
+                                              </Sequence>
+                                            </If.Then>
+                                            <If.Else>
+                                              <Sequence sap:VirtualizedContainerService.HintSize="376,241" sap2010:WorkflowViewState.IdRef="Sequence_73">
+                                                <sap:WorkflowViewStateService.ViewState>
+                                                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                                  </scg:Dictionary>
+                                                </sap:WorkflowViewStateService.ViewState>
+                                                <ui:Delete ContinueOnError="{x:Null}" sap:VirtualizedContainerService.HintSize="334,22" sap2010:WorkflowViewState.IdRef="Delete_3" Path="[Arg_inRemitFileFolderPath+&quot;\&quot;+item.Name]" />
+                                                <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke workflow file" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_4" UnSafe="False" WorkflowFileName="Framework\Logging\Logging.xaml">
+                                                  <ui:InvokeWorkflowFile.Arguments>
+                                                    <InArgument x:TypeArguments="x:String" x:Key="argLogFilePath">[Arg_inLogFilePath]</InArgument>
+                                                    <InArgument x:TypeArguments="x:String" x:Key="argLogMessage">["Amount not matched,file is deleted "+item.FullName]</InArgument>
+                                                    <InArgument x:TypeArguments="x:String" x:Key="argLogLevel">Info</InArgument>
+                                                    <InArgument x:TypeArguments="x:String" x:Key="argOutputDirectory">[Arg_inOutputDirectory]</InArgument>
+                                                    <InArgument x:TypeArguments="x:String" x:Key="argUniqueInputID">[Arg_inUniqueID]</InArgument>
+                                                    <InOutArgument x:TypeArguments="sd:DataTable" x:Key="argDTFinalOutPut">[Arg_inoutFinalDT]</InOutArgument>
+                                                    <InArgument x:TypeArguments="x:String" x:Key="argStepDetailDescription">["Amount not matched,file is deleted "+item.FullName]</InArgument>
+                                                    <InArgument x:TypeArguments="x:String" x:Key="argExceptionMessage">NA</InArgument>
+                                                  </ui:InvokeWorkflowFile.Arguments>
+                                                </ui:InvokeWorkflowFile>
+                                              </Sequence>
+                                            </If.Else>
+                                          </If>
+                                        </If.Else>
+                                      </If>
+                                    </Sequence>
+                                  </If.Else>
+                                </If>
+                              </Sequence>
+                            </If.Then>
+                          </If>
+                        </Sequence>
+                      </If.Then>
+                    </If>
+                  </Sequence>
+                </ActivityAction>
+              </ui:ForEach.Body>
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                  <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+            </ui:ForEach>
+          </Sequence>
+        </ActivityAction>
+      </p:WithFtpSession.Body>
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+    </p:WithFtpSession>
+  </Sequence>
+</Activity>

@@ -1,0 +1,454 @@
+﻿<Activity mc:Ignorable="sap sap2010 sads" x:Class="GetDetailsFromCheckstatement"
+ xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
+ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+ xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities"
+ xmlns:s="clr-namespace:System;assembly=mscorlib"
+ xmlns:sads="http://schemas.microsoft.com/netfx/2010/xaml/activities/debugger"
+ xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"
+ xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation"
+ xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib"
+ xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib"
+ xmlns:sd="clr-namespace:System.Data;assembly=System.Data"
+ xmlns:str="clr-namespace:System.Text.RegularExpressions;assembly=System"
+ xmlns:ui="http://schemas.uipath.com/workflow/activities"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property Name="Arg_inFile" Type="InArgument(x:String)" />
+    <x:Property Name="Arg_inoutMappingTable" Type="InOutArgument(sd:DataTable)" />
+    <x:Property Name="Arg_inDBDataSource" Type="InArgument(x:String)" />
+    <x:Property Name="Arg_inUsername" Type="InArgument(x:String)" />
+    <x:Property Name="Arg_inPassword" Type="InArgument(x:String)" />
+    <x:Property Name="Arg_inAllDatatable" Type="InArgument(sd:DataTable)" />
+    <x:Property Name="Arg_inRegion" Type="InArgument(x:String)" />
+  </x:Members>
+  <mva:VisualBasic.Settings>
+    <x:Null />
+  </mva:VisualBasic.Settings>
+  <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <sco:Collection x:TypeArguments="x:String">
+      <x:String>System.Activities</x:String>
+      <x:String>System.Activities.Statements</x:String>
+      <x:String>System.Activities.Expressions</x:String>
+      <x:String>System.Activities.Validation</x:String>
+      <x:String>System.Activities.XamlIntegration</x:String>
+      <x:String>Microsoft.VisualBasic</x:String>
+      <x:String>Microsoft.VisualBasic.Activities</x:String>
+      <x:String>System</x:String>
+      <x:String>System.Collections</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Diagnostics</x:String>
+      <x:String>System.Drawing</x:String>
+      <x:String>System.IO</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Net.Mail</x:String>
+      <x:String>System.Text.RegularExpressions</x:String>
+      <x:String>System.Xml</x:String>
+      <x:String>System.Xml.Linq</x:String>
+      <x:String>UiPath.Core</x:String>
+      <x:String>UiPath.Core.Activities</x:String>
+      <x:String>UiPath.Orchestrator.Client</x:String>
+      <x:String>UiPath.Orchestrator.Client.Models</x:String>
+      <x:String>UiPath.Excel.Activities</x:String>
+      <x:String>UiPath.CSV.Activities</x:String>
+      <x:String>UiPath.Excel</x:String>
+      <x:String>UiPath.CSV</x:String>
+      <x:String>UiPath.Mail.Activities</x:String>
+      <x:String>UiPath.Mail.Exchange.Activities</x:String>
+      <x:String>UiPath.Mail.IMAP.Activities</x:String>
+      <x:String>UiPath.Mail.Outlook.Activities</x:String>
+      <x:String>UiPath.Mail.POP3.Activities</x:String>
+      <x:String>UiPath.Mail.SMTP.Activities</x:String>
+      <x:String>UiPath.PDF.Activities</x:String>
+      <x:String>UiPath.XPS.Activities</x:String>
+      <x:String>System.Windows.Markup</x:String>
+      <x:String>System.Xml.Serialization</x:String>
+    </sco:Collection>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System.Data.DataSetExtensions</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Drawing</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>UiPath.Studio.Plugin.Workflow</AssemblyReference>
+      <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.OrchestratorClient</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Excel.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Excel</AssemblyReference>
+      <AssemblyReference>UiPath.Mail.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.PDF.Activities</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>PresentationCore</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>UiPath.PDF</AssemblyReference>
+      <AssemblyReference>System.ValueTuple</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
+      <AssemblyReference>System.Collections.Immutable</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualStudio.Services.Common</AssemblyReference>
+    </sco:Collection>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence DisplayName="Check statement" sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="x:String" Name="PDFOutput" />
+      <Variable x:TypeArguments="scg:IEnumerable(str:Match)" Name="RegexOutput" />
+      <Variable x:TypeArguments="str:MatchCollection" Name="Checks" />
+      <Variable x:TypeArguments="s:String[]" Name="Payments" />
+      <Variable x:TypeArguments="scg:List(x:String)" Name="ListData" />
+      <Variable x:TypeArguments="x:Int32" Name="i" />
+      <Variable x:TypeArguments="x:Object" Name="CustNo" />
+    </Sequence.Variables>
+    <ui:ReadPDFText DisplayName="Read PDF Text" FileName="[Arg_inFile]" sap2010:WorkflowViewState.IdRef="ReadPDFText_1" Range="All" Text="[PDFOutput]" />
+    <Assign sap2010:WorkflowViewState.IdRef="Assign_2">
+      <Assign.To>
+        <OutArgument x:TypeArguments="s:String[]">[Payments]</OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="s:String[]">[PDFOutput.Split({"Currency:"},StringSplitOptions.None)]</InArgument>
+      </Assign.Value>
+    </Assign>
+    <Assign sap2010:WorkflowViewState.IdRef="Assign_4">
+      <Assign.To>
+        <OutArgument x:TypeArguments="scg:List(x:String)">[ListData]</OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="scg:List(x:String)">[Payments.ToList]</InArgument>
+      </Assign.Value>
+    </Assign>
+    <InvokeMethod DisplayName="Invoke method" sap2010:WorkflowViewState.IdRef="InvokeMethod_1" MethodName="RemoveAt">
+      <InvokeMethod.TargetObject>
+        <InArgument x:TypeArguments="scg:List(x:String)">[ListData]</InArgument>
+      </InvokeMethod.TargetObject>
+      <InArgument x:TypeArguments="x:Int32">0</InArgument>
+    </InvokeMethod>
+    <Assign sap2010:WorkflowViewState.IdRef="Assign_5">
+      <Assign.To>
+        <OutArgument x:TypeArguments="s:String[]">[Payments]</OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="s:String[]">[ListData.ToArray]</InArgument>
+      </Assign.Value>
+    </Assign>
+    <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" DisplayName="For Each" sap2010:WorkflowViewState.IdRef="ForEach`1_3" Values="[Payments]">
+      <ui:ForEach.Body>
+        <ActivityAction x:TypeArguments="x:String">
+          <ActivityAction.Argument>
+            <DelegateInArgument x:TypeArguments="x:String" Name="Payment" />
+          </ActivityAction.Argument>
+          <Sequence DisplayName="Body" sap2010:WorkflowViewState.IdRef="Sequence_4">
+            <Sequence.Variables>
+              <Variable x:TypeArguments="scg:IEnumerable(str:Match)" Name="TransactionCount" />
+              <Variable x:TypeArguments="scg:IEnumerable(str:Match)" Name="TransactionAmt" />
+              <Variable x:TypeArguments="x:Object" Name="Currency" />
+            </Sequence.Variables>
+            <Assign sap2010:WorkflowViewState.IdRef="Assign_11">
+              <Assign.To>
+                <OutArgument x:TypeArguments="x:Object">[Currency]</OutArgument>
+              </Assign.To>
+              <Assign.Value>
+                <InArgument x:TypeArguments="x:Object">[System.Text.RegularExpressions.Regex.Match(Payment.ToString,"[A-Z]+",System.Text.RegularExpressions.RegexOptions.Multiline)]</InArgument>
+              </Assign.Value>
+            </Assign>
+            <ui:Matches sap2010:WorkflowViewState.IdRef="Matches_1" Input="[Payment]" Pattern="(?m)(?&lt;=\bTransaction Count:)([^\n\r]*)" RegexOption="Compiled" Result="[TransactionCount]" />
+            <ui:Matches sap2010:WorkflowViewState.IdRef="Matches_2" Input="[Payment]" Pattern="(?m)(?&lt;=\bTotal Transaction Amount:)([^\n\r]*)" RegexOption="Compiled" Result="[TransactionAmt]" />
+            <Assign sap2010:WorkflowViewState.IdRef="Assign_3">
+              <Assign.To>
+                <OutArgument x:TypeArguments="str:MatchCollection">[Checks]</OutArgument>
+              </Assign.To>
+              <Assign.Value>
+                <InArgument x:TypeArguments="str:MatchCollection">[System.Text.RegularExpressions.Regex.Matches(Payment,"^\d+[\s,0-9,/,.,-]+[\w, ]+",System.Text.RegularExpressions.RegexOptions.Multiline)]</InArgument>
+              </Assign.Value>
+            </Assign>
+            <ui:ForEach x:TypeArguments="x:Object" CurrentIndex="{x:Null}" DisplayName="For Each" sap2010:WorkflowViewState.IdRef="ForEach`1_5" Values="[Checks]">
+              <ui:ForEach.Body>
+                <ActivityAction x:TypeArguments="x:Object">
+                  <ActivityAction.Argument>
+                    <DelegateInArgument x:TypeArguments="x:Object" Name="Check" />
+                  </ActivityAction.Argument>
+                  <Sequence DisplayName="Body" sap2010:WorkflowViewState.IdRef="Sequence_3">
+                    <Sequence.Variables>
+                      <Variable x:TypeArguments="x:Object" Name="ReceiptDate" />
+                      <Variable x:TypeArguments="x:Object" Name="LockBoxNo" />
+                      <Variable x:TypeArguments="x:Object" Name="CustomerName" />
+                      <Variable x:TypeArguments="x:String" Name="ReceiptAmt" />
+                      <Variable x:TypeArguments="x:String" Name="ReceiptNo" />
+                      <Variable x:TypeArguments="x:String" Name="status" />
+                    </Sequence.Variables>
+                    <Assign sap2010:WorkflowViewState.IdRef="Assign_6">
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="x:Object">[ReceiptDate]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="str:Match">[System.Text.RegularExpressions.Regex.Match(Check.ToString,"[0-9]{2}/[0-9]{2}/[0-9]{4}",System.Text.RegularExpressions.RegexOptions.Multiline)]</InArgument>
+                      </Assign.Value>
+                    </Assign>
+                    <If Condition="[Convert.ToDateTime(ReceiptDate.ToString).DayOfWeek.ToString.ToLower.Contains(&quot;saturday&quot;)]" DisplayName="Check Receipt is Saturday" sap2010:WorkflowViewState.IdRef="If_2">
+                      <If.Then>
+                        <Assign sap2010:WorkflowViewState.IdRef="Assign_18">
+                          <Assign.To>
+                            <OutArgument x:TypeArguments="x:Object">[ReceiptDate]</OutArgument>
+                          </Assign.To>
+                          <Assign.Value>
+                            <InArgument x:TypeArguments="x:Object">[Convert.ToDateTime(ReceiptDate.ToString).AddDays(2)]</InArgument>
+                          </Assign.Value>
+                        </Assign>
+                      </If.Then>
+                      <If.Else>
+                        <If Condition="[Convert.ToDateTime(ReceiptDate.ToString).DayOfWeek.ToString.ToLower.Contains(&quot;sunday&quot;)]" DisplayName="If Receipt date is Sunday" sap2010:WorkflowViewState.IdRef="If_3">
+                          <If.Then>
+                            <Assign sap2010:WorkflowViewState.IdRef="Assign_19">
+                              <Assign.To>
+                                <OutArgument x:TypeArguments="x:Object">[ReceiptDate]</OutArgument>
+                              </Assign.To>
+                              <Assign.Value>
+                                <InArgument x:TypeArguments="s:DateTime">[Convert.ToDateTime(ReceiptDate.ToString).AddDays(1)]</InArgument>
+                              </Assign.Value>
+                            </Assign>
+                          </If.Then>
+                        </If>
+                      </If.Else>
+                    </If>
+                    <Assign sap2010:WorkflowViewState.IdRef="Assign_7">
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="x:Object">[LockBoxNo]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="str:Match">[System.Text.RegularExpressions.Regex.Match(Check.ToString,"^\d+",System.Text.RegularExpressions.RegexOptions.Multiline)]</InArgument>
+                      </Assign.Value>
+                    </Assign>
+                    <Assign sap2010:WorkflowViewState.IdRef="Assign_8">
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="x:Object">[CustomerName]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="str:Match">[System.Text.RegularExpressions.Regex.Match(Check.ToString,"[A-Z].*",System.Text.RegularExpressions.RegexOptions.Multiline)]</InArgument>
+                      </Assign.Value>
+                    </Assign>
+                    <Assign sap2010:WorkflowViewState.IdRef="Assign_9">
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="x:String">[ReceiptAmt]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="x:String">[Check.ToString.Split(" "c)(7)]</InArgument>
+                      </Assign.Value>
+                    </Assign>
+                    <Assign sap2010:WorkflowViewState.IdRef="Assign_10">
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="x:String">[ReceiptNo]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="x:String">[Check.ToString.Split(" "c)(6)]</InArgument>
+                      </Assign.Value>
+                    </Assign>
+                    <Assign sap2010:WorkflowViewState.IdRef="Assign_16">
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="x:String">[status]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="x:String">
+                          <Literal x:TypeArguments="x:String" Value="" />
+                        </InArgument>
+                      </Assign.Value>
+                    </Assign>
+                    <TryCatch DisplayName="If Cut No not present in Mapping Table" sap2010:WorkflowViewState.IdRef="TryCatch_1">
+                      <TryCatch.Try>
+                        <Sequence sap2010:WorkflowViewState.IdRef="Sequence_5">
+                          <Assign sap2010:WorkflowViewState.IdRef="Assign_12">
+                            <Assign.To>
+                              <OutArgument x:TypeArguments="x:Int32">[i]</OutArgument>
+                            </Assign.To>
+                            <Assign.Value>
+                              <InArgument x:TypeArguments="x:Int32">[(Arg_inoutMappingTable.Rows.IndexOf(Arg_inoutMappingTable.AsEnumerable().Where(Function(row) System.Text.RegularExpressions.Regex.ISMatch(CustomerName.tostring,row(1).ToString,System.Text.RegularExpressions.RegexOptions.Multiline)&lt;&gt;False).ToArray()(0)))]</InArgument>
+                            </Assign.Value>
+                          </Assign>
+                          <Assign sap2010:WorkflowViewState.IdRef="Assign_13">
+                            <Assign.To>
+                              <OutArgument x:TypeArguments="x:Object">[CustNo]</OutArgument>
+                            </Assign.To>
+                            <Assign.Value>
+                              <InArgument x:TypeArguments="x:Object">[Arg_inoutMappingTable(Convert.ToInt32(i))(0).ToString]</InArgument>
+                            </Assign.Value>
+                          </Assign>
+                        </Sequence>
+                      </TryCatch.Try>
+                      <TryCatch.Catches>
+                        <Catch x:TypeArguments="s:Exception" sap2010:WorkflowViewState.IdRef="Catch`1_1">
+                          <ActivityAction x:TypeArguments="s:Exception">
+                            <ActivityAction.Argument>
+                              <DelegateInArgument x:TypeArguments="s:Exception" Name="exception" />
+                            </ActivityAction.Argument>
+                            <Sequence sap2010:WorkflowViewState.IdRef="Sequence_6">
+                              <Assign sap2010:WorkflowViewState.IdRef="Assign_14">
+                                <Assign.To>
+                                  <OutArgument x:TypeArguments="x:Object">[CustNo]</OutArgument>
+                                </Assign.To>
+                                <Assign.Value>
+                                  <InArgument x:TypeArguments="x:Object">[DBNull.Value]</InArgument>
+                                </Assign.Value>
+                              </Assign>
+                              <Assign sap2010:WorkflowViewState.IdRef="Assign_17">
+                                <Assign.To>
+                                  <OutArgument x:TypeArguments="x:String">[status]</OutArgument>
+                                </Assign.To>
+                                <Assign.Value>
+                                  <InArgument x:TypeArguments="x:String">Exception</InArgument>
+                                </Assign.Value>
+                              </Assign>
+                            </Sequence>
+                          </ActivityAction>
+                        </Catch>
+                      </TryCatch.Catches>
+                    </TryCatch>
+                    <If Condition="[IsNothing(i)]" sap2010:WorkflowViewState.IdRef="If_1">
+                      <If.Then>
+                        <Assign sap2010:WorkflowViewState.IdRef="Assign_15">
+                          <Assign.To>
+                            <OutArgument x:TypeArguments="x:Object">[CustNo]</OutArgument>
+                          </Assign.To>
+                          <Assign.Value>
+                            <InArgument x:TypeArguments="x:Object">[DBNull.Value]</InArgument>
+                          </Assign.Value>
+                        </Assign>
+                      </If.Then>
+                    </If>
+                    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Insert Records in Database" DisplayName="Invoke Workflow File" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="DatabaseOperations\InsertIntoPaymentMasterTable.xaml">
+                      <ui:InvokeWorkflowFile.Arguments>
+                        <InArgument x:TypeArguments="x:Object" x:Key="CustomerName">[CustomerName.ToString.Trim]</InArgument>
+                        <InArgument x:TypeArguments="x:Object" x:Key="ReceiptNo">[ReceiptNo.Trim]</InArgument>
+                        <InArgument x:TypeArguments="x:Object" x:Key="CustNo">[""]</InArgument>
+                        <InArgument x:TypeArguments="x:Object" x:Key="ReceiptAmount">[ReceiptAmt.ToString.Replace(",","")]</InArgument>
+                        <InArgument x:TypeArguments="x:Object" x:Key="ReceiptDate">[Convert.ToDateTime(ReceiptDate.ToString)]</InArgument>
+                        <InArgument x:TypeArguments="x:Object" x:Key="Currency">[Currency.ToString]</InArgument>
+                        <InArgument x:TypeArguments="x:Object" x:Key="TotalCreditAmount">[TransactionAmt(0).ToString.Replace(",","")]</InArgument>
+                        <InArgument x:TypeArguments="x:Object" x:Key="BankAccountNo">[LockBoxNo]</InArgument>
+                        <InArgument x:TypeArguments="x:String" x:Key="Arg_inFile">[Arg_inFile]</InArgument>
+                        <InArgument x:TypeArguments="x:String" x:Key="Arg_inRegion">[Arg_inRegion]</InArgument>
+                        <InArgument x:TypeArguments="x:String" x:Key="Arg_inUsername">[Arg_inUsername]</InArgument>
+                        <InArgument x:TypeArguments="x:String" x:Key="Arg_inPassword">[Arg_inPassword]</InArgument>
+                        <InArgument x:TypeArguments="x:String" x:Key="Arg_inDBDataSource">[Arg_inDBDataSource]</InArgument>
+                        <InArgument x:TypeArguments="x:Object" x:Key="CountofPayment">[TransactionCount(0).ToString.Trim.Split(" "c)(0)]</InArgument>
+                        <InArgument x:TypeArguments="x:String" x:Key="Arg_inPaymentType">Check</InArgument>
+                        <InOutArgument x:TypeArguments="sd:DataTable" x:Key="Arg_inAllDataTable">[Arg_inAllDatatable]</InOutArgument>
+                        <InArgument x:TypeArguments="x:String" x:Key="Arg_inStatus">[status]</InArgument>
+                      </ui:InvokeWorkflowFile.Arguments>
+                    </ui:InvokeWorkflowFile>
+                  </Sequence>
+                </ActivityAction>
+              </ui:ForEach.Body>
+            </ui:ForEach>
+          </Sequence>
+        </ActivityAction>
+      </ui:ForEach.Body>
+    </ui:ForEach>
+    <sads:DebugSymbol.Symbol>d0dDOlxGaW5hbmNlXFBERkFuZE1UOTQyRmlsZXNPcGVyYXRpb25zXEdldERldGFpbHNGcm9tQ2hlY2tzdGF0ZW1lbnQueGFtbGhlA+ICDgIBAW8Fb5oBAwGSAXAFdw4DAY4BeAV/DgMBigGAAQWFARQDAYYBhgEFjQEOAwGBAY4BBeACEgIBAm+KAW+XAQMBlgFvOm9IAwGUAW9/b4QBAwGTAXUydWoDAZEBcjNyPQMBjwF9On1LAwGNAXo7ekUDAYsBhAEthAEuAwGJAYIBOoIBRAMBhwGLATKLAUQDAYQBiAEziAE9AwGCAY4BkAGOAZwBAgF/lAEL3QIWAgEDmgENoQEWAgF6ogENogHBAQIBdKMBDaMBxgECAW6kAQ2rARYCAWmsAQ3cAhoCAQSfATifAbUBAgF9nAE5nAFDAgF7ogFLogFWAgF4ogGqAaIBvgECAXaiAV+iAYsBAgF1owFLowFWAgFyowGxAaMBwwECAXCjAV+jAZIBAgFvqQFDqQHNAQIBbKYBRKYBTAIBaqwBmAGsAaIBAgFnsgET2QIeAgEFuwEVwgEeAgFiwwEV3AEaAgFW3QEV5AEeAgFR5QEV7AEeAgFM7QEV9AEeAgFH9QEV/AEeAgFC/QEVhgIeAgE+hwIVtwIgAgEruAIVwwIaAgElxAIV2AItAgEGwAFBwAHQAQIBZb0BQb0BTgIBY8MBI8MBiQECAVfFARnMASICAV7PARnaAR4CAVjiAUHiAboBAgFU3wFB3wFMAgFS6gFB6gG9AQIBT+cBQecBTwIBTfIBQPIBXwIBSu8BQe8BTQIBSPoBQPoBXwIBRfcBQfcBTAIBQ4MCG4MCSgIBQf8BQf8BSQIBP4kCGZoCJAIBNaICHbMCKAIBLLgCI7gCMwIBJroCGcECIgIBJ8YCVcYCcQIBI80CVs0CYQIBIcgCT8gCUwIBIM8CVc8CYwIBHscCUscCYgIBHMoCVMoCfgIBG9YCVdYCXQIBGcsCUcsCZAIBF8wCWswChgECARbVAmLVAnYCARTOAlPOAl8CARLJAlbJAnsCARDSAlvSAm8CAQ7TAlfTAokBAgEN0AJX0AJnAgELxAKAAsQCtgICAQrRAlfRAmcCAQjUAlrUAl8CAQfKAUTKAXkCAWHHAUXHAVICAV/PASfPAYsBAgFZ0QEd2AEmAgFaigIbkQIkAgE6kgIbmQIkAgE2owIfqgIoAgExqwIfsgIoAgEtvwJEvwJSAgEqvAJFvAJNAgEo1gFK1gF/AgFd0wFJ0wFWAgFbjwJFjwLKAgIBPYwCRowCSQIBO5cCRpcCfQIBOZQCR5QCTwIBN6gCSqgCWAIBNKUCS6UCUwIBMrACSrACUwIBMK0CS60CUwIBLg==</sads:DebugSymbol.Symbol>
+  </Sequence>
+  <sap2010:WorkflowViewState.ViewStateManager>
+    <sap2010:ViewStateManager>
+      <sap2010:ViewStateData Id="ReadPDFText_1" sap:VirtualizedContainerService.HintSize="807,60" />
+      <sap2010:ViewStateData Id="Assign_2" sap:VirtualizedContainerService.HintSize="807,60" />
+      <sap2010:ViewStateData Id="Assign_4" sap:VirtualizedContainerService.HintSize="807,60" />
+      <sap2010:ViewStateData Id="InvokeMethod_1" sap:VirtualizedContainerService.HintSize="807,132" />
+      <sap2010:ViewStateData Id="Assign_5" sap:VirtualizedContainerService.HintSize="807,60" />
+      <sap2010:ViewStateData Id="Assign_11" sap:VirtualizedContainerService.HintSize="769,60" />
+      <sap2010:ViewStateData Id="Matches_1" sap:VirtualizedContainerService.HintSize="769,22" />
+      <sap2010:ViewStateData Id="Matches_2" sap:VirtualizedContainerService.HintSize="769,22" />
+      <sap2010:ViewStateData Id="Assign_3" sap:VirtualizedContainerService.HintSize="769,60" />
+      <sap2010:ViewStateData Id="Assign_6" sap:VirtualizedContainerService.HintSize="731,60" />
+      <sap2010:ViewStateData Id="Assign_18" sap:VirtualizedContainerService.HintSize="242,60" />
+      <sap2010:ViewStateData Id="Assign_19" sap:VirtualizedContainerService.HintSize="242,60" />
+      <sap2010:ViewStateData Id="If_3" sap:VirtualizedContainerService.HintSize="464,208" />
+      <sap2010:ViewStateData Id="If_2" sap:VirtualizedContainerService.HintSize="731,356" />
+      <sap2010:ViewStateData Id="Assign_7" sap:VirtualizedContainerService.HintSize="731,60" />
+      <sap2010:ViewStateData Id="Assign_8" sap:VirtualizedContainerService.HintSize="731,60" />
+      <sap2010:ViewStateData Id="Assign_9" sap:VirtualizedContainerService.HintSize="731,60" />
+      <sap2010:ViewStateData Id="Assign_10" sap:VirtualizedContainerService.HintSize="731,60" />
+      <sap2010:ViewStateData Id="Assign_16" sap:VirtualizedContainerService.HintSize="731,60" />
+      <sap2010:ViewStateData Id="Assign_12" sap:VirtualizedContainerService.HintSize="242,60" />
+      <sap2010:ViewStateData Id="Assign_13" sap:VirtualizedContainerService.HintSize="242,60" />
+      <sap2010:ViewStateData Id="Sequence_5" sap:VirtualizedContainerService.HintSize="264,284">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Assign_14" sap:VirtualizedContainerService.HintSize="242,60" />
+      <sap2010:ViewStateData Id="Assign_17" sap:VirtualizedContainerService.HintSize="242,60" />
+      <sap2010:ViewStateData Id="Sequence_6" sap:VirtualizedContainerService.HintSize="264,278">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Catch`1_1" sap:VirtualizedContainerService.HintSize="404,21">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="TryCatch_1" sap:VirtualizedContainerService.HintSize="731,51">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Assign_15" sap:VirtualizedContainerService.HintSize="242,60" />
+      <sap2010:ViewStateData Id="If_1" sap:VirtualizedContainerService.HintSize="731,51">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="InvokeWorkflowFile_1" sap:VirtualizedContainerService.HintSize="731,114">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Sequence_3" sap:VirtualizedContainerService.HintSize="753,1416">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ForEach`1_5" sap:VirtualizedContainerService.HintSize="769,1550" />
+      <sap2010:ViewStateData Id="Sequence_4" sap:VirtualizedContainerService.HintSize="791,1998">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ForEach`1_3" sap:VirtualizedContainerService.HintSize="807,2132" />
+      <sap2010:ViewStateData Id="Sequence_1" sap:VirtualizedContainerService.HintSize="829,2828">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ActivityBuilder_1" sap:VirtualizedContainerService.HintSize="869,2908" />
+    </sap2010:ViewStateManager>
+  </sap2010:WorkflowViewState.ViewStateManager>
+</Activity>

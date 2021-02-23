@@ -1,0 +1,110 @@
+﻿<Activity mc:Ignorable="sap sap2010 sads" x:Class="UpdatePaymentTableWithRemitFileName"
+ xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
+ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+ xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities"
+ xmlns:sads="http://schemas.microsoft.com/netfx/2010/xaml/activities/debugger"
+ xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"
+ xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation"
+ xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib"
+ xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib"
+ xmlns:sd="clr-namespace:System.Data;assembly=System.Data"
+ xmlns:ui="http://schemas.uipath.com/workflow/activities"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property Name="Arg_inPaymentDT" Type="InArgument(sd:DataTable)" />
+    <x:Property Name="Arg_inCnt" Type="InArgument(x:Int32)" />
+    <x:Property Name="Arg_inTransactionStatus" Type="InArgument(x:String)" />
+    <x:Property Name="Arg_inTransactionRemarks" Type="InArgument(x:String)" />
+    <x:Property Name="Arg_inDBDataSource" Type="InArgument(x:String)" />
+    <x:Property Name="Arg_inUsername" Type="InArgument(x:String)" />
+    <x:Property Name="Arg_inPassword" Type="InArgument(x:String)" />
+    <x:Property Name="Arg_inRemitFileName" Type="InArgument(x:String)" />
+    <x:Property Name="Arg_inRemitFilePath" Type="InArgument(x:String)" />
+  </x:Members>
+  <mva:VisualBasic.Settings>
+    <x:Null />
+  </mva:VisualBasic.Settings>
+  <sap2010:WorkflowViewState.IdRef>UpdatePaymentTableWithRemitFileName_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <sco:Collection x:TypeArguments="x:String">
+      <x:String>System.Activities</x:String>
+      <x:String>System.Activities.Statements</x:String>
+      <x:String>System.Activities.Expressions</x:String>
+      <x:String>System.Activities.Validation</x:String>
+      <x:String>System.Activities.XamlIntegration</x:String>
+      <x:String>Microsoft.VisualBasic</x:String>
+      <x:String>Microsoft.VisualBasic.Activities</x:String>
+      <x:String>System</x:String>
+      <x:String>System.Collections</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Diagnostics</x:String>
+      <x:String>System.Drawing</x:String>
+      <x:String>System.IO</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Net.Mail</x:String>
+      <x:String>System.Xml</x:String>
+      <x:String>System.Xml.Linq</x:String>
+      <x:String>System.Windows.Markup</x:String>
+      <x:String>UiPath.Core</x:String>
+      <x:String>UiPath.Core.Activities</x:String>
+      <x:String>System.Xml.Serialization</x:String>
+    </sco:Collection>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System.Data.DataSetExtensions</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Drawing</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>PresentationCore</AssemblyReference>
+      <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>UiPath.PDF</AssemblyReference>
+      <AssemblyReference>UiPath.Excel</AssemblyReference>
+      <AssemblyReference>System.ValueTuple</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
+      <AssemblyReference>System.Collections.Immutable</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualStudio.Services.Common</AssemblyReference>
+      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
+    </sco:Collection>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence DisplayName="UpdatePaymentTableWithRemitFileName" sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="ui:DatabaseConnection" Name="DBConnection" />
+    </Sequence.Variables>
+    <ui:DatabaseConnect DatabaseConnection="[DBConnection]" DisplayName="Connect" sap2010:WorkflowViewState.IdRef="DatabaseConnect_1" ProviderName="System.Data.OleDb" ConnectionString="[&quot;Provider=OraOLEDB.Oracle.1;Data Source=&quot;+Arg_inDBDataSource+&quot;;Password=&quot;+Arg_inPassword+&quot;;User ID=&quot;+Arg_inUsername+&quot;&quot;]" />
+    <ui:ExecuteNonQuery AffectedRecords="{x:Null}" ContinueOnError="{x:Null}" TimeoutMS="{x:Null}" CommandType="Text" DisplayName="Execute non query" ExistingDbConnection="[DBConnection]" sap2010:WorkflowViewState.IdRef="ExecuteNonQuery_1" Sql="[&quot;Update LBOT_AR_RECEIPT_LOG_MASTER  Set TRANSACTION_STATUS ='&quot;+Arg_inTransactionStatus+&quot;',TRANSACTION_REMARKS='&quot;+Arg_inTransactionRemarks+&quot;',REMIT_FILE_NAME='&quot;+Arg_inRemitFileName+&quot;',NON_EDI_RAW_REMIT_PATH='&quot;+Arg_inRemitFilePath+&quot;',LAST_UPDATED_DATE_TIME =:CurrentDate where ST_CUSTOMER_NAME='&quot;+Arg_inPaymentDT(Arg_incnt)(&quot;ST_CUSTOMER_NAME&quot;).ToString+&quot;' and TRANSACTION_STATUS Like '%New%' and RECEIPT_NUMBER ='&quot;+Arg_inPaymentDT(Arg_incnt)(&quot;RECEIPT_NUMBER&quot;).ToString.Trim+&quot;'&quot;]">
+      <ui:ExecuteNonQuery.Parameters>
+        <InArgument x:TypeArguments="x:Object" x:Key="CurrentDate">[DateTime.Now]</InArgument>
+      </ui:ExecuteNonQuery.Parameters>
+    </ui:ExecuteNonQuery>
+    <ui:DatabaseDisconnect DatabaseConnection="[DBConnection]" DisplayName="Disconnect" sap2010:WorkflowViewState.IdRef="DatabaseDisconnect_1" />
+    <sads:DebugSymbol.Symbol>d3pDOlxVc2Vyc1xzcnYtY29ycC1ycGEtZGV2LW9yYVxEb2N1bWVudHNcVWlQYXRoXEZpbmFuY2VcRmluYW5jZVxEYXRhYmFzZU9wZXJhdGlvbnNcVXBkYXRlUGF5bWVudFRhYmxlV2l0aFJlbWl0RmlsZU5hbWUueGFtbAtSA14OAgEBVgVW3gICAQpXBVsaAgEFXAVckgECAQJWlAFWpwECARFWuQFW2wICAQ1WLFY8AgELV6wBV7wBAgEIWURZUgIBB1f1AVeuBgIBBlwvXD8CAQM=</sads:DebugSymbol.Symbol>
+  </Sequence>
+  <sap2010:WorkflowViewState.ViewStateManager>
+    <sap2010:ViewStateManager>
+      <sap2010:ViewStateData Id="DatabaseConnect_1" sap:VirtualizedContainerService.HintSize="314,59" />
+      <sap2010:ViewStateData Id="ExecuteNonQuery_1" sap:VirtualizedContainerService.HintSize="314,88" />
+      <sap2010:ViewStateData Id="DatabaseDisconnect_1" sap:VirtualizedContainerService.HintSize="314,22" />
+      <sap2010:ViewStateData Id="Sequence_1" sap:VirtualizedContainerService.HintSize="336,373">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="UpdatePaymentTableWithRemitFileName_1" sap:VirtualizedContainerService.HintSize="376,453" />
+    </sap2010:ViewStateManager>
+  </sap2010:WorkflowViewState.ViewStateManager>
+</Activity>

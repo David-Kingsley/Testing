@@ -1,0 +1,313 @@
+﻿<Activity mc:Ignorable="sap sap2010 sads" x:Class="InsertIntoPayMasterTable"
+ xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
+ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+ xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities"
+ xmlns:sads="http://schemas.microsoft.com/netfx/2010/xaml/activities/debugger"
+ xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"
+ xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation"
+ xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib"
+ xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib"
+ xmlns:sd="clr-namespace:System.Data;assembly=System.Data"
+ xmlns:ui="http://schemas.uipath.com/workflow/activities"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property Name="CustomerName" Type="InArgument(x:Object)" />
+    <x:Property Name="ReceiptNo" Type="InArgument(x:Object)" />
+    <x:Property Name="CustNo" Type="InArgument(x:Object)" />
+    <x:Property Name="ReceiptAmount" Type="InArgument(x:Object)" />
+    <x:Property Name="ReceiptDate" Type="InArgument(x:Object)" />
+    <x:Property Name="Currency" Type="InArgument(x:Object)" />
+    <x:Property Name="TotalCreditAmount" Type="InArgument(x:Object)" />
+    <x:Property Name="BankAccountNo" Type="InArgument(x:Object)" />
+    <x:Property Name="Arg_inFile" Type="InArgument(x:String)" />
+    <x:Property Name="Arg_inRegion" Type="InArgument(x:String)" />
+    <x:Property Name="Arg_inUsername" Type="InArgument(x:String)" />
+    <x:Property Name="Arg_inPassword" Type="InArgument(x:String)" />
+    <x:Property Name="Arg_inDBDataSource" Type="InArgument(x:String)" />
+    <x:Property Name="CountofPayment" Type="InArgument(x:Object)" />
+    <x:Property Name="Arg_inPaymentType" Type="InArgument(x:String)" />
+    <x:Property Name="Arg_inAllDataTable" Type="InOutArgument(sd:DataTable)" />
+    <x:Property Name="Arg_inStatus" Type="InArgument(x:String)" />
+  </x:Members>
+  <mva:VisualBasic.Settings>
+    <x:Null />
+  </mva:VisualBasic.Settings>
+  <sap2010:WorkflowViewState.IdRef>InsertIntoPayMasterTable_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <sco:Collection x:TypeArguments="x:String">
+      <x:String>System.Activities</x:String>
+      <x:String>System.Activities.Statements</x:String>
+      <x:String>System.Activities.Expressions</x:String>
+      <x:String>System.Activities.Validation</x:String>
+      <x:String>System.Activities.XamlIntegration</x:String>
+      <x:String>Microsoft.VisualBasic</x:String>
+      <x:String>Microsoft.VisualBasic.Activities</x:String>
+      <x:String>System</x:String>
+      <x:String>System.Collections</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Diagnostics</x:String>
+      <x:String>System.Drawing</x:String>
+      <x:String>System.IO</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Net.Mail</x:String>
+      <x:String>System.Xml</x:String>
+      <x:String>System.Xml.Linq</x:String>
+      <x:String>UiPath.Core</x:String>
+      <x:String>UiPath.Orchestrator.Client</x:String>
+      <x:String>UiPath.Orchestrator.Client.Models</x:String>
+      <x:String>UiPath.Core.Activities</x:String>
+      <x:String>UiPath.Mail.Activities</x:String>
+      <x:String>UiPath.Mail.Exchange.Activities</x:String>
+      <x:String>UiPath.Mail.IMAP.Activities</x:String>
+      <x:String>UiPath.Mail.Outlook.Activities</x:String>
+      <x:String>UiPath.Mail.POP3.Activities</x:String>
+      <x:String>UiPath.Mail.SMTP.Activities</x:String>
+      <x:String>UiPath.PDF.Activities</x:String>
+      <x:String>UiPath.XPS.Activities</x:String>
+      <x:String>UiPath.Database.Activities</x:String>
+      <x:String>UiPath.Database</x:String>
+      <x:String>UiPath.Excel.Activities</x:String>
+      <x:String>UiPath.CSV.Activities</x:String>
+      <x:String>UiPath.Excel</x:String>
+      <x:String>UiPath.CSV</x:String>
+      <x:String>System.Windows.Markup</x:String>
+      <x:String>System.Xml.Serialization</x:String>
+      <x:String>System.Globalization</x:String>
+    </sco:Collection>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System.Data.DataSetExtensions</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Drawing</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>UiPath.Studio.Plugin.Workflow</AssemblyReference>
+      <AssemblyReference>UiPath.OrchestratorClient</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Mail.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.PDF.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Database.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Database</AssemblyReference>
+      <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Excel.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Excel</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>PresentationCore</AssemblyReference>
+      <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>UiPath.PDF</AssemblyReference>
+      <AssemblyReference>System.ValueTuple</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
+      <AssemblyReference>System.Collections.Immutable</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualStudio.Services.Common</AssemblyReference>
+    </sco:Collection>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence DisplayName="Insert IntoPaymeent Master Table" sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="ui:DatabaseConnection" Name="DBConnection" />
+      <Variable x:TypeArguments="x:String" Name="Status" />
+      <Variable x:TypeArguments="x:Int32" Name="IterationCount" />
+      <Variable x:TypeArguments="x:Object" Name="CurrentPhase" />
+      <Variable x:TypeArguments="x:Object" Name="Transaction_remarks" />
+      <Variable x:TypeArguments="x:Int32" Name="RecordsAffected" />
+    </Sequence.Variables>
+    <ui:DatabaseConnect DatabaseConnection="[DBConnection]" DisplayName="Connect" sap2010:WorkflowViewState.IdRef="DatabaseConnect_1" ProviderName="System.Data.OleDb" ConnectionString="[&quot;Provider=OraOLEDB.Oracle.1;Data Source=&quot;+Arg_inDBDataSource+&quot;;Password=&quot;+Arg_inPassword+&quot;;User ID=&quot;+Arg_inUsername+&quot;&quot;]" />
+    <If Condition="[Arg_inStatus.Contains(&quot;Exception&quot;)]" sap2010:WorkflowViewState.IdRef="If_2">
+      <If.Then>
+        <Sequence sap2010:WorkflowViewState.IdRef="Sequence_9">
+          <Assign sap2010:WorkflowViewState.IdRef="Assign_19">
+            <Assign.To>
+              <OutArgument x:TypeArguments="x:String">[Status]</OutArgument>
+            </Assign.To>
+            <Assign.Value>
+              <InArgument x:TypeArguments="x:String">Exception</InArgument>
+            </Assign.Value>
+          </Assign>
+          <Assign sap2010:WorkflowViewState.IdRef="Assign_21">
+            <Assign.To>
+              <OutArgument x:TypeArguments="x:Object">[CurrentPhase]</OutArgument>
+            </Assign.To>
+            <Assign.Value>
+              <InArgument x:TypeArguments="x:Object">[DBNull.Value]</InArgument>
+            </Assign.Value>
+          </Assign>
+          <Assign sap2010:WorkflowViewState.IdRef="Assign_20">
+            <Assign.To>
+              <OutArgument x:TypeArguments="x:Object">[Transaction_remarks]</OutArgument>
+            </Assign.To>
+            <Assign.Value>
+              <InArgument x:TypeArguments="x:Object">["Customer Name not found in MappingTable"]</InArgument>
+            </Assign.Value>
+          </Assign>
+        </Sequence>
+      </If.Then>
+      <If.Else>
+        <If Condition="[Arg_inAllDataTable.Select(&quot;Convert([ST_CUSTOMER_NAME],System.String) LIKE '%&quot;+CustomerName.ToString.Trim+&quot;%' and Convert([RECEIPT_DATE],System.String) LIKE '&quot;+ReceiptDate.ToString+&quot;'and Convert([RECEIPT_AMOUNT],System.String) LIKE '&quot;+ReceiptAmount.ToString+&quot;' and Convert([RECEIPT_NUMBER],System.String) LIKE '&quot;+ReceiptNo.ToString.Trim.TrimStart(&quot;0&quot;c)+&quot;'&quot;).Count&gt;0]" DisplayName="Check payment is duplicate or not" sap2010:WorkflowViewState.IdRef="If_1">
+          <If.Then>
+            <Sequence sap2010:WorkflowViewState.IdRef="Sequence_6">
+              <Assign DisplayName="Assign Status" sap2010:WorkflowViewState.IdRef="Assign_1">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:String">[Status]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:String">Duplicate</InArgument>
+                </Assign.Value>
+              </Assign>
+              <Assign sap2010:WorkflowViewState.IdRef="Assign_16">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:Int32">[IterationCount]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:Int32">0</InArgument>
+                </Assign.Value>
+              </Assign>
+              <Assign sap2010:WorkflowViewState.IdRef="Assign_17">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:Object">[CurrentPhase]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:Object">["Bank Statement Received"]</InArgument>
+                </Assign.Value>
+              </Assign>
+              <Assign sap2010:WorkflowViewState.IdRef="Assign_22">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:Object">[Transaction_remarks]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:Object">[DBNull.Value]</InArgument>
+                </Assign.Value>
+              </Assign>
+            </Sequence>
+          </If.Then>
+          <If.Else>
+            <Sequence sap2010:WorkflowViewState.IdRef="Sequence_7">
+              <Assign DisplayName="Assign  Status" sap2010:WorkflowViewState.IdRef="Assign_2">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:String">[Status]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:String">New</InArgument>
+                </Assign.Value>
+              </Assign>
+              <Assign sap2010:WorkflowViewState.IdRef="Assign_18">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:Object">[CurrentPhase]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:Object">[DBNull.Value]</InArgument>
+                </Assign.Value>
+              </Assign>
+              <Assign sap2010:WorkflowViewState.IdRef="Assign_23">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:Object">[Transaction_remarks]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:Object">[DBNull.Value]</InArgument>
+                </Assign.Value>
+              </Assign>
+            </Sequence>
+          </If.Else>
+        </If>
+      </If.Else>
+    </If>
+    <ui:ExecuteNonQuery ContinueOnError="{x:Null}" TimeoutMS="{x:Null}" AffectedRecords="[RecordsAffected]" CommandType="Text" DisplayName="Execute Insert Query" ExistingDbConnection="[DBConnection]" sap2010:WorkflowViewState.IdRef="ExecuteNonQuery_4" Sql="insert into LBOT_AR_RECEIPT_LOG_MASTER (STATEMENT_NAME,PAYMENT_TYPE,ST_CUSTOMER_NAME,CUSTOMER_NUMBER,RECEIPT_NUMBER,RECEIPT_DATE,RECEIPT_AMOUNT,RECEIPT_CURRENCY,LOCKBOX_BANK_ACCT_NUM,REGION,CREATION_DATE_TIME,LAST_UPDATED_DATE_TIME,COUNT_OF_PAYMENT,TOTAL_STATEMENT_AMOUNT,BANK_STATEMENT_PATH,TRANSACTION_STATUS,CREATED_BY,LAST_UPDATED_BY,ITERATION_COUNT,CURRENT_PHASE,TRANSACTION_REMARKS) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)">
+      <ui:ExecuteNonQuery.Parameters>
+        <InArgument x:TypeArguments="x:String" x:Key="Value1">[Path.GetFileName(Arg_inFile)]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="Value2">[Arg_inPaymentType]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="Value3">[CustomerName.ToString]</InArgument>
+        <InArgument x:TypeArguments="x:Object" x:Key="Value4">[CustNo.ToString.Trim]</InArgument>
+        <InArgument x:TypeArguments="x:Object" x:Key="Value5">[ReceiptNo.ToString.Trim.TrimStart("0"c)]</InArgument>
+        <InArgument x:TypeArguments="x:Object" x:Key="Value6">[ReceiptDate]</InArgument>
+        <InArgument x:TypeArguments="x:Object" x:Key="Value7">[ReceiptAmount.ToString.Trim]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="Value8">[Currency.ToString]</InArgument>
+        <InArgument x:TypeArguments="x:Object" x:Key="Value9">[BankAccountNo.ToString.Trim]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="Value10">[Arg_inRegion]</InArgument>
+        <InArgument x:TypeArguments="x:Object" x:Key="Value11">[DateTime.Now]</InArgument>
+        <InArgument x:TypeArguments="x:Object" x:Key="Value12">[DateTime.Now]</InArgument>
+        <InArgument x:TypeArguments="x:Object" x:Key="Value13">[CountOfPayment.ToString.TrimStart("0"c)]</InArgument>
+        <InArgument x:TypeArguments="x:Object" x:Key="Value14">[TotalCreditAmount.ToString.Trim.Replace(",",".")]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="Value15">[Arg_inFile]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="value16">[Status]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="value17">LOGIOAARBOT</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="value18">LOGIOAARBOT</InArgument>
+        <InArgument x:TypeArguments="x:Int32" x:Key="value19">[IterationCount]</InArgument>
+        <InArgument x:TypeArguments="x:Object" x:Key="value20">[CurrentPhase]</InArgument>
+        <InArgument x:TypeArguments="x:Object" x:Key="value21">[Transaction_remarks]</InArgument>
+      </ui:ExecuteNonQuery.Parameters>
+    </ui:ExecuteNonQuery>
+    <ui:AddDataRow DataRow="{x:Null}" ArrayRow="[{Path.GetFileName(Arg_inFile),Arg_inPaymentType,CustomerName.tostring,&quot;&quot;,CustNo.ToString,&quot;&quot;,ReceiptNo.ToString.Trim.TrimStart(&quot;0&quot;c),ReceiptDate.ToString,ReceiptAmount.ToString.Trim,Currency.ToString.Trim,&quot;&quot;,BankAccountNo.ToString.Trim,Arg_inRegion,Now.ToString(&quot;M/dd/yyyy hh:mm:ss&quot;),Now.ToString(&quot;M/dd/yyyy hh:mm:ss&quot;),CountOfPayment.ToString.TrimStart(&quot;0&quot;c),TotalCreditAmount.ToString.Trim.Replace(&quot;,&quot;,&quot;.&quot;),Arg_inFile}]" DataTable="[Arg_inAllDataTable]" DisplayName="Add Data Row" sap2010:WorkflowViewState.IdRef="AddDataRow_1" />
+    <ui:DatabaseDisconnect DatabaseConnection="[DBConnection]" DisplayName="Disconnect" sap2010:WorkflowViewState.IdRef="DatabaseDisconnect_1" />
+    <sads:DebugSymbol.Symbol>dz9DOlxGaW5hbmNlXERhdGFiYXNlT3BlcmF0aW9uc1xJbnNlcnRJbnRvUGF5bWVudE1hc3RlclRhYmxlLnhhbWxIcQP5AQ4CAQF6BXreAgIBZHsF3AEKAgE03QEF9QEaAgEJ9gEF9gGeBQIBBfcBBfcBkgECAQJ6lAF6pwECAWt6uQF62wICAWd6LHo8AgFlexN7QwIBNX0JlgEUAgFXmQEJ2gEOAgE38AFA8AFLAgEz6wFA6wFpAgEx8QE/8QFPAgEv6gFA6gFOAgEu6QFA6QFOAgEt3QG4Ad0ByAECASvoAUDoAU4CASntAUDtAUwCASfnAT/nAVwCASXsAUDsAXICASPmAT/mAVICASHkAT/kAUwCAR/lAT/lAVwCAR3iAT/iAVUCARvdAYEC3QG6BQIBGuMBP+MBaAIBGOABP+ABUgIBFt0BWd0BbAIBFOEBP+EBVgIBEu8BQO8BSwIBEfMBQPMBVQIBD98BP98BXQIBDu4BQO4BSAIBDPIBQPIBTgIBCvYBuwT2AdEEAgEH9gEw9gGwBAIBBvcBL/cBPwIBA34LhQEUAgFghgELjQEUAgFcjgELlQEUAgFYmQEXmQHGAwIBOJsBDbwBGAIBRr8BDdgBGAIBOYMBNoMBPwIBY4ABN4ABPwIBYYsBNosBRAIBX4gBN4gBRQIBXZMBNpMBYQIBW5ABN5ABTAIBWZwBD6MBGAIBU6QBD6sBGAIBT6wBD7MBGAIBS7QBD7sBGAIBR8ABD8cBGAIBQsgBD88BGAIBPtABD9cBGAIBOqEBOqEBQwIBVp4BO54BQwIBVKkBOakBOgIBUqYBOqYBSgIBULEBOrEBVQIBTq4BO64BSQIBTLkBOrkBSAIBSrYBO7YBUAIBSMUBOsUBPQIBRcIBO8IBQwIBQ80BOs0BSAIBQcoBO8oBSQIBP9UBOtUBSAIBPdIBO9IBUAIBOw==</sads:DebugSymbol.Symbol>
+  </Sequence>
+  <sap2010:WorkflowViewState.ViewStateManager>
+    <sap2010:ViewStateManager>
+      <sap2010:ViewStateData Id="DatabaseConnect_1" sap:VirtualizedContainerService.HintSize="314,59" />
+      <sap2010:ViewStateData Id="Assign_19" sap:VirtualizedContainerService.HintSize="242,60" />
+      <sap2010:ViewStateData Id="Assign_21" sap:VirtualizedContainerService.HintSize="242,60" />
+      <sap2010:ViewStateData Id="Assign_20" sap:VirtualizedContainerService.HintSize="242,60" />
+      <sap2010:ViewStateData Id="Sequence_9" sap:VirtualizedContainerService.HintSize="264,384">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Assign_1" sap:VirtualizedContainerService.HintSize="242,60" />
+      <sap2010:ViewStateData Id="Assign_16" sap:VirtualizedContainerService.HintSize="242,60" />
+      <sap2010:ViewStateData Id="Assign_17" sap:VirtualizedContainerService.HintSize="242,60" />
+      <sap2010:ViewStateData Id="Assign_22" sap:VirtualizedContainerService.HintSize="242,60" />
+      <sap2010:ViewStateData Id="Sequence_6" sap:VirtualizedContainerService.HintSize="264,484">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Assign_2" sap:VirtualizedContainerService.HintSize="242,60" />
+      <sap2010:ViewStateData Id="Assign_18" sap:VirtualizedContainerService.HintSize="242,60" />
+      <sap2010:ViewStateData Id="Assign_23" sap:VirtualizedContainerService.HintSize="242,60" />
+      <sap2010:ViewStateData Id="Sequence_7" sap:VirtualizedContainerService.HintSize="264,384">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="If_1" sap:VirtualizedContainerService.HintSize="553,632">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="If_2" sap:VirtualizedContainerService.HintSize="314,51">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ExecuteNonQuery_4" sap:VirtualizedContainerService.HintSize="314,88" />
+      <sap2010:ViewStateData Id="AddDataRow_1" sap:VirtualizedContainerService.HintSize="314,22" />
+      <sap2010:ViewStateData Id="DatabaseDisconnect_1" sap:VirtualizedContainerService.HintSize="314,22" />
+      <sap2010:ViewStateData Id="Sequence_1" sap:VirtualizedContainerService.HintSize="336,526">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="InsertIntoPayMasterTable_1" sap:VirtualizedContainerService.HintSize="376,606" />
+    </sap2010:ViewStateManager>
+  </sap2010:WorkflowViewState.ViewStateManager>
+</Activity>

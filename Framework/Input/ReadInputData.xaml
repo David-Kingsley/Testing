@@ -1,0 +1,815 @@
+<Activity mc:Ignorable="sap sap2010" x:Class="ReadInputData" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib" xmlns:sd="clr-namespace:System.Diagnostics;assembly=System" xmlns:sd1="clr-namespace:System.Data;assembly=System.Data" xmlns:snm="clr-namespace:System.Net.Mail;assembly=System" xmlns:ss="clr-namespace:System.Security;assembly=mscorlib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property Name="Arg_inLogFilePath" Type="InArgument(x:String)" />
+    <x:Property Name="Arg_inOutputDirectory" Type="InArgument(x:String)" />
+    <x:Property Name="Arg_inoutFinalDT" Type="InOutArgument(sd1:DataTable)" />
+    <x:Property Name="Arg_inUniqueID" Type="InArgument(x:String)" />
+    <x:Property Name="Arg_inConfig" Type="InArgument(scg:Dictionary(x:String, x:Object))" />
+    <x:Property Name="Arg_inDBUsername" Type="InArgument(x:String)" />
+    <x:Property Name="Arg_inDBPassword" Type="InArgument(ss:SecureString)" />
+    <x:Property Name="Arg_inOracleUsername" Type="InArgument(x:String)" />
+    <x:Property Name="Arg_inOraclePassword" Type="InArgument(ss:SecureString)" />
+    <x:Property Name="Arg_outPaymentDT" Type="OutArgument(sd1:DataTable)" />
+    <x:Property Name="PaymentMasterDT" Type="OutArgument(sd1:DataTable)" />
+    <x:Property Name="MappingDT" Type="OutArgument(sd1:DataTable)" />
+    <x:Property Name="BankMappingDT" Type="OutArgument(sd1:DataTable)" />
+    <x:Property Name="ProcessedPaymentDT" Type="OutArgument(sd1:DataTable)" />
+    <x:Property Name="Arg_outEmailsDT" Type="OutArgument(sd1:DataTable)" />
+    <x:Property Name="Arg_inEmailID" Type="InArgument(x:String)" />
+    <x:Property Name="Arg_inEmailPassword" Type="InArgument(x:String)" />
+    <x:Property Name="Arg_outMailMsgs" Type="OutArgument(scg:List(snm:MailMessage))" />
+    <x:Property Name="Arg_inProcessStartTime" Type="InArgument(x:String)" />
+  </x:Members>
+  <mva:VisualBasic.Settings>
+    <x:Null />
+  </mva:VisualBasic.Settings>
+  <sap:VirtualizedContainerService.HintSize>1350,1381</sap:VirtualizedContainerService.HintSize>
+  <sap2010:WorkflowViewState.IdRef>ReadInputData_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <sco:Collection x:TypeArguments="x:String">
+      <x:String>System.Activities</x:String>
+      <x:String>System.Activities.Statements</x:String>
+      <x:String>System.Activities.Expressions</x:String>
+      <x:String>System.Activities.Validation</x:String>
+      <x:String>System.Activities.XamlIntegration</x:String>
+      <x:String>Microsoft.VisualBasic</x:String>
+      <x:String>Microsoft.VisualBasic.Activities</x:String>
+      <x:String>System</x:String>
+      <x:String>System.Collections</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Diagnostics</x:String>
+      <x:String>System.Drawing</x:String>
+      <x:String>System.IO</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Net.Mail</x:String>
+      <x:String>System.Xml</x:String>
+      <x:String>System.Xml.Linq</x:String>
+      <x:String>System.Windows.Markup</x:String>
+      <x:String>UiPath.Core</x:String>
+      <x:String>UiPath.Core.Activities</x:String>
+      <x:String>System.Security</x:String>
+      <x:String>System.Xml.Serialization</x:String>
+    </sco:Collection>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System.Data.DataSetExtensions</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Drawing</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>PresentationCore</AssemblyReference>
+      <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>UiPath.PDF</AssemblyReference>
+      <AssemblyReference>UiPath.Excel</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualStudio.Services.Common</AssemblyReference>
+      <AssemblyReference>System.ValueTuple</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
+      <AssemblyReference>System.Collections.Immutable</AssemblyReference>
+      <AssemblyReference>UiPath.Studio.Plugin.Workflow</AssemblyReference>
+      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
+    </sco:Collection>
+  </TextExpression.ReferencesForImplementation>
+  <Flowchart sap2010:Annotation.AnnotationText="" DisplayName="Read Input Data" sap:VirtualizedContainerService.HintSize="1360,1316" sap2010:WorkflowViewState.IdRef="Flowchart_2">
+    <Flowchart.Variables>
+      <Variable x:TypeArguments="sd1:DataTable" Name="PaymentDT" />
+      <Variable x:TypeArguments="x:String" Name="Responsibilities" />
+      <Variable x:TypeArguments="x:String" Name="CustomerType" />
+      <Variable x:TypeArguments="x:String" Name="CustRefNO" />
+      <Variable x:TypeArguments="x:String" Name="var_RemitFile" />
+      <Variable x:TypeArguments="ui:GenericValue" Name="var_confirmationText" />
+      <Variable x:TypeArguments="x:String" Name="var_ConcurrentProgramName" />
+      <Variable x:TypeArguments="x:String" Name="var_RequestID" />
+      <Variable x:TypeArguments="ui:GenericValue" Name="var_phaseStatus" />
+      <Variable x:TypeArguments="ui:GenericValue" Name="var_Status" />
+      <Variable x:TypeArguments="x:Int32" Name="var_IterationCount" />
+      <Variable x:TypeArguments="x:String" Name="var_RemitSubject" />
+      <Variable x:TypeArguments="x:String" Name="var_RemitAttachmentCheck" />
+      <Variable x:TypeArguments="x:String" Name="var_RemitAttachmentName" />
+      <Variable x:TypeArguments="x:String" Name="var_CustRefColumn" />
+      <Variable x:TypeArguments="x:String" Name="var_AmtInRemit" />
+      <Variable x:TypeArguments="x:String" Name="var_YIdentidyColumn" />
+      <Variable x:TypeArguments="x:String" Name="var_NIdentifyColumn" />
+      <Variable x:TypeArguments="x:String" Name="var_RemitSender" />
+      <Variable x:TypeArguments="x:String" Name="var_MacroCustomerName" />
+      <Variable x:TypeArguments="x:Boolean" Name="EmailFlag" />
+      <Variable x:TypeArguments="x:Boolean" Name="PaymentTableEmpty" />
+      <Variable x:TypeArguments="x:Boolean" Name="RemitEmail" />
+      <Variable x:TypeArguments="x:Boolean" Name="RemitFileFound" />
+      <Variable x:TypeArguments="sd1:DataTable" Name="AllDataDT" />
+      <Variable x:TypeArguments="x:Boolean" Name="PaymentFlag" />
+      <Variable x:TypeArguments="x:String" Name="var_OraResponsibilityProgram" />
+      <Variable x:TypeArguments="x:String" Name="var_ReceiptMethod" />
+      <Variable x:TypeArguments="x:String" Name="var_RawRemitFile" />
+      <Variable x:TypeArguments="x:Boolean" Name="var_Exception" />
+      <Variable x:TypeArguments="x:String" Name="var_Subject" />
+    </Flowchart.Variables>
+    <sap:WorkflowViewStateService.ViewState>
+      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+        <av:Point x:Key="ShapeLocation">640,2.5</av:Point>
+        <av:Size x:Key="ShapeSize">60,75</av:Size>
+        <av:PointCollection x:Key="ConnectorLocation">670,77.5 670,104.5</av:PointCollection>
+        <x:Double x:Key="Height">1249</x:Double>
+        <x:Double x:Key="Width">1326</x:Double>
+        <x:Boolean x:Key="IsPinned">False</x:Boolean>
+        <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+      </scg:Dictionary>
+    </sap:WorkflowViewStateService.ViewState>
+    <Flowchart.StartNode>
+      <x:Reference>__ReferenceID12</x:Reference>
+    </Flowchart.StartNode>
+    <FlowStep x:Name="__ReferenceID1" sap2010:WorkflowViewState.IdRef="FlowStep_18">
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <av:Point x:Key="ShapeLocation">710,514.5</av:Point>
+          <av:Size x:Key="ShapeSize">200,93</av:Size>
+          <av:PointCollection x:Key="ConnectorLocation">710,561 610,561 610,696.5</av:PointCollection>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+      <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="This sequence is used to read emails" DisplayName="Invoke GetEmailsthroughIMAPServer workflow" sap:VirtualizedContainerService.HintSize="200,93" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_26" UnSafe="False" WorkflowFileName="EmailOperations/GetEmailsthroughIMAPServer.xaml">
+        <ui:InvokeWorkflowFile.Arguments>
+          <InArgument x:TypeArguments="sd1:DataTable" x:Key="Arg_inMappingDT">[MappingDT]</InArgument>
+          <InArgument x:TypeArguments="sd1:DataTable" x:Key="Arg_inBankMappingDT">[BankMappingDT]</InArgument>
+          <OutArgument x:TypeArguments="x:Boolean" x:Key="Arg_outMailFlag">[EmailFlag]</OutArgument>
+          <InArgument x:TypeArguments="x:String" x:Key="Arg_inEmailAttachmentPath">[Arg_inConfig("EmailAttachmentPath").ToString]</InArgument>
+          <InArgument x:TypeArguments="x:String" x:Key="Arg_inLogFilePath">[Arg_inLogFilePath]</InArgument>
+          <InArgument x:TypeArguments="x:String" x:Key="Arg_inOutputDirectory">[Arg_inOutputDirectory]</InArgument>
+          <InOutArgument x:TypeArguments="sd1:DataTable" x:Key="Arg_inoutFinalDT">[Arg_inoutFinalDT]</InOutArgument>
+          <InArgument x:TypeArguments="x:String" x:Key="Arg_inUniqueID">Emails</InArgument>
+          <InArgument x:TypeArguments="x:String" x:Key="Arg_inEmailID">[Arg_inEmailID]</InArgument>
+          <InArgument x:TypeArguments="x:String" x:Key="Arg_inEmailPassword">[Arg_inEmailPassword]</InArgument>
+          <OutArgument x:TypeArguments="scg:List(snm:MailMessage)" x:Key="Arg_outMailMsgs">[Arg_outMailMsgs]</OutArgument>
+        </ui:InvokeWorkflowFile.Arguments>
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </ui:InvokeWorkflowFile>
+      <FlowStep.Next>
+        <FlowDecision x:Name="__ReferenceID6" Condition="[EmailFlag]" DisplayName="Email Received?" sap:VirtualizedContainerService.HintSize="90,87" sap2010:WorkflowViewState.IdRef="FlowDecision_5">
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+              <av:Point x:Key="ShapeLocation">565,696.5</av:Point>
+              <av:Size x:Key="ShapeSize">90,87</av:Size>
+              <x:String x:Key="FalseLabel">No</x:String>
+              <x:String x:Key="TrueLabel">Yes</x:String>
+              <av:PointCollection x:Key="TrueConnector">565,740 410,740 410,834.5</av:PointCollection>
+              <av:PointCollection x:Key="FalseConnector">655,740 830,740 830,776</av:PointCollection>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+          <FlowDecision.True>
+            <FlowStep x:Name="__ReferenceID2" sap2010:WorkflowViewState.IdRef="FlowStep_14">
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <av:Point x:Key="ShapeLocation">310,834.5</av:Point>
+                  <av:Size x:Key="ShapeSize">200,108</av:Size>
+                  <av:PointCollection x:Key="ConnectorLocation">410,942.5 410,976</av:PointCollection>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Extract Payment details fromBank/Check Statments and add it in DB" DisplayName="Invoke GetPaymentDetailsfromCheckandBankStatementsandSaveinDatabase workflow" sap:VirtualizedContainerService.HintSize="200,108" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_27" UnSafe="False" WorkflowFileName="PDFAndMT942FilesOperations/GetPaymentDetailsfromCheckandBankStatementsandSaveinDatabase.xaml">
+                <ui:InvokeWorkflowFile.Arguments>
+                  <InArgument x:TypeArguments="sd1:DataTable" x:Key="Arg_inMappingDT">[MappingDT]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="Arg_inEmailAttachmentPath">[Arg_inConfig("EmailAttachmentPath").ToString]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="Arg_inLogFilePath">[Arg_inLogFilePath]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="Arg_inOutputDirectory">[Arg_inOutputDirectory]</InArgument>
+                  <InOutArgument x:TypeArguments="sd1:DataTable" x:Key="Arg_inoutFinalDT">[Arg_inoutFinalDT]</InOutArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="Arg_inUniqueID">File</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="Arg_inProcessFolderPath">[Arg_inConfig("StatementsFolderPath").ToString]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="Arg_inDBDataDource">[Arg_inConfig("DBDataSource").ToString]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="Arg_inUsername">[Arg_inDBUSername]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="Arg_inPassword">[new System.Net.NetworkCredential(string.Empty, Arg_inDBPassword).Password]</InArgument>
+                  <InOutArgument x:TypeArguments="sd1:DataTable" x:Key="Arg_inAllDataTable">[AllDataDT]</InOutArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="Arg_inBSMappingFilePath">[Arg_inConfig("BSMappingFilePath").ToString.Trim]</InArgument>
+                  <InArgument x:TypeArguments="sd1:DataTable" x:Key="Arg_inEmailDT">[Arg_outEmailsDT]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="Arg_inSuccessEmailID">[Arg_inConfig("SuccessEmailID").ToString]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="Arg_inEmailID">[Arg_inEmailID]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="Arg_inEmailPassword">[Arg_inEmailPassword]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="Arg_inProcessStartTime">[Arg_inProcessStartTime]</InArgument>
+                </ui:InvokeWorkflowFile.Arguments>
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+              </ui:InvokeWorkflowFile>
+              <FlowStep.Next>
+                <FlowStep x:Name="__ReferenceID9" sap2010:WorkflowViewState.IdRef="FlowStep_13">
+                  <sap:WorkflowViewStateService.ViewState>
+                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                      <av:Point x:Key="ShapeLocation">310,976</av:Point>
+                      <av:Size x:Key="ShapeSize">200,108</av:Size>
+                      <av:PointCollection x:Key="ConnectorLocation">410,1084 410,1114.5</av:PointCollection>
+                    </scg:Dictionary>
+                  </sap:WorkflowViewStateService.ViewState>
+                  <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Get Data from Database whose Status is NEW and save it in Datatable" DisplayName="Invoke GetDataFromDatabasewhoseStatusisNEW workflow" sap:VirtualizedContainerService.HintSize="200,108" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_28" UnSafe="False" WorkflowFileName="DatabaseOperations/GetDataFromDatabasewhoseStatusisNEW.xaml">
+                    <ui:InvokeWorkflowFile.Arguments>
+                      <OutArgument x:TypeArguments="sd1:DataTable" x:Key="PaymentDT">[Arg_outPaymentDT]</OutArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="Arg_inDBDataSource">[Arg_inConfig("DBDataSource").ToString]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="Arg_inUsername">[Arg_inDBUSername]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="Arg_inPassword">[new System.Net.NetworkCredential(string.Empty, Arg_inDBPassword).Password]</InArgument>
+                      <InArgument x:TypeArguments="x:Int32" x:Key="Arg_inProcessPaymentDays">[var_IterationCount]</InArgument>
+                    </ui:InvokeWorkflowFile.Arguments>
+                    <sap:WorkflowViewStateService.ViewState>
+                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                        <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                      </scg:Dictionary>
+                    </sap:WorkflowViewStateService.ViewState>
+                  </ui:InvokeWorkflowFile>
+                  <FlowStep.Next>
+                    <FlowStep x:Name="__ReferenceID0" sap2010:WorkflowViewState.IdRef="FlowStep_12">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <av:Point x:Key="ShapeLocation">310,1114.5</av:Point>
+                          <av:Size x:Key="ShapeSize">200,82</av:Size>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <TryCatch sap2010:Annotation.AnnotationText="Oracle Login" sap:VirtualizedContainerService.HintSize="434,985" sap2010:WorkflowViewState.IdRef="TryCatch_5">
+                        <sap:WorkflowViewStateService.ViewState>
+                          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                            <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                          </scg:Dictionary>
+                        </sap:WorkflowViewStateService.ViewState>
+                        <TryCatch.Try>
+                          <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="This sequnce is used to login into Oracle" DisplayName="Invoke OracleLogin workflow" sap:VirtualizedContainerService.HintSize="314,114" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_29" UnSafe="False" WorkflowFileName="OracleOperations\OracleLogin.xaml">
+                            <ui:InvokeWorkflowFile.Arguments>
+                              <InArgument x:TypeArguments="x:String" x:Key="Arg_inOracleLoginURL">[Arg_inConfig("OracleLogon").ToString]</InArgument>
+                              <InArgument x:TypeArguments="x:String" x:Key="Arg_inUniqueID">Oracle</InArgument>
+                              <InArgument x:TypeArguments="x:String" x:Key="Arg_inLogFilePath">[Arg_inLogFilePath]</InArgument>
+                              <InArgument x:TypeArguments="x:String" x:Key="Arg_inOutputDirectory">[Arg_inOutputDirectory]</InArgument>
+                              <InOutArgument x:TypeArguments="sd1:DataTable" x:Key="Arg_inoutFinalDT">[Arg_inoutFinalDT]</InOutArgument>
+                              <InArgument x:TypeArguments="x:String" x:Key="Arg_inOracleUsername">[Arg_inOracleUsername]</InArgument>
+                              <InArgument x:TypeArguments="ss:SecureString" x:Key="Arg_inOraclePassword">[Arg_inOraclePassword]</InArgument>
+                              <InArgument x:TypeArguments="x:String" x:Key="Arg_inExceptionEmailID">[Arg_inConfig("ExceptionEmailID").ToString]</InArgument>
+                              <InArgument x:TypeArguments="x:String" x:Key="Arg_inExceptionEmailTemplate">[Arg_inConfig("ExceptionEmailTemplate").ToString]</InArgument>
+                            </ui:InvokeWorkflowFile.Arguments>
+                            <sap:WorkflowViewStateService.ViewState>
+                              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                              </scg:Dictionary>
+                            </sap:WorkflowViewStateService.ViewState>
+                          </ui:InvokeWorkflowFile>
+                        </TryCatch.Try>
+                        <TryCatch.Catches>
+                          <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="400,792" sap2010:WorkflowViewState.IdRef="Catch`1_5">
+                            <sap:WorkflowViewStateService.ViewState>
+                              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                              </scg:Dictionary>
+                            </sap:WorkflowViewStateService.ViewState>
+                            <ActivityAction x:TypeArguments="s:Exception">
+                              <ActivityAction.Argument>
+                                <DelegateInArgument x:TypeArguments="s:Exception" Name="exception" />
+                              </ActivityAction.Argument>
+                              <Sequence sap:VirtualizedContainerService.HintSize="376,723" sap2010:WorkflowViewState.IdRef="Sequence_22">
+                                <sap:WorkflowViewStateService.ViewState>
+                                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                  </scg:Dictionary>
+                                </sap:WorkflowViewStateService.ViewState>
+                                <ui:CommentOut DisplayName="Comment Out" sap:VirtualizedContainerService.HintSize="334,51" sap2010:WorkflowViewState.IdRef="CommentOut_2">
+                                  <ui:CommentOut.Body>
+                                    <Sequence DisplayName="Ignored Activities" sap:VirtualizedContainerService.HintSize="376,198" sap2010:WorkflowViewState.IdRef="Sequence_24">
+                                      <sap:WorkflowViewStateService.ViewState>
+                                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                        </scg:Dictionary>
+                                      </sap:WorkflowViewStateService.ViewState>
+                                      <ui:CloseApplication ContinueOnError="True" DisplayName="Close Application 'iexplore.exe Home'" sap:VirtualizedContainerService.HintSize="334,106" sap2010:WorkflowViewState.IdRef="CloseApplication_1">
+                                        <ui:CloseApplication.Target>
+                                          <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="17ed940fa22fb14367aa87c9b51b540a" Selector="&lt;wnd app='iexplore.exe' cls='IEFrame' title='*' /&gt;" WaitForReady="INTERACTIVE" />
+                                        </ui:CloseApplication.Target>
+                                      </ui:CloseApplication>
+                                    </Sequence>
+                                  </ui:CommentOut.Body>
+                                  <sap:WorkflowViewStateService.ViewState>
+                                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                      <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                                      <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                                    </scg:Dictionary>
+                                  </sap:WorkflowViewStateService.ViewState>
+                                </ui:CommentOut>
+                                <ui:KillProcess Process="{x:Null}" ContinueOnError="True" DisplayName="Kill Process" sap:VirtualizedContainerService.HintSize="334,22" sap2010:WorkflowViewState.IdRef="KillProcess_2" ProcessName="jp2Launcher" />
+                                <ui:KillProcess Process="{x:Null}" ContinueOnError="True" DisplayName="Kill Process" sap:VirtualizedContainerService.HintSize="334,22" sap2010:WorkflowViewState.IdRef="KillProcess_1" ProcessName="iexplore" />
+                                <Delay Duration="00:00:02" sap:VirtualizedContainerService.HintSize="334,22" sap2010:WorkflowViewState.IdRef="Delay_2" />
+                                <InvokeMethod DisplayName="Invoke Method" sap:VirtualizedContainerService.HintSize="334,134" sap2010:WorkflowViewState.IdRef="InvokeMethod_1" MethodName="Start" TargetType="sd:Process">
+                                  <InArgument x:TypeArguments="x:String">rundll32.exe</InArgument>
+                                  <InArgument x:TypeArguments="x:String">InetCpl.cpl,ClearMyTracksByProcess 32</InArgument>
+                                </InvokeMethod>
+                                <Delay Duration="00:00:10" sap:VirtualizedContainerService.HintSize="334,22" sap2010:WorkflowViewState.IdRef="Delay_1" />
+                                <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="This sequnce is used to login into Oracle" DisplayName="Invoke OracleLogin workflow" sap:VirtualizedContainerService.HintSize="334,118" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_31" UnSafe="False" WorkflowFileName="OracleOperations\OracleLogin.xaml">
+                                  <ui:InvokeWorkflowFile.Arguments>
+                                    <InArgument x:TypeArguments="x:String" x:Key="Arg_inOracleLoginURL">[Arg_inConfig("OracleLogon").ToString]</InArgument>
+                                    <InArgument x:TypeArguments="x:String" x:Key="Arg_inUniqueID">Oracle</InArgument>
+                                    <InArgument x:TypeArguments="x:String" x:Key="Arg_inLogFilePath">[Arg_inLogFilePath]</InArgument>
+                                    <InArgument x:TypeArguments="x:String" x:Key="Arg_inOutputDirectory">[Arg_inOutputDirectory]</InArgument>
+                                    <InOutArgument x:TypeArguments="sd1:DataTable" x:Key="Arg_inoutFinalDT">[Arg_inoutFinalDT]</InOutArgument>
+                                    <InArgument x:TypeArguments="x:String" x:Key="Arg_inOracleUsername">[Arg_inOracleUsername]</InArgument>
+                                    <InArgument x:TypeArguments="ss:SecureString" x:Key="Arg_inOraclePassword">[Arg_inOraclePassword]</InArgument>
+                                    <InArgument x:TypeArguments="x:String" x:Key="Arg_inExceptionEmailID">[Arg_inConfig("ExceptionEmailID").ToString]</InArgument>
+                                    <InArgument x:TypeArguments="x:String" x:Key="Arg_inExceptionEmailTemplate">[Arg_inConfig("ExceptionEmailTemplate").ToString]</InArgument>
+                                  </ui:InvokeWorkflowFile.Arguments>
+                                  <sap:WorkflowViewStateService.ViewState>
+                                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                      <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                                    </scg:Dictionary>
+                                  </sap:WorkflowViewStateService.ViewState>
+                                </ui:InvokeWorkflowFile>
+                              </Sequence>
+                            </ActivityAction>
+                          </Catch>
+                        </TryCatch.Catches>
+                      </TryCatch>
+                    </FlowStep>
+                  </FlowStep.Next>
+                </FlowStep>
+              </FlowStep.Next>
+            </FlowStep>
+          </FlowDecision.True>
+          <FlowDecision.False>
+            <FlowStep x:Name="__ReferenceID10" sap2010:WorkflowViewState.IdRef="FlowStep_17">
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <av:Point x:Key="ShapeLocation">730,776</av:Point>
+                  <av:Size x:Key="ShapeSize">200,123</av:Size>
+                  <av:PointCollection x:Key="ConnectorLocation">830,899 830,926.5 830.5,926.5</av:PointCollection>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <Sequence sap2010:Annotation.AnnotationText="This sequence is used to send email stating that no emails received for current run" DisplayName="Send Email" sap:VirtualizedContainerService.HintSize="200,123" sap2010:WorkflowViewState.IdRef="Sequence_20">
+                <Sequence.Variables>
+                  <Variable x:TypeArguments="x:String" Name="var_Body" />
+                </Sequence.Variables>
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                    <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+                <Assign sap:VirtualizedContainerService.HintSize="314,60" sap2010:WorkflowViewState.IdRef="Assign_11">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:String">[var_Subject]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:String">[Arg_outEmailsDT(0)("Subject").tostring.replace("CURRENTTIME",Arg_inProcessStartTime)]</InArgument>
+                  </Assign.Value>
+                </Assign>
+                <Assign sap:VirtualizedContainerService.HintSize="314,60" sap2010:WorkflowViewState.IdRef="Assign_13">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:String">[var_Body]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:String">[Arg_outEmailsDT(0)("HTML").tostring.replace("CURRENTTIME",DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss"))]</InArgument>
+                  </Assign.Value>
+                </Assign>
+                <ui:SendMail Bcc="{x:Null}" Cc="{x:Null}" From="{x:Null}" MailMessage="{x:Null}" Name="{x:Null}" TimeoutMS="{x:Null}" Body="[var_Body]" DisplayName="Send SMTP Mail Message" Email="[Arg_inEmailID]" EnableSSL="True" sap:VirtualizedContainerService.HintSize="314,145" sap2010:WorkflowViewState.IdRef="SendMail_3" IsBodyHtml="True" Password="[Arg_inEmailPassword]" Port="587" SecureConnection="Auto" Server="smtp.gmail.com" Subject="[var_Subject]" To="[Arg_inConfig(&quot;SuccessEmailID&quot;).ToString]">
+                  <ui:SendMail.Files>
+                    <scg:List x:TypeArguments="InArgument(x:String)" Capacity="0" />
+                  </ui:SendMail.Files>
+                </ui:SendMail>
+              </Sequence>
+              <FlowStep.Next>
+                <FlowDecision x:Name="__ReferenceID7" Condition="[NOT(PaymentTableEmpty)]" DisplayName="NEW Payments Present in PaymentMasterTable?" sap:VirtualizedContainerService.HintSize="160,87" sap2010:WorkflowViewState.IdRef="FlowDecision_4" True="{x:Reference __ReferenceID0}">
+                  <sap:WorkflowViewStateService.ViewState>
+                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                      <av:Point x:Key="ShapeLocation">750.5,926.5</av:Point>
+                      <av:Size x:Key="ShapeSize">160,87</av:Size>
+                      <x:String x:Key="FalseLabel">No</x:String>
+                      <x:String x:Key="TrueLabel">Yes</x:String>
+                      <av:PointCollection x:Key="TrueConnector">750.5,970 720.5,970 720.5,1155.5 510,1155.5</av:PointCollection>
+                      <av:PointCollection x:Key="FalseConnector">910.5,970 1050,970 1050,1020</av:PointCollection>
+                    </scg:Dictionary>
+                  </sap:WorkflowViewStateService.ViewState>
+                  <FlowDecision.False>
+                    <FlowStep x:Name="__ReferenceID8" sap2010:WorkflowViewState.IdRef="FlowStep_16">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <av:Point x:Key="ShapeLocation">950,1020</av:Point>
+                          <av:Size x:Key="ShapeSize">200,82</av:Size>
+                          <av:PointCollection x:Key="ConnectorLocation">1050,1102 1050,1126</av:PointCollection>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="To keep tract of Logging" DisplayName="Invoke Workflow File" sap:VirtualizedContainerService.HintSize="200,82" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_30" UnSafe="False" WorkflowFileName="Framework\Logging\Logging.xaml">
+                        <ui:InvokeWorkflowFile.Arguments>
+                          <InArgument x:TypeArguments="x:String" x:Key="argLogFilePath">[Arg_inLogFilePath]</InArgument>
+                          <InArgument x:TypeArguments="x:String" x:Key="argLogMessage">No New Payments present in table</InArgument>
+                          <InArgument x:TypeArguments="x:String" x:Key="argLogLevel">Info</InArgument>
+                          <InArgument x:TypeArguments="x:String" x:Key="argOutputDirectory">[Arg_inOutputDirectory]</InArgument>
+                          <InArgument x:TypeArguments="x:String" x:Key="argUniqueInputID">[Arg_inUniqueID]</InArgument>
+                          <InOutArgument x:TypeArguments="sd1:DataTable" x:Key="argDTFinalOutPut">[Arg_inoutFinalDT]</InOutArgument>
+                          <InArgument x:TypeArguments="x:String" x:Key="argStepDetailDescription">No New Payments present in table</InArgument>
+                          <InArgument x:TypeArguments="x:String" x:Key="argExceptionMessage">NA</InArgument>
+                        </ui:InvokeWorkflowFile.Arguments>
+                        <sap:WorkflowViewStateService.ViewState>
+                          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                            <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                          </scg:Dictionary>
+                        </sap:WorkflowViewStateService.ViewState>
+                      </ui:InvokeWorkflowFile>
+                      <FlowStep.Next>
+                        <FlowStep x:Name="__ReferenceID11" sap2010:WorkflowViewState.IdRef="FlowStep_15">
+                          <sap:WorkflowViewStateService.ViewState>
+                            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                              <av:Point x:Key="ShapeLocation">950,1126</av:Point>
+                              <av:Size x:Key="ShapeSize">200,123</av:Size>
+                              <av:PointCollection x:Key="ConnectorLocation">840,894 840,924 840.5,924 840.5,936.5</av:PointCollection>
+                            </scg:Dictionary>
+                          </sap:WorkflowViewStateService.ViewState>
+                          <Sequence sap2010:Annotation.AnnotationText="This sequence is used to send email stating that no data left for processing" DisplayName="Send Email" sap:VirtualizedContainerService.HintSize="200,123" sap2010:WorkflowViewState.IdRef="Sequence_21">
+                            <sap:WorkflowViewStateService.ViewState>
+                              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                              </scg:Dictionary>
+                            </sap:WorkflowViewStateService.ViewState>
+                            <Assign sap:VirtualizedContainerService.HintSize="314,60" sap2010:WorkflowViewState.IdRef="Assign_12">
+                              <Assign.To>
+                                <OutArgument x:TypeArguments="x:String">[var_Subject]</OutArgument>
+                              </Assign.To>
+                              <Assign.Value>
+                                <InArgument x:TypeArguments="x:String">[Arg_outEmailsDT(1)("Subject").ToString.replace("CURRENTTIME",DateTime.Now.ToString("dd-MM-yyyy hh:mm:ss"))]</InArgument>
+                              </Assign.Value>
+                            </Assign>
+                            <ui:SendMail Bcc="{x:Null}" Cc="{x:Null}" From="{x:Null}" MailMessage="{x:Null}" Name="{x:Null}" TimeoutMS="{x:Null}" Body="[Arg_outEmailsDT(1)(&quot;HTML&quot;).ToString]" DisplayName="Send SMTP Mail Message" Email="[Arg_inEmailID]" EnableSSL="True" sap:VirtualizedContainerService.HintSize="314,145" sap2010:WorkflowViewState.IdRef="SendMail_4" IsBodyHtml="True" Password="[Arg_inEmailPassword]" Port="587" SecureConnection="Auto" Server="smtp.gmail.com" Subject="[var_Subject]" To="[Arg_inConfig(&quot;SuccessEmailID&quot;).ToString]">
+                              <ui:SendMail.Files>
+                                <scg:List x:TypeArguments="InArgument(x:String)" Capacity="0" />
+                              </ui:SendMail.Files>
+                            </ui:SendMail>
+                          </Sequence>
+                        </FlowStep>
+                      </FlowStep.Next>
+                    </FlowStep>
+                  </FlowDecision.False>
+                </FlowDecision>
+              </FlowStep.Next>
+            </FlowStep>
+          </FlowDecision.False>
+        </FlowDecision>
+      </FlowStep.Next>
+    </FlowStep>
+    <FlowStep x:Name="__ReferenceID12" sap2010:WorkflowViewState.IdRef="FlowStep_20">
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <av:Point x:Key="ShapeLocation">570,104.5</av:Point>
+          <av:Size x:Key="ShapeSize">200,123</av:Size>
+          <av:PointCollection x:Key="ConnectorLocation">670,227.5 670,246.5</av:PointCollection>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+      <Sequence sap2010:Annotation.AnnotationText="This sequence is used to extract data from Mapping Table" DisplayName="Read Mapping Table" sap:VirtualizedContainerService.HintSize="200,123" sap2010:WorkflowViewState.IdRef="Sequence_13">
+        <Sequence.Variables>
+          <Variable x:TypeArguments="ui:WorkbookApplication" Name="wrkbk" />
+        </Sequence.Variables>
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Read Mapping Table " DisplayName="Invoke ReadMappingTable workflow" sap:VirtualizedContainerService.HintSize="334,118" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_16" UnSafe="False" WorkflowFileName="DatabaseOperations\ReadMappingTable.xaml">
+          <ui:InvokeWorkflowFile.Arguments>
+            <OutArgument x:TypeArguments="sd1:DataTable" x:Key="Arg_outMappingDT">[MappingDT]</OutArgument>
+            <InArgument x:TypeArguments="x:String" x:Key="Arg_inMappingFilePath">[Arg_inConfig("MappingFilePath").ToString]</InArgument>
+            <OutArgument x:TypeArguments="sd1:DataTable" x:Key="Arg_outEmailsDT">[Arg_outEmailsDT]</OutArgument>
+          </ui:InvokeWorkflowFile.Arguments>
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+        </ui:InvokeWorkflowFile>
+        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke workflow file" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_17" UnSafe="False" WorkflowFileName="Framework\Logging\Logging.xaml">
+          <ui:InvokeWorkflowFile.Arguments>
+            <InArgument x:TypeArguments="x:String" x:Key="argLogFilePath">[Arg_inLogFilePath]</InArgument>
+            <InArgument x:TypeArguments="x:String" x:Key="argLogMessage">Reading Mapping Table</InArgument>
+            <InArgument x:TypeArguments="x:String" x:Key="argLogLevel">Info</InArgument>
+            <InArgument x:TypeArguments="x:String" x:Key="argOutputDirectory">[Arg_inOutputDirectory]</InArgument>
+            <InArgument x:TypeArguments="x:String" x:Key="argUniqueInputID">[Arg_inUniqueID]</InArgument>
+            <InOutArgument x:TypeArguments="sd1:DataTable" x:Key="argDTFinalOutPut">[Arg_inoutFinalDT]</InOutArgument>
+            <InArgument x:TypeArguments="x:String" x:Key="argStepDetailDescription">Reading Mapping Table</InArgument>
+            <InArgument x:TypeArguments="x:String" x:Key="argExceptionMessage">NA</InArgument>
+          </ui:InvokeWorkflowFile.Arguments>
+        </ui:InvokeWorkflowFile>
+      </Sequence>
+      <FlowStep.Next>
+        <FlowDecision x:Name="__ReferenceID3" Condition="[MappingDT.Rows.Count.Equals(0)]" DisplayName="Mapping Table is Blank?" sap:VirtualizedContainerService.HintSize="132,87" sap2010:WorkflowViewState.IdRef="FlowDecision_6">
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+              <av:Point x:Key="ShapeLocation">603.5,246.5</av:Point>
+              <av:Size x:Key="ShapeSize">132,87</av:Size>
+              <x:String x:Key="FalseLabel">No</x:String>
+              <x:String x:Key="TrueLabel">Yes</x:String>
+              <av:PointCollection x:Key="TrueConnector">603.5,290 460,290 460,344.5</av:PointCollection>
+              <av:PointCollection x:Key="FalseConnector">736.5,290 810,290 810,363.5</av:PointCollection>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+          <FlowDecision.True>
+            <FlowStep x:Name="__ReferenceID4" sap2010:WorkflowViewState.IdRef="FlowStep_11">
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <av:Point x:Key="ShapeLocation">360,344.5</av:Point>
+                  <av:Size x:Key="ShapeSize">200,82</av:Size>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="To keep tract of Logging" DisplayName="Invoke Workflow File" sap:VirtualizedContainerService.HintSize="200,82" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_18" UnSafe="False" WorkflowFileName="Framework\Logging\Logging.xaml">
+                <ui:InvokeWorkflowFile.Arguments>
+                  <InArgument x:TypeArguments="x:String" x:Key="argLogFilePath">[Arg_inLogFilePath]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="argLogMessage">Mapping Table is blank</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="argLogLevel">Info</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="argOutputDirectory">[Arg_inOutputDirectory]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="argUniqueInputID">[Arg_inUniqueID]</InArgument>
+                  <InOutArgument x:TypeArguments="sd1:DataTable" x:Key="argDTFinalOutPut">[Arg_inoutFinalDT]</InOutArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="argStepDetailDescription">Mapping Table is Blank</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="argExceptionMessage">NA</InArgument>
+                </ui:InvokeWorkflowFile.Arguments>
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                    <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+              </ui:InvokeWorkflowFile>
+            </FlowStep>
+          </FlowDecision.True>
+          <FlowDecision.False>
+            <FlowStep x:Name="__ReferenceID5" sap2010:WorkflowViewState.IdRef="FlowStep_19">
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <av:Point x:Key="ShapeLocation">710,363.5</av:Point>
+                  <av:Size x:Key="ShapeSize">200,108</av:Size>
+                  <av:PointCollection x:Key="ConnectorLocation">810,471.5 810,514.5</av:PointCollection>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <Sequence sap2010:Annotation.AnnotationText="Read AllDataTable and ProcessedPayment Table" DisplayName="Read Tables" sap:VirtualizedContainerService.HintSize="480,1341" sap2010:WorkflowViewState.IdRef="Sequence_19">
+                <Sequence.Variables>
+                  <Variable x:TypeArguments="x:String" Name="str" />
+                </Sequence.Variables>
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                    <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+                <Assign DisplayName="Assign UniqueID" sap:VirtualizedContainerService.HintSize="438,60" sap2010:WorkflowViewState.IdRef="Assign_7">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:String">[Arg_inUniqueID]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:String">["Database"]</InArgument>
+                  </Assign.Value>
+                </Assign>
+                <TryCatch DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="438,472" sap2010:WorkflowViewState.IdRef="TryCatch_3">
+                  <TryCatch.Try>
+                    <Sequence sap:VirtualizedContainerService.HintSize="476,933" sap2010:WorkflowViewState.IdRef="Sequence_15">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Read LBOT_AR_CASH_RECEIPTS_V table" DisplayName="Invoke ReadProcessedPaymentTable workflow" sap:VirtualizedContainerService.HintSize="434,118" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_19" UnSafe="False" WorkflowFileName="DatabaseOperations/ReadProcessedPaymentTable.xaml">
+                        <ui:InvokeWorkflowFile.Arguments>
+                          <OutArgument x:TypeArguments="sd1:DataTable" x:Key="Arg_outProcessedPaymentDT">[ProcessedPaymentDT]</OutArgument>
+                          <InArgument x:TypeArguments="x:Int32" x:Key="Arg_inProcessPaymentDays">[Convert.ToInt32(Arg_inConfig("ProcessPaymentDays").ToString)]</InArgument>
+                          <InArgument x:TypeArguments="x:String" x:Key="Arg_inDBDataSource">[Arg_inConfig("DBDataSource").ToString]</InArgument>
+                          <InArgument x:TypeArguments="x:String" x:Key="Arg_inUsername">[Arg_inDBUSername]</InArgument>
+                          <InArgument x:TypeArguments="x:String" x:Key="Arg_inPassword">[new System.Net.NetworkCredential(string.Empty, Arg_inDBPassword).Password]</InArgument>
+                        </ui:InvokeWorkflowFile.Arguments>
+                        <sap:WorkflowViewStateService.ViewState>
+                          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                            <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                          </scg:Dictionary>
+                        </sap:WorkflowViewStateService.ViewState>
+                      </ui:InvokeWorkflowFile>
+                      <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke workflow file" sap:VirtualizedContainerService.HintSize="434,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_20" UnSafe="False" WorkflowFileName="Framework\Logging\Logging.xaml">
+                        <ui:InvokeWorkflowFile.Arguments>
+                          <InArgument x:TypeArguments="x:String" x:Key="argLogFilePath">[Arg_inLogFilePath]</InArgument>
+                          <InArgument x:TypeArguments="x:String" x:Key="argLogMessage">["Data read from LBOT_AR_CASH_RECEIPTS_V and Count is" +ProcessedPaymentDT.Rows.Count.ToString]</InArgument>
+                          <InArgument x:TypeArguments="x:String" x:Key="argLogLevel">Info</InArgument>
+                          <InArgument x:TypeArguments="x:String" x:Key="argOutputDirectory">[Arg_inOutputDirectory]</InArgument>
+                          <InArgument x:TypeArguments="x:String" x:Key="argUniqueInputID">[Arg_inUniqueID]</InArgument>
+                          <InOutArgument x:TypeArguments="sd1:DataTable" x:Key="argDTFinalOutPut">[Arg_inoutFinalDT]</InOutArgument>
+                          <InArgument x:TypeArguments="x:String" x:Key="argStepDetailDescription">["Data read from LBOT_AR_CASH_RECEIPTS_V and Count is" +ProcessedPaymentDT.Rows.Count.ToString]</InArgument>
+                          <InArgument x:TypeArguments="x:String" x:Key="argExceptionMessage">NA</InArgument>
+                        </ui:InvokeWorkflowFile.Arguments>
+                      </ui:InvokeWorkflowFile>
+                      <ui:ExcelApplicationScope Password="{x:Null}" DisplayName="Read NewBSMapping Table" sap:VirtualizedContainerService.HintSize="434,260" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_3" WorkbookPath="[Arg_inConfig(&quot;BSMappingFilePath&quot;).ToString.Trim]">
+                        <ui:ExcelApplicationScope.Body>
+                          <ActivityAction x:TypeArguments="ui:WorkbookApplication">
+                            <ActivityAction.Argument>
+                              <DelegateInArgument x:TypeArguments="ui:WorkbookApplication" Name="ExcelWorkbookScope" />
+                            </ActivityAction.Argument>
+                            <Sequence DisplayName="Do" sap:VirtualizedContainerService.HintSize="376,151" sap2010:WorkflowViewState.IdRef="Sequence_14">
+                              <sap:WorkflowViewStateService.ViewState>
+                                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                </scg:Dictionary>
+                              </sap:WorkflowViewStateService.ViewState>
+                              <ui:ExcelReadRange AddHeaders="True" DataTable="[BankMappingDT]" DisplayName="Read Sheet" sap:VirtualizedContainerService.HintSize="334,59" sap2010:WorkflowViewState.IdRef="ExcelReadRange_3" SheetName="Sheet1">
+                                <ui:ExcelReadRange.Range>
+                                  <InArgument x:TypeArguments="x:String">
+                                    <Literal x:TypeArguments="x:String" Value="" />
+                                  </InArgument>
+                                </ui:ExcelReadRange.Range>
+                              </ui:ExcelReadRange>
+                            </Sequence>
+                          </ActivityAction>
+                        </ui:ExcelApplicationScope.Body>
+                        <sap:WorkflowViewStateService.ViewState>
+                          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                          </scg:Dictionary>
+                        </sap:WorkflowViewStateService.ViewState>
+                      </ui:ExcelApplicationScope>
+                      <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Read LBOT_AR_RECEIPT_LOG_MASTER Table and save it in AllDataTable" DisplayName="Invoke ReadAllDataTable workflow" sap:VirtualizedContainerService.HintSize="434,129" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_21" UnSafe="False" WorkflowFileName="DatabaseOperations/ReadAllDataTable.xaml">
+                        <ui:InvokeWorkflowFile.Arguments>
+                          <InArgument x:TypeArguments="x:String" x:Key="Arg_inDBDataSource">[Arg_inConfig("DBDataSource").ToString]</InArgument>
+                          <InArgument x:TypeArguments="x:String" x:Key="Arg_inUsername">[Arg_inDBUSername]</InArgument>
+                          <InArgument x:TypeArguments="x:String" x:Key="Arg_inPassword">[new System.Net.NetworkCredential(string.Empty, Arg_inDBPassword).Password]</InArgument>
+                          <InArgument x:TypeArguments="x:Int32" x:Key="Arg_inProcessPaymentDays">[Convert.ToInt32(Arg_inConfig("ProcessPaymentDays").ToString)]</InArgument>
+                          <OutArgument x:TypeArguments="sd1:DataTable" x:Key="Arg_outAllDataDT">[AllDataDT]</OutArgument>
+                        </ui:InvokeWorkflowFile.Arguments>
+                        <sap:WorkflowViewStateService.ViewState>
+                          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                            <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                          </scg:Dictionary>
+                        </sap:WorkflowViewStateService.ViewState>
+                      </ui:InvokeWorkflowFile>
+                      <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke workflow file" sap:VirtualizedContainerService.HintSize="434,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_22" UnSafe="False" WorkflowFileName="Framework\Logging\Logging.xaml">
+                        <ui:InvokeWorkflowFile.Arguments>
+                          <InArgument x:TypeArguments="x:String" x:Key="argLogFilePath">[Arg_inLogFilePath]</InArgument>
+                          <InArgument x:TypeArguments="x:String" x:Key="argLogMessage">["Data read from LBOT_AR_RECEIPT_LOG_MASTER and Count is" +AllDataDT.Rows.Count.ToString]</InArgument>
+                          <InArgument x:TypeArguments="x:String" x:Key="argLogLevel">Info</InArgument>
+                          <InArgument x:TypeArguments="x:String" x:Key="argOutputDirectory">[Arg_inOutputDirectory]</InArgument>
+                          <InArgument x:TypeArguments="x:String" x:Key="argUniqueInputID">[Arg_inUniqueID]</InArgument>
+                          <InOutArgument x:TypeArguments="sd1:DataTable" x:Key="argDTFinalOutPut">[Arg_inoutFinalDT]</InOutArgument>
+                          <InArgument x:TypeArguments="x:String" x:Key="argStepDetailDescription">["Data read from LBOT_AR_RECEIPT_LOG_MASTER and Count is" +AllDataDT.Rows.Count.ToString]</InArgument>
+                          <InArgument x:TypeArguments="x:String" x:Key="argExceptionMessage">NA</InArgument>
+                        </ui:InvokeWorkflowFile.Arguments>
+                      </ui:InvokeWorkflowFile>
+                    </Sequence>
+                  </TryCatch.Try>
+                  <TryCatch.Catches>
+                    <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="400,310" sap2010:WorkflowViewState.IdRef="Catch`1_3">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <ActivityAction x:TypeArguments="s:Exception">
+                        <ActivityAction.Argument>
+                          <DelegateInArgument x:TypeArguments="s:Exception" Name="exception" />
+                        </ActivityAction.Argument>
+                        <Sequence sap:VirtualizedContainerService.HintSize="381,241" sap2010:WorkflowViewState.IdRef="Sequence_16">
+                          <sap:WorkflowViewStateService.ViewState>
+                            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                            </scg:Dictionary>
+                          </sap:WorkflowViewStateService.ViewState>
+                          <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke workflow file" sap:VirtualizedContainerService.HintSize="339,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_23" UnSafe="False" WorkflowFileName="Framework\Exceptions\ExceptionHandling.xaml">
+                            <ui:InvokeWorkflowFile.Arguments>
+                              <InArgument x:TypeArguments="x:String" x:Key="argMailList">[Arg_inConfig("ExceptionEmailID").ToString]</InArgument>
+                              <InArgument x:TypeArguments="x:String" x:Key="argMailSubject">Exception Occurred : Oracle Database</InArgument>
+                              <InArgument x:TypeArguments="x:String" x:Key="argMailBody">[“BOT is unable to connect to Oracle Database"+Environment.NewLine+"Exception Source:"+exception.Source+Environment.NewLine+"Message: "+exception.Message+Environment.NewLine]</InArgument>
+                              <InArgument x:TypeArguments="x:String" x:Key="argMailTemplatePath">[Arg_inConfig("ExceptionEmailTemplate").ToString]</InArgument>
+                              <InArgument x:TypeArguments="x:String" x:Key="argOutputDirectory">[Arg_inOutputDirectory]</InArgument>
+                              <InArgument x:TypeArguments="x:String" x:Key="argLogFilePath">[Arg_inLogFilePath]</InArgument>
+                              <InArgument x:TypeArguments="x:String" x:Key="argLogLevel">Error</InArgument>
+                              <InArgument x:TypeArguments="x:String" x:Key="argLogMessage">Exception</InArgument>
+                              <InArgument x:TypeArguments="x:String" x:Key="argUniqueInputID" xml:space="preserve">Error: </InArgument>
+                              <InArgument x:TypeArguments="sd1:DataTable" x:Key="argDTFinalOutPut">[Arg_inoutFinalDT]</InArgument>
+                              <InArgument x:TypeArguments="x:String" x:Key="argExceptionMessage">["Exception Source:"+exception.Source+Environment.NewLine+"Message: "+exception.Message+Environment.NewLine+"Stack Trace: "+exception.StackTrace]</InArgument>
+                              <InArgument x:TypeArguments="x:String" x:Key="argStepDetails">Exception Caught At Database.xaml</InArgument>
+                            </ui:InvokeWorkflowFile.Arguments>
+                          </ui:InvokeWorkflowFile>
+                          <Rethrow sap:VirtualizedContainerService.HintSize="339,22" sap2010:WorkflowViewState.IdRef="Rethrow_2" />
+                        </Sequence>
+                      </ActivityAction>
+                    </Catch>
+                  </TryCatch.Catches>
+                </TryCatch>
+                <Assign sap:VirtualizedContainerService.HintSize="438,60" sap2010:WorkflowViewState.IdRef="Assign_8">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:Boolean">[PaymentTableEmpty]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:Boolean">False</InArgument>
+                  </Assign.Value>
+                </Assign>
+                <TryCatch DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="438,506" sap2010:WorkflowViewState.IdRef="TryCatch_4">
+                  <sap:WorkflowViewStateService.ViewState>
+                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                      <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                    </scg:Dictionary>
+                  </sap:WorkflowViewStateService.ViewState>
+                  <TryCatch.Try>
+                    <Sequence sap:VirtualizedContainerService.HintSize="376,279" sap2010:WorkflowViewState.IdRef="Sequence_17">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <Assign DisplayName="Retrieve records whose status is NEW" sap:VirtualizedContainerService.HintSize="334,60" sap2010:WorkflowViewState.IdRef="Assign_9">
+                        <Assign.To>
+                          <OutArgument x:TypeArguments="sd1:DataTable">[Arg_outPaymentDT]</OutArgument>
+                        </Assign.To>
+                        <Assign.Value>
+                          <InArgument x:TypeArguments="sd1:DataTable">[AllDataDT.Select("[TRANSACTION_STATUS]='New'").CopyToDataTable]</InArgument>
+                        </Assign.Value>
+                      </Assign>
+                      <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke workflow file" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_24" UnSafe="False" WorkflowFileName="Framework\Logging\Logging.xaml">
+                        <ui:InvokeWorkflowFile.Arguments>
+                          <InArgument x:TypeArguments="x:String" x:Key="argLogFilePath">[Arg_inLogFilePath]</InArgument>
+                          <InArgument x:TypeArguments="x:String" x:Key="argLogMessage" xml:space="preserve">["Data read from LBOT_AR_RECEIPT_LOG_MASTER  whose Status is NEW and Count is" +Arg_outPaymentDT.Rows.Count.ToString]</InArgument>
+                          <InArgument x:TypeArguments="x:String" x:Key="argLogLevel">Info</InArgument>
+                          <InArgument x:TypeArguments="x:String" x:Key="argOutputDirectory">[Arg_inOutputDirectory]</InArgument>
+                          <InArgument x:TypeArguments="x:String" x:Key="argUniqueInputID">[Arg_inUniqueID]</InArgument>
+                          <InOutArgument x:TypeArguments="sd1:DataTable" x:Key="argDTFinalOutPut">[Arg_inoutFinalDT]</InOutArgument>
+                          <InArgument x:TypeArguments="x:String" x:Key="argStepDetailDescription" xml:space="preserve">["Data read from LBOT_AR_RECEIPT_LOG_MASTER  whose Status is NEW and Count is" +Arg_outPaymentDT.Rows.Count.ToString]</InArgument>
+                          <InArgument x:TypeArguments="x:String" x:Key="argExceptionMessage">NA</InArgument>
+                        </ui:InvokeWorkflowFile.Arguments>
+                      </ui:InvokeWorkflowFile>
+                    </Sequence>
+                  </TryCatch.Try>
+                  <TryCatch.Catches>
+                    <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="404,21" sap2010:WorkflowViewState.IdRef="Catch`1_4">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <ActivityAction x:TypeArguments="s:Exception">
+                        <ActivityAction.Argument>
+                          <DelegateInArgument x:TypeArguments="s:Exception" Name="exception" />
+                        </ActivityAction.Argument>
+                        <Sequence sap:VirtualizedContainerService.HintSize="356,279" sap2010:WorkflowViewState.IdRef="Sequence_18">
+                          <sap:WorkflowViewStateService.ViewState>
+                            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                            </scg:Dictionary>
+                          </sap:WorkflowViewStateService.ViewState>
+                          <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke workflow file" sap:VirtualizedContainerService.HintSize="314,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_25" UnSafe="False" WorkflowFileName="Framework\Logging\Logging.xaml">
+                            <ui:InvokeWorkflowFile.Arguments>
+                              <InArgument x:TypeArguments="x:String" x:Key="argLogFilePath">[Arg_inLogFilePath]</InArgument>
+                              <InArgument x:TypeArguments="x:String" x:Key="argLogMessage">No NEW Items in AllDataTable</InArgument>
+                              <InArgument x:TypeArguments="x:String" x:Key="argLogLevel">Info</InArgument>
+                              <InArgument x:TypeArguments="x:String" x:Key="argOutputDirectory">[Arg_inOutputDirectory]</InArgument>
+                              <InArgument x:TypeArguments="x:String" x:Key="argUniqueInputID">[Arg_inUniqueID]</InArgument>
+                              <InOutArgument x:TypeArguments="sd1:DataTable" x:Key="argDTFinalOutPut">[Arg_inoutFinalDT]</InOutArgument>
+                              <InArgument x:TypeArguments="x:String" x:Key="argStepDetailDescription">No NEW Items in AllDataTable</InArgument>
+                              <InArgument x:TypeArguments="x:String" x:Key="argExceptionMessage">NA</InArgument>
+                            </ui:InvokeWorkflowFile.Arguments>
+                          </ui:InvokeWorkflowFile>
+                          <Assign sap:VirtualizedContainerService.HintSize="314,60" sap2010:WorkflowViewState.IdRef="Assign_10">
+                            <Assign.To>
+                              <OutArgument x:TypeArguments="x:Boolean">[PaymentTableEmpty]</OutArgument>
+                            </Assign.To>
+                            <Assign.Value>
+                              <InArgument x:TypeArguments="x:Boolean">True</InArgument>
+                            </Assign.Value>
+                          </Assign>
+                        </Sequence>
+                      </ActivityAction>
+                    </Catch>
+                  </TryCatch.Catches>
+                </TryCatch>
+              </Sequence>
+              <FlowStep.Next>
+                <x:Reference>__ReferenceID1</x:Reference>
+              </FlowStep.Next>
+            </FlowStep>
+          </FlowDecision.False>
+        </FlowDecision>
+      </FlowStep.Next>
+    </FlowStep>
+    <x:Reference>__ReferenceID2</x:Reference>
+    <x:Reference>__ReferenceID0</x:Reference>
+    <x:Reference>__ReferenceID3</x:Reference>
+    <x:Reference>__ReferenceID4</x:Reference>
+    <x:Reference>__ReferenceID5</x:Reference>
+    <x:Reference>__ReferenceID6</x:Reference>
+    <x:Reference>__ReferenceID7</x:Reference>
+    <x:Reference>__ReferenceID8</x:Reference>
+    <x:Reference>__ReferenceID9</x:Reference>
+    <x:Reference>__ReferenceID10</x:Reference>
+    <x:Reference>__ReferenceID11</x:Reference>
+  </Flowchart>
+</Activity>
